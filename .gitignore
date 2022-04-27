@@ -1,2 +1,5 @@
 .direnv
 .envrc
+serve
+dist
+.parcel-cache
