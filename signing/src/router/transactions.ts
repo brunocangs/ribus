@@ -1,37 +1,20 @@
-import { TransactionRequest } from "@ethersproject/providers";
-import { Router } from "express";
-import transactions, { Transaction } from "../models/transactions";
-
+import { Request, Response, Router } from "express";
+import { WalletManager } from "../lib/walletManager";
+import { validator as txValidator } from "../models/transactions";
 const txRouter = Router();
 
-txRouter.get(`/`, async (req, res) => {
-  const allTxs = await transactions.findMany();
-  res.json(allTxs);
-});
-
-txRouter.get(`/:id`, async (req, res) => {
-  const dbTx = await transactions.findFirst({
-    where: {
-      id: +req.params.id,
-    },
-  });
-  if (!dbTx) {
-    res.sendStatus(404);
-    return;
-  }
-  res.json(dbTx);
-});
-
-txRouter.post(`/`, async (req, res) => {
-  const txBody = req.body as Transaction;
+export const signRouteHandler = async (req: Request, res: Response) => {
   try {
-    await transactions.create({
-      data: txBody,
-    });
-    res.json(txBody);
-  } catch (e: any) {
+    // const values = txValidator.parse(req.body);
+    const wallet = WalletManager.shared.getChildByAddress(req.body.from);
+    if (!wallet) return res.sendStatus(404);
+    console.log(req.body);
+    res.send(await wallet.signTransaction(req.body));
+  } catch (e) {
+    console.error(e);
     res.status(500).json(e);
   }
-});
+};
+txRouter.post("/sign", signRouteHandler);
 
 export default txRouter;

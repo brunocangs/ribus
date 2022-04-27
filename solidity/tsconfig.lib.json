@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "outDir": "./types",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true
+  },
+  "include": ["typechain"],
+  "files": ["./src/lib/index.ts"]
+}

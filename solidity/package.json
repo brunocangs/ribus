@@ -1,8 +1,32 @@
 {
-  "name": "solidity",
+  "name": "ribus-sdk",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
+  "main": "dist/index.js",
+  "unpkg": "dist/umd.js",
+  "types": "types/src/lib/index.d.ts",
+  "targets": {
+    "umd": {
+      "outputFormat": "global",
+      "context": "browser",
+      "source": "src/lib/umd.js"
+    },
+    "main": {
+      "source": "src/lib/index.ts",
+      "isLibrary": true
+    }
+  },
+  "files": [
+    "dist/**",
+    "types/**"
+  ],
+  "scripts": {
+    "dev": "hardhat node --network hardhat --tags dev",
+    "test": "rm -rf ./deployments/hardhat && hardhat test --network hardhat",
+    "watch": "parcel watch",
+    "build": "parcel build && npm run build:types",
+    "build:types": "tsc --project tsconfig.lib.json && cp ./typechain/**.d.ts ./types/typechain"
+  },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
     "@nomiclabs/hardhat-etherscan": "^3.0.0",
@@ -25,9 +49,9 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-promise": "^5.1.0",
     "ethereum-waffle": "^3.0.0",
-    "ethers": "^5.6.2",
     "hardhat": "^2.9.3",
     "hardhat-gas-reporter": "^1.0.4",
+    "parcel": "^2.5.0",
     "prettier": "^2.3.2",
     "prettier-plugin-solidity": "^1.0.0-beta.13",
     "solhint": "^3.3.6",
@@ -38,6 +62,7 @@
   },
   "dependencies": {
     "axios": "^0.26.1",
+    "ethers": "^5.6.4",
     "hardhat-deploy": "^0.11.4",
     "hardhat-deploy-ethers": "^0.3.0-beta.13"
   }

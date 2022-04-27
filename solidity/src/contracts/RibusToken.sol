@@ -3,15 +3,17 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract RibusToken is ERC20, Ownable, Initializable {
+contract RibusToken is ERC20, ERC20Burnable, Ownable, Initializable {
     using SafeMath for uint256;
+    //                      300 000 000
     uint256 public supply = 3e8;
 
-    constructor(address owner) ERC20("Ribus Token", "RBS") {
+    constructor(address owner) ERC20("Ribus Token", "RIB") {
         transferOwnership(owner);
     }
 

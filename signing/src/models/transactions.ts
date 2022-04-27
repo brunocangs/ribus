@@ -1,6 +1,10 @@
-export { Transaction } from "@prisma/client";
-import { prisma } from "../lib/utils";
+import { z } from "zod";
 
-const transactions = prisma.transaction;
+const validator = z.object({
+  to: z.string(),
+  from: z.string(),
+  data: z.string().optional(),
+  value: z.string().optional(),
+});
 
-export default transactions;
+export { validator };

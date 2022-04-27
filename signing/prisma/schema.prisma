@@ -16,6 +16,7 @@ model Transaction {
   updatedAt DateTime @updatedAt
   to        String
   from      String
-  data      String?
-  value     Int
+  data      String   @default("")
+  value     String
+  executed  Boolean
 }
