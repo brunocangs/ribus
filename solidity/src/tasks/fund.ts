@@ -36,9 +36,7 @@ export const fundManyAction = async (
 ) => {
   try {
     const addresses = await Promise.all(
-      Array.from({ length: args.first || 10 }, (_, i) =>
-        fundWallet(i + 1, ethers)
-      )
+      Array.from({ length: args.first || 10 }, (_, i) => fundWallet(i, ethers))
     );
     addresses.forEach((address) => {
       console.log(`Funded ${address} with 5 ETH on localhost`);

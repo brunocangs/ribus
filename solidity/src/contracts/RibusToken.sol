@@ -1,26 +1,50 @@
 // SPDX-License-Identifier: MIT
+pragma solidity ^0.8.4;
 
-pragma solidity ^0.8.0;
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20BurnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/metatx/ERC2771ContextUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+contract RibusToken is
+    Initializable,
+    ERC20Upgradeable,
+    ERC20BurnableUpgradeable,
+    OwnableUpgradeable,
+    UUPSUpgradeable,
+    ERC2771ContextUpgradeable
+{
+    using SafeMathUpgradeable for uint256;
+    uint256 private supply;
 
-contract RibusToken is ERC20, ERC20Burnable, Ownable, Initializable {
-    using SafeMath for uint256;
-    //                      300 000 000
-    uint256 public supply = 3e8;
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor(address forwarder) ERC2771ContextUpgradeable(forwarder) {}
 
-    constructor(address owner) ERC20("Ribus Token", "RIB") {
-        transferOwnership(owner);
+    function initialize() public initializer {
+        __ERC20_init("RibusToken", "RIB");
+        __ERC20Burnable_init();
+        __Ownable_init();
+        __UUPSUpgradeable_init();
+        //   300 000 000
+        supply = 3e8;
     }
 
-    function init(address[] memory wallets, uint256[] memory percentages)
+    function decimals() public pure virtual override returns (uint8) {
+        return 0;
+    }
+
+    modifier firstMint() {
+        require(totalSupply() == 0);
+        _;
+    }
+
+    function distribute(address[] memory wallets, uint256[] memory percentages)
         public
-        initializer
         onlyOwner
+        firstMint
     {
         uint256 percentageSum = 0;
         for (uint256 i = 0; i < percentages.length; i++) {
@@ -36,7 +60,7 @@ contract RibusToken is ERC20, ERC20Burnable, Ownable, Initializable {
     function distributeTokens(
         address[] memory wallets,
         uint256[] memory percentages
-    ) internal onlyOwner onlyInitializing {
+    ) internal onlyOwner firstMint {
         for (uint256 i = 0; i < wallets.length; i++) {
             address wallet = wallets[i];
             uint256 percentage = percentages[i];
@@ -47,5 +71,36 @@ contract RibusToken is ERC20, ERC20Burnable, Ownable, Initializable {
             uint256 tokensDue = supply.mul(percentage).div(100);
             _mint(wallet, tokensDue);
         }
+    }
+
+    function version() public pure virtual returns (string memory) {
+        return "1.0.0";
+    }
+
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        virtual
+        override
+        onlyOwner
+    {}
+
+    function _msgSender()
+        internal
+        view
+        virtual
+        override(ContextUpgradeable, ERC2771ContextUpgradeable)
+        returns (address sender)
+    {
+        return ERC2771ContextUpgradeable._msgSender();
+    }
+
+    function _msgData()
+        internal
+        view
+        virtual
+        override(ContextUpgradeable, ERC2771ContextUpgradeable)
+        returns (bytes calldata)
+    {
+        return ERC2771ContextUpgradeable._msgData();
     }
 }

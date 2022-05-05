@@ -1,105 +1,139 @@
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { deployments, getUnnamedAccounts, ethers } from "hardhat";
-import { NamedAccounts } from "../types";
-import { RibusToken } from "./../../typechain";
+import { providers, Wallet } from "ethers";
+import { HDNode, defaultPath } from "ethers/lib/utils";
+import { ethers, upgrades } from "hardhat";
+import { signMetaTxRequest } from "../lib/signer";
+import {
+  MinimalForwarderUpgradeable,
+  RibusToken,
+  RibusTokenV2,
+} from "../../typechain";
 
-const setupTest = deployments.createFixture(
-  async ({ deployments, ethers, getNamedAccounts }) => {
-    const { deployer } = (await getNamedAccounts()) as NamedAccounts;
-    await deployments.deploy("RibusToken", {
-      from: deployer,
-      args: [deployer],
-      skipIfAlreadyDeployed: false,
+describe("Greeter", function () {
+  this.beforeAll(async function () {
+    // Parent custodiated wallet => Generates children wallet
+    const parentNode = HDNode.fromMnemonic(
+      (await ethers.Wallet.createRandom()).mnemonic.phrase
+    );
+    // Relayer wallet (wallet with funds to submit meta tx)
+    const [relayer] = await ethers.getSigners();
+    // User 1 wallet => Will sign meta tx
+    const firstUser = new ethers.Wallet(
+      parentNode.derivePath(defaultPath.slice(0, -1) + "1").privateKey,
+      relayer.provider
+    );
+    // User 2 wallet => Could be any wallet. Will receive the RIB
+    const secondUser = new ethers.Wallet(
+      parentNode.derivePath(defaultPath.slice(0, -1) + "2").privateKey,
+      relayer.provider
+    );
+    // Send funds to base wallet for non-meta tx
+    await relayer.sendTransaction({
+      to: parentNode.address,
+      value: ethers.utils.parseEther("1"),
     });
-    const [, ...rest] = await ethers.getSigners();
-    return {
-      tokenContract: (await ethers.getContract(`RibusToken`)) as RibusToken,
-      deployer: await ethers.getSigner(deployer),
-      signers: rest,
-    };
-  }
-);
+    Object.assign(this, { parentNode, firstUser, secondUser, relayer });
+  });
+  it("Should deploy V1 contract and Forwarder", async function () {
+    const Ribus = await ethers.getContractFactory("RibusToken");
+    const Forwarder = await ethers.getContractFactory("UpgradeableForwarder");
+    const forwarder = await upgrades.deployProxy(Forwarder);
 
-describe("Ribus Token", function () {
-  it("Should deploy and set correct owner", async () => {
-    const { tokenContract, deployer } = await setupTest();
-    const owner = await tokenContract.owner();
-    expect(owner).to.equal(deployer.address);
+    const constructorArgs = [forwarder.address];
+    const instance = (await upgrades.deployProxy(Ribus, {
+      constructorArgs,
+    })) as RibusToken;
+
+    expect(await instance.isTrustedForwarder(forwarder.address)).to.true;
+    expect(await instance.version()).to.eq("1.0.0");
+
+    this.token = instance;
+    this.forwarder = forwarder;
   });
-  it("Should deploy and distribute tokens according to percentages", async function () {
-    const { tokenContract } = await setupTest();
-    const tokenSupply = (await tokenContract.supply()).toNumber();
-    const unnamed = await getUnnamedAccounts();
-    const validPercentages = [20, 30, 40, 10];
-    const wallets = unnamed.slice(0, validPercentages.length);
-    let tx = await tokenContract.init(wallets, validPercentages);
+  it("Should upgrade to V2 correctly", async function () {
+    const Ribus = this.token as RibusToken;
+    const Forwarder = this.forwarder as MinimalForwarderUpgradeable;
+
+    const RibusV2 = await ethers.getContractFactory("RibusTokenV2");
+
+    const upgraded = (await upgrades.upgradeProxy(Ribus.address, RibusV2, {
+      constructorArgs: [Forwarder.address],
+    })) as RibusTokenV2;
+
+    expect(await upgraded.version()).to.eq("2.0.0");
+    this.token = upgraded;
+  });
+  it("Should perform token distribution", async function () {
+    const RibusV2 = this.token as RibusTokenV2;
+    const signers = await ethers.getSigners();
+    const parts = 5;
+    const wallets = signers.slice(0, parts).map((signer) => signer.address);
+    const percentages = wallets.map(() => 100 / parts);
+
+    let tx = await RibusV2.distribute(wallets, percentages);
     await tx.wait();
-    for (const index in wallets) {
-      const wallet = wallets[index];
-      const percentage = validPercentages[index];
-      const tokenCount = (tokenSupply * percentage) / 100;
-      expect(await tokenContract.balanceOf(wallet)).to.equal(tokenCount);
+
+    const supply = await RibusV2.totalSupply();
+
+    for (const address of wallets) {
+      const walletBalance = await RibusV2.balanceOf(address);
+      expect(walletBalance.eq(supply.div(parts)));
     }
+    // Pick last wallet as funds holder (ICO bank)
+    this.holder = await ethers.getSigner(wallets[4]);
   });
-  it("Should fail when percentages dont add to 100%", async () => {
-    const { tokenContract } = await setupTest();
-    const unnamed = await getUnnamedAccounts();
-    const invalidPercentagesLess = [20, 20, 20, 20];
-    const wallets = unnamed.slice(0, invalidPercentagesLess.length);
-    try {
-      await tokenContract.init(wallets, invalidPercentagesLess);
-      // This should never happen. Will cause test to fail
-      expect(false).to.equal(true);
-    } catch (e: any) {
-      expect(e.message).to.contain(`Invalid input`);
-    }
-  });
-  it("Should fail when percentages go over 100%", async () => {
-    const { tokenContract } = await setupTest();
-    const unnamed = await getUnnamedAccounts();
-    const invalidPercentagesMore = [30, 30, 30, 30];
-    const wallets = unnamed.slice(0, invalidPercentagesMore.length);
-    try {
-      await tokenContract.init(wallets, invalidPercentagesMore);
-      // This should never happen. Will cause test to fail
-      expect(false).to.equal(true);
-    } catch (e: any) {
-      expect(e.message).to.contain(`Invalid input`);
-    }
-  });
-  it("Should fail if trying to initialize twice", async () => {
-    const { tokenContract } = await setupTest();
-    const unnamed = await getUnnamedAccounts();
-    const validPercentages = [20, 30, 40, 10];
-    const wallets = unnamed.slice(0, validPercentages.length);
-    let tx = await tokenContract.init(wallets, validPercentages);
-    await tx.wait();
-    const moreWallets = unnamed.slice(
-      validPercentages.length,
-      validPercentages.length
-    );
-    try {
-      tx = await tokenContract.init(moreWallets, validPercentages);
-      tx = await tokenContract.init(moreWallets, validPercentages);
-    } catch (e: any) {
-      expect(e.message).to.contain(`already initialized`);
-    }
-  });
-  it("Decreases total supply when burning tokens", async () => {
-    const { tokenContract } = await setupTest();
-    const unnamed = await getUnnamedAccounts();
-    const validPercentages = [20, 30, 40, 10];
-    const wallets = unnamed.slice(0, validPercentages.length);
-    let tx = await tokenContract.init(wallets, validPercentages);
-    await tx.wait();
-    const burner = await ethers.getSigner(wallets[0]);
-    const burnerTokenInstance = tokenContract.connect(burner);
-    const supply = await tokenContract.totalSupply();
-    tx = await burnerTokenInstance.burn(
-      await burnerTokenInstance.balanceOf(burner.address)
+  it("Should transfer to custodiated wallet", async function () {
+    const holder = this.holder as SignerWithAddress;
+    const firstUser = this.firstUser as Wallet;
+    const parentNode = this.parentNode as HDNode;
+    const RibusV2 = this.token as RibusTokenV2;
+    const ALLOWANCE = 100000;
+    // Set allowance from holder to parentNode
+    let tx = await RibusV2.connect(holder).increaseAllowance(
+      parentNode.address,
+      ALLOWANCE
     );
     await tx.wait();
-    const supplyAfter = await tokenContract.totalSupply();
-    expect(supplyAfter.lt(supply));
+    // Parent Node transfer from holder to child address (non meta)
+    const parentWallet = new Wallet(parentNode.privateKey, holder.provider);
+    tx = await RibusV2.connect(parentWallet).transferFrom(
+      holder.address,
+      firstUser.address,
+      ALLOWANCE / 2
+    );
+    await tx.wait();
+    const childBalance = await RibusV2.balanceOf(firstUser.address);
+    expect(childBalance.eq(ALLOWANCE / 2));
+  });
+  it("Should transfer from custodiated wallet via meta-tx", async function () {
+    const firstUser = this.firstUser as Wallet;
+    const relayer = this.relayer as SignerWithAddress;
+    const forwarder = this.forwarder.connect(
+      relayer
+    ) as MinimalForwarderUpgradeable;
+    const secondUser = this.secondUser as Wallet;
+    const RibusV2 = this.token as RibusTokenV2;
+    const ALLOWANCE = 100000;
+    const { request, signature } = await signMetaTxRequest(
+      // Have to use private key here because of hardhat not managing this key => Key was generated
+      // @ts-ignore
+      firstUser.privateKey,
+      forwarder,
+      {
+        from: firstUser.address,
+        to: RibusV2.address,
+        data: RibusV2.interface.encodeFunctionData("transfer", [
+          secondUser.address,
+          ALLOWANCE / 2,
+        ]),
+      }
+    );
+    await forwarder.execute(request, signature).then((tx) => tx.wait());
+    const ribBalance = await RibusV2.balanceOf(secondUser.address);
+    const ethBalance = await firstUser.provider.getBalance(firstUser.address);
+    // Check that RIB was transfered without user 1 having funds
+    expect(ribBalance.eq(ALLOWANCE / 2));
+    expect(ethBalance.eq(0));
   });
 });
