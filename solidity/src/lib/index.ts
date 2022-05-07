@@ -1,3 +1,3 @@
-export { default as RibusSdk } from "./lib";
-export { default as Network } from "./network";
-export * as util from "util";
+import RibusSdk from "./lib";
+import Network from "./network";
+export { RibusSdk, Network };

@@ -35,6 +35,7 @@ interface RibusTokenInterface extends ethers.utils.Interface {
     "isTrustedForwarder(address)": FunctionFragment;
     "name()": FunctionFragment;
     "owner()": FunctionFragment;
+    "paused()": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "symbol()": FunctionFragment;
@@ -84,6 +85,7 @@ interface RibusTokenInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proxiableUUID",
     values?: undefined
@@ -138,6 +140,7 @@ interface RibusTokenInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proxiableUUID",
     data: BytesLike
@@ -173,7 +176,9 @@ interface RibusTokenInterface extends ethers.utils.Interface {
     "BeaconUpgraded(address)": EventFragment;
     "Initialized(uint8)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
+    "Paused(address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
+    "Unpaused(address)": EventFragment;
     "Upgraded(address)": EventFragment;
   };
 
@@ -182,7 +187,9 @@ interface RibusTokenInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "BeaconUpgraded"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Upgraded"): EventFragment;
 }
 
@@ -206,9 +213,13 @@ export type OwnershipTransferredEvent = TypedEvent<
   [string, string] & { previousOwner: string; newOwner: string }
 >;
 
+export type PausedEvent = TypedEvent<[string] & { account: string }>;
+
 export type TransferEvent = TypedEvent<
   [string, string, BigNumber] & { from: string; to: string; value: BigNumber }
 >;
+
+export type UnpausedEvent = TypedEvent<[string] & { account: string }>;
 
 export type UpgradedEvent = TypedEvent<[string] & { implementation: string }>;
 
@@ -314,6 +325,8 @@ export class RibusToken extends BaseContract {
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
+    paused(overrides?: CallOverrides): Promise<[boolean]>;
+
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
@@ -414,6 +427,8 @@ export class RibusToken extends BaseContract {
 
   owner(overrides?: CallOverrides): Promise<string>;
 
+  paused(overrides?: CallOverrides): Promise<boolean>;
+
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
@@ -508,6 +523,8 @@ export class RibusToken extends BaseContract {
     name(overrides?: CallOverrides): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
+
+    paused(overrides?: CallOverrides): Promise<boolean>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
@@ -616,6 +633,12 @@ export class RibusToken extends BaseContract {
       { previousOwner: string; newOwner: string }
     >;
 
+    "Paused(address)"(
+      account?: null
+    ): TypedEventFilter<[string], { account: string }>;
+
+    Paused(account?: null): TypedEventFilter<[string], { account: string }>;
+
     "Transfer(address,address,uint256)"(
       from?: string | null,
       to?: string | null,
@@ -633,6 +656,12 @@ export class RibusToken extends BaseContract {
       [string, string, BigNumber],
       { from: string; to: string; value: BigNumber }
     >;
+
+    "Unpaused(address)"(
+      account?: null
+    ): TypedEventFilter<[string], { account: string }>;
+
+    Unpaused(account?: null): TypedEventFilter<[string], { account: string }>;
 
     "Upgraded(address)"(
       implementation?: string | null
@@ -701,6 +730,8 @@ export class RibusToken extends BaseContract {
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    paused(overrides?: CallOverrides): Promise<BigNumber>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -805,6 +836,8 @@ export class RibusToken extends BaseContract {
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

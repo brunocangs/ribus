@@ -9,6 +9,7 @@ export type { IBeaconUpgradeable } from "./IBeaconUpgradeable";
 export type { ERC1967UpgradeUpgradeable } from "./ERC1967UpgradeUpgradeable";
 export type { Initializable } from "./Initializable";
 export type { UUPSUpgradeable } from "./UUPSUpgradeable";
+export type { PausableUpgradeable } from "./PausableUpgradeable";
 export type { ERC20Upgradeable } from "./ERC20Upgradeable";
 export type { ERC20BurnableUpgradeable } from "./ERC20BurnableUpgradeable";
 export type { IERC20MetadataUpgradeable } from "./IERC20MetadataUpgradeable";
@@ -27,6 +28,7 @@ export { IBeaconUpgradeable__factory } from "./factories/IBeaconUpgradeable__fac
 export { ERC1967UpgradeUpgradeable__factory } from "./factories/ERC1967UpgradeUpgradeable__factory";
 export { Initializable__factory } from "./factories/Initializable__factory";
 export { UUPSUpgradeable__factory } from "./factories/UUPSUpgradeable__factory";
+export { PausableUpgradeable__factory } from "./factories/PausableUpgradeable__factory";
 export { ERC20Upgradeable__factory } from "./factories/ERC20Upgradeable__factory";
 export { ERC20BurnableUpgradeable__factory } from "./factories/ERC20BurnableUpgradeable__factory";
 export { IERC20MetadataUpgradeable__factory } from "./factories/IERC20MetadataUpgradeable__factory";

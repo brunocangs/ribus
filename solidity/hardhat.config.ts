@@ -8,6 +8,7 @@ import "@openzeppelin/hardhat-upgrades";
 import "@typechain/hardhat";
 import "hardhat-gas-reporter";
 import "solidity-coverage";
+import "./src/tasks";
 
 dotenv.config();
 
@@ -27,8 +28,8 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 const config: HardhatUserConfig = {
   solidity: "0.8.9",
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL || "",
+    mumbai: {
+      url: "https://speedy-nodes-nyc.moralis.io/f7da58f3ff99c93c911451b0/polygon/mumbai",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },

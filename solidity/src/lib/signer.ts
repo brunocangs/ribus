@@ -1,6 +1,6 @@
 import ethers from "ethers";
 import { MinimalForwarderUpgradeable } from "../../typechain";
-
+import { signTypedData, SignTypedDataVersion } from "@metamask/eth-sig-util";
 type AsyncReturn<T> = T extends (...args: any) => Promise<infer U>
   ? U
   : T extends (...args: any) => any
@@ -18,8 +18,6 @@ type SignerType =
       send: ethers.providers.JsonRpcProvider["send"];
     }
   | string;
-
-const ethSigUtil = require("eth-sig-util");
 
 const EIP712Domain = [
   { name: "name", type: "string" },
@@ -49,28 +47,26 @@ function getMetaTxTypeData(chainId: number, verifyingContract: string) {
       chainId,
       verifyingContract,
     },
-    primaryType: "ForwardRequest",
+    primaryType: "ForwardRequest" as const,
   };
 }
 
-async function signTypedData(
+async function doSign(
   signer: SignerType,
   from: string,
-  data: AsyncReturn<typeof getMetaTxTypeData>
+  data: AsyncReturn<typeof buildTypedData>
 ) {
-  console.log({ signer });
-  // If signer is a private key, use it to sign
   if (typeof signer === "string") {
     const privateKey = Buffer.from(signer.replace(/^0x/, ""), "hex");
-    return ethSigUtil.signTypedMessage(privateKey, { data });
+    return signTypedData({
+      data,
+      privateKey,
+      version: SignTypedDataVersion.V4,
+    });
   }
-
   // Otherwise, send the signTypedData RPC call
   // Note that hardhatvm and metamask require different EIP712 input
-  const isHardhat = data.domain.chainId == 31337;
-  const [method, argData] = isHardhat
-    ? ["eth_signTypedData", data]
-    : ["eth_signTypedData_v4", JSON.stringify(data)];
+  const [method, argData] = ["eth_signTypedData_v4", JSON.stringify(data)];
   return await signer.send(method, [from, argData]);
 }
 
@@ -100,7 +96,7 @@ async function signMetaTxRequest(
 ) {
   const request = await buildRequest(forwarder, input);
   const toSign = await buildTypedData(forwarder, request);
-  const signature = await signTypedData(signer, input.from, toSign);
+  const signature = await doSign(signer, input.from, toSign);
   return { signature, request };
 }
 

@@ -2,7 +2,7 @@ import { TransactionRequest } from "@ethersproject/providers";
 import axios from "axios";
 import * as ethers from "ethers";
 import { abi } from "../../artifacts/src/contracts/RibusToken.sol/RibusToken.json";
-import type { RibusToken } from "../../typechain";
+import { RibusToken } from "../../typechain";
 import Network from "./network";
 
 const { url } = Network.shared;

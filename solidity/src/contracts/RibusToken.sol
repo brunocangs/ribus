@@ -8,6 +8,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/metatx/ERC2771ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
 contract RibusToken is
     Initializable,
@@ -15,7 +16,8 @@ contract RibusToken is
     ERC20BurnableUpgradeable,
     OwnableUpgradeable,
     UUPSUpgradeable,
-    ERC2771ContextUpgradeable
+    ERC2771ContextUpgradeable,
+    PausableUpgradeable
 {
     using SafeMathUpgradeable for uint256;
     uint256 private supply;
@@ -28,6 +30,7 @@ contract RibusToken is
         __ERC20Burnable_init();
         __Ownable_init();
         __UUPSUpgradeable_init();
+        __Pausable_init();
         //   300 000 000
         supply = 3e8;
     }

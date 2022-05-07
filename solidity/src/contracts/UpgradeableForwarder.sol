@@ -24,5 +24,7 @@ contract UpgradeableForwarder is
         virtual
         override
         onlyOwner
-    {}
+    {
+        //
+    }
 }

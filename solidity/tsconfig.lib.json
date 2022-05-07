@@ -7,7 +7,8 @@
     "declaration": true,
     "outDir": "./types",
     "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true
   },
   "include": ["typechain"],
   "files": ["./src/lib/index.ts"]
