@@ -3,3 +3,4 @@
 serve
 dist
 .parcel-cache
+php-mock
