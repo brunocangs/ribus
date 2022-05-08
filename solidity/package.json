@@ -30,9 +30,12 @@
     "local:deploy": "hardhat run src/scripts/deploy.ts --network localhost",
     "local:upgrade": "hardhat run src/scripts/upgrade.ts --network localhost",
     "local:test": "hardhat test --network localhost",
-    "deploy": "hardhat run src/scripts/deploy.ts --network mumbai",
-    "upgrade": "hardhat run src/scripts/upgrade.ts --network mumbai",
-    "upload": "hardhat run src/scripts/upload.ts"
+    "staging:deploy": "hardhat run src/scripts/deploy.ts --network mumbai",
+    "staging:upgrade": "hardhat run src/scripts/upgrade.ts --network mumbai",
+    "deploy": "hardhat run src/scripts/deploy.ts --network polygon",
+    "upgrade": "hardhat run src/scripts/upgrade.ts --network polygon",
+    "staging:upload": "hardhat run src/scripts/upload.ts --network mumbai",
+    "upload": "hardhat run src/scripts/upload.ts --network polygon"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",

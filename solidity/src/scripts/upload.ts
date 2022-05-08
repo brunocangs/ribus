@@ -6,6 +6,7 @@ import { config } from "dotenv";
 const MUMBAI_MAP = {
   relay: "f65013f5-5edc-4d9e-a677-f80e1ab32cc4",
   signing: "e8273f76-fed8-491d-91dc-54ec5a31ff62",
+  transfer: "8397348b-fb30-43e6-9711-1674b424bbb4",
 };
 
 const taskIdNetworkMap: Record<string, Record<string, string>> = {

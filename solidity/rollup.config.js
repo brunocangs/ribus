@@ -22,6 +22,7 @@ const bundle = (name) => ({
     "web3",
     "axios",
     /^defender-relay-client(\/.*)?$/,
+    "hardhat",
   ],
 });
-export default [bundle(`relay`), bundle(`signing`)];
+export default [bundle(`relay`), bundle(`signing`), bundle("transfer")];

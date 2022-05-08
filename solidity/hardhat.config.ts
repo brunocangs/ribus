@@ -32,6 +32,7 @@ const config: HardhatUserConfig = {
       url: "https://speedy-nodes-nyc.moralis.io/f7da58f3ff99c93c911451b0/polygon/mumbai",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      chainId: 80001,
     },
   },
   gasReporter: {
@@ -39,7 +40,10 @@ const config: HardhatUserConfig = {
     currency: "USD",
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      polygon: process.env.ETHERSCAN_API_KEY,
+      polygonMumbai: process.env.ETHERSCAN_API_KEY,
+    },
   },
   paths: {
     sources: "./src/contracts",
