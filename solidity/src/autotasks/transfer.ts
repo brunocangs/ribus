@@ -64,7 +64,7 @@ async function handler(
       to: tokenContract.address,
     });
     const tx = await forwarder.execute(request, signature);
-    return tx;
+    return { hash: tx.hash };
   }
 }
 

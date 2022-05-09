@@ -1,15 +1,33 @@
+import axios from "axios";
+import { chainIdToAutotasks, TaskNames } from "./utils";
 class Network {
   static shared = new Network();
-  API_BASE_URL = process.env.API_BASE_URL || "http://localhost:3000";
   RPC_URL = process.env.RPC_URL || "http://localhost:8545";
-  setBaseUrl(url: string) {
-    this.API_BASE_URL = url;
-  }
+  chainId = 31337;
   setRpcUrl(url: string) {
     this.RPC_URL = url;
   }
-  url = (path: string) => {
-    return this.API_BASE_URL + path;
+  setChainId(chainId: number) {
+    this.chainId = chainId;
+  }
+  task = async (task: TaskNames, params: any) => {
+    try {
+      const data = await axios(chainIdToAutotasks[this.chainId][task], {
+        method: "post",
+        data: params,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (data.data && data.data.result) {
+        const result = JSON.parse(data.data.result);
+        data.data.result = result;
+        return data.data;
+      }
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
   };
 }
 

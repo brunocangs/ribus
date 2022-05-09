@@ -136,4 +136,17 @@ describe("Greeter", function () {
     expect(ribBalance.eq(ALLOWANCE / 2));
     expect(ethBalance.eq(0));
   });
+  it("Cannot distribute tokens twice", async function () {
+    const ribus = this.token as RibusTokenV2;
+    const signers = await ethers.getSigners();
+    const wallets = signers.slice(0, 5).map((signer) => signer.address);
+    const percentages = wallets.map((_, __, arr) => 100 / arr.length);
+    let tx = ribus.distribute(wallets, percentages);
+    try {
+      await (await tx).wait();
+      expect(false).to.true;
+    } catch (e) {
+      expect(e).to.exist;
+    }
+  });
 });

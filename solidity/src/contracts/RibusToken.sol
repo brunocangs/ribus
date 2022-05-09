@@ -21,6 +21,7 @@ contract RibusToken is
 {
     using SafeMathUpgradeable for uint256;
     uint256 private supply;
+    bool public hasMinted;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor(address forwarder) ERC2771ContextUpgradeable(forwarder) {}
@@ -33,6 +34,7 @@ contract RibusToken is
         __Pausable_init();
         //   300 000 000
         supply = 3e8;
+        hasMinted = false;
     }
 
     function decimals() public pure virtual override returns (uint8) {
@@ -40,7 +42,7 @@ contract RibusToken is
     }
 
     modifier firstMint() {
-        require(totalSupply() == 0);
+        require(!hasMinted);
         _;
     }
 
@@ -51,13 +53,15 @@ contract RibusToken is
     {
         uint256 percentageSum = 0;
         for (uint256 i = 0; i < percentages.length; i++) {
-            percentageSum += percentages[i];
+            require(percentages[i] <= 100, "Invalid input");
+            percentageSum = percentageSum.add(percentages[i]);
         }
         require(
             wallets.length == percentages.length && percentageSum == 100,
             "Invalid input"
         );
         distributeTokens(wallets, percentages);
+        hasMinted = true;
     }
 
     function distributeTokens(

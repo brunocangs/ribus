@@ -1,6 +1,6 @@
 {
   "name": "ribus-sdk",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "dist/index.js",
   "unpkg": "dist/umd.js",
@@ -21,7 +21,7 @@
     "types/**"
   ],
   "scripts": {
-    "dev": "hardhat node --network hardhat --tags dev",
+    "dev": "hardhat node",
     "watch": "parcel watch",
     "build": "npm run build:tasks && npm run build:lib && npm run build:types",
     "build:tasks": "rollup -c",

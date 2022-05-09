@@ -30,6 +30,7 @@ interface RibusTokenV2Interface extends ethers.utils.Interface {
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "distribute(address[],uint256[])": FunctionFragment;
+    "hasMinted()": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
     "initialize()": FunctionFragment;
     "isTrustedForwarder(address)": FunctionFragment;
@@ -71,6 +72,7 @@ interface RibusTokenV2Interface extends ethers.utils.Interface {
     functionFragment: "distribute",
     values: [string[], BigNumberish[]]
   ): string;
+  encodeFunctionData(functionFragment: "hasMinted", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "increaseAllowance",
     values: [string, BigNumberish]
@@ -129,6 +131,7 @@ interface RibusTokenV2Interface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "distribute", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "hasMinted", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "increaseAllowance",
     data: BytesLike
@@ -306,6 +309,8 @@ export class RibusTokenV2 extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    hasMinted(overrides?: CallOverrides): Promise<[boolean]>;
+
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
@@ -408,6 +413,8 @@ export class RibusTokenV2 extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  hasMinted(overrides?: CallOverrides): Promise<boolean>;
+
   increaseAllowance(
     spender: string,
     addedValue: BigNumberish,
@@ -506,6 +513,8 @@ export class RibusTokenV2 extends BaseContract {
       percentages: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
+
+    hasMinted(overrides?: CallOverrides): Promise<boolean>;
 
     increaseAllowance(
       spender: string,
@@ -712,6 +721,8 @@ export class RibusTokenV2 extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    hasMinted(overrides?: CallOverrides): Promise<BigNumber>;
+
     increaseAllowance(
       spender: string,
       addedValue: BigNumberish,
@@ -817,6 +828,8 @@ export class RibusTokenV2 extends BaseContract {
       percentages: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    hasMinted(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     increaseAllowance(
       spender: string,
