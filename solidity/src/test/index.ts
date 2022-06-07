@@ -3,12 +3,14 @@ import { expect } from "chai";
 import { providers, Wallet } from "ethers";
 import { HDNode, defaultPath } from "ethers/lib/utils";
 import { ethers, upgrades } from "hardhat";
-import { signMetaTxRequest } from "../lib/signer";
+import { signMetaTxRequest } from "../lib/signer_node";
 import {
   MinimalForwarderUpgradeable,
   RibusToken,
   RibusTokenV2,
 } from "../../typechain";
+
+let ALLOWANCE = 100000;
 
 describe("Greeter", function () {
   this.beforeAll(async function () {
@@ -47,9 +49,11 @@ describe("Greeter", function () {
 
     expect(await instance.isTrustedForwarder(forwarder.address)).to.true;
     expect(await instance.version()).to.eq("1.0.0");
-
+    console.log(`Deployed token to ${instance.address}`);
     this.token = instance;
     this.forwarder = forwarder;
+    // Correct allowance for decimals
+    ALLOWANCE = ALLOWANCE * Math.pow(10, await instance.decimals());
   });
   it("Should upgrade to V2 correctly", async function () {
     const Ribus = this.token as RibusToken;
@@ -82,13 +86,13 @@ describe("Greeter", function () {
     }
     // Pick last wallet as funds holder (ICO bank)
     this.holder = await ethers.getSigner(wallets[4]);
+    console.log(`Holder PK: ${this.holder.privateKey}`);
   });
   it("Should transfer to custodiated wallet", async function () {
     const holder = this.holder as SignerWithAddress;
     const firstUser = this.firstUser as Wallet;
     const parentNode = this.parentNode as HDNode;
     const RibusV2 = this.token as RibusTokenV2;
-    const ALLOWANCE = 100000;
     // Set allowance from holder to parentNode
     let tx = await RibusV2.connect(holder).increaseAllowance(
       parentNode.address,
@@ -114,7 +118,6 @@ describe("Greeter", function () {
     ) as MinimalForwarderUpgradeable;
     const secondUser = this.secondUser as Wallet;
     const RibusV2 = this.token as RibusTokenV2;
-    const ALLOWANCE = 100000;
     const { request, signature } = await signMetaTxRequest(
       // Have to use private key here because of hardhat not managing this key => Key was generated
       // @ts-ignore
@@ -148,5 +151,27 @@ describe("Greeter", function () {
     } catch (e) {
       expect(e).to.exist;
     }
+  });
+  it("Should perform a burn through a meta-tx", async function () {
+    const relayer = this.relayer as SignerWithAddress;
+    const forwarder = this.forwarder.connect(
+      relayer
+    ) as MinimalForwarderUpgradeable;
+    const secondUser = this.secondUser as Wallet;
+    const RibusV2 = this.token as RibusTokenV2;
+    const { request, signature } = await signMetaTxRequest(
+      secondUser.privateKey,
+      forwarder,
+      {
+        to: RibusV2.address,
+        from: secondUser.address,
+        data: RibusV2.interface.encodeFunctionData("burn", [ALLOWANCE / 4]),
+      }
+    );
+    await forwarder.execute(request, signature).then((tx) => tx.wait);
+    let newBalance = await RibusV2.balanceOf(secondUser.address);
+    expect(newBalance.eq(ALLOWANCE / 4));
+    let totalSupply = await RibusV2.totalSupply();
+    expect(totalSupply.lt(3e8));
   });
 });

@@ -7,7 +7,8 @@
     "outDir": "dist",
     "declaration": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": "./ribus-sdk"
   },
   "include": ["./src/**/*.ts"],
   "files": ["./hardhat.config.ts"]

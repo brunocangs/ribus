@@ -9,6 +9,7 @@ import { ethers } from "ethers";
 import { abi as ForwarderAbi } from "../../artifacts/src/contracts/UpgradeableForwarder.sol/UpgradeableForwarder.json";
 import d from "../../deploy.json";
 import { UpgradeableForwarder } from "../../typechain";
+import { chainIdToName } from "../lib/utils";
 const deploy = d as any;
 
 async function relay(
@@ -42,8 +43,8 @@ async function handler(event: AutotaskEvent & RelayerParams) {
   const signer = new DefenderRelaySigner(credentials, provider, {
     speed: "fast",
   });
-  const network = provider.network;
-  const ForwarderAddress = deploy[network.name].forwarder;
+  const network = await provider._networkPromise;
+  const ForwarderAddress = deploy[chainIdToName[network.chainId]].forwarder;
   const forwarder = new ethers.Contract(
     ForwarderAddress,
     ForwarderAbi,
@@ -53,7 +54,7 @@ async function handler(event: AutotaskEvent & RelayerParams) {
   // Relay transaction!
   const tx = await relay(forwarder, request, signature);
   console.log(`Sent meta-tx: ${tx.hash}`);
-  return { txHash: tx.hash };
+  return { hash: tx.hash };
 }
 
 module.exports = {

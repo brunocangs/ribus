@@ -10,7 +10,7 @@ import { defaultPath, HDNode } from "ethers/lib/utils";
 import { abi as ForwarderAbi } from "../../artifacts/src/contracts/UpgradeableForwarder.sol/UpgradeableForwarder.json";
 import d from "../../deploy.json";
 import { UpgradeableForwarder } from "../../typechain";
-import { signMetaTxRequest } from "../lib/signer";
+import { signMetaTxRequest } from "../lib/signer_node";
 import { chainIdToName } from "../lib/utils";
 
 const deploy = d as any;
@@ -89,7 +89,7 @@ if (require.main === module) {
     },
     request: {
       body: {
-        index: 2,
+        index: 1,
         // data: {
         //   to: deploy.localhost.token,
         //   data: ribusInterface.encodeFunctionData("transfer", [

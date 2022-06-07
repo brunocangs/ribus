@@ -1,6 +1,5 @@
 import ethers from "ethers";
 import { MinimalForwarderUpgradeable } from "../../typechain";
-import { signTypedData, SignTypedDataVersion } from "@metamask/eth-sig-util";
 type AsyncReturn<T> = T extends (...args: any) => Promise<infer U>
   ? U
   : T extends (...args: any) => any
@@ -57,19 +56,23 @@ async function doSign(
   data: AsyncReturn<typeof buildTypedData>
 ) {
   if (typeof signer === "string") {
-    const privateKey = Buffer.from(signer.replace(/^0x/, ""), "hex");
-    return signTypedData({
-      data,
-      privateKey,
-      version: SignTypedDataVersion.V4,
-    });
+    return "";
   }
   // Otherwise, send the signTypedData RPC call
   // Note that hardhatvm and metamask require different EIP712 input
   const [method, argData] = ["eth_signTypedData_v4", JSON.stringify(data)];
   return await signer.send(method, [from, argData]);
 }
-
+async function doOnboardSign(
+  provider: ethers.providers.Web3Provider,
+  from: string,
+  data: AsyncReturn<typeof buildTypedData>
+) {
+  return await provider.send("eth_signTypedData_v4", [
+    from,
+    JSON.stringify(data),
+  ]);
+}
 async function buildRequest(
   forwarder: MinimalForwarderUpgradeable,
   input: TxInput
@@ -100,4 +103,20 @@ async function signMetaTxRequest(
   return { signature, request };
 }
 
-export { signMetaTxRequest, buildRequest, buildTypedData };
+async function onboardSignMetaTxRequest(
+  signer: ethers.providers.Web3Provider,
+  forwarder: MinimalForwarderUpgradeable,
+  input: TxInput
+) {
+  const request = await buildRequest(forwarder, input);
+  const toSign = await buildTypedData(forwarder, request);
+  const signature = await doOnboardSign(signer, input.from, toSign);
+  return { signature, request };
+}
+
+export {
+  signMetaTxRequest,
+  onboardSignMetaTxRequest,
+  buildRequest,
+  buildTypedData,
+};

@@ -9,6 +9,7 @@ const bundle = (name) => ({
     file: `dist/tasks/${name}/index.js`,
     format: "cjs",
     exports: "auto",
+    inlineDynamicImports: true,
   },
   plugins: [
     resolve({ preferBuiltins: true }),

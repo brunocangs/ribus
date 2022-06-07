@@ -29,10 +29,16 @@ const config: HardhatUserConfig = {
   solidity: "0.8.9",
   networks: {
     mumbai: {
-      url: "https://speedy-nodes-nyc.moralis.io/f7da58f3ff99c93c911451b0/polygon/mumbai",
+      url: "https://polygon-mumbai.infura.io/v3/5554892250224defb6c817ddb2755733",
       accounts:
         process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
       chainId: 80001,
+    },
+    polygon: {
+      url: "https://polygon-mainnet.infura.io/v3/5554892250224defb6c817ddb2755733",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+      chainId: 137,
     },
   },
   gasReporter: {

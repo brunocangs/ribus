@@ -33,12 +33,14 @@ contract RibusToken is
         __UUPSUpgradeable_init();
         __Pausable_init();
         //   300 000 000
-        supply = 3e8;
+        uint256 initialSupply = 3e8;
+        // Adjust for decimal
+        supply = initialSupply.mul(10**decimals());
         hasMinted = false;
     }
 
     function decimals() public pure virtual override returns (uint8) {
-        return 0;
+        return 8;
     }
 
     modifier firstMint() {

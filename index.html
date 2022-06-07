@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ribus Demo</title>
+    <script src="http://localhost:5000/sdk/umd.js"></script>
+    <style>
+      * {
+        font-family: Arial, Helvetica, sans-serif;
+        color: rgb(0, 0, 88);
+      }
+      body,
+      html {
+        box-sizing: border-box;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+      }
+      body > div:first-child {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 16px;
+        border: 3px solid darkblue;
+        padding: 1em;
+        border-radius: 6px;
+      }
+      button {
+        border: none;
+        border-radius: 4px;
+        padding: 0.5em 0.75em;
+        background-color: darkblue;
+        color: rgb(235, 172, 12);
+        font-size: 1.2em;
+        cursor: pointer;
+      }
+      div.loading {
+        position: absolute;
+        inset: 0;
+        display: none;
+        /* display: flex; */
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(0 0 0 /25%);
+      }
+      div.loading > div {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        justify-content: center;
+        align-items: center;
+
+        border: 3px solid darkblue;
+        background-color: whitesmoke;
+        padding: 1.25em;
+        border-radius: 6px;
+      }
+      .balance {
+        display: none;
+      }
+      h2 {
+        margin-top: 0;
+      }
+      h1 {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h1>Ribus Claim</h1>
+      <small
+        >Token address:
+        <span class="tokenAddress"
+          >0x113DB5773f8a96E5cFc56850a14035b0EA20574e</span
+        ></small
+      >
+      <div>
+        <label for="address">Seu Endereço</label>
+        <input type="text" id="address" onchange="checkBalance()" />
+      </div>
+      <div class="balance"></div>
+      <button onclick="claim()">Claim</button>
+      <button onclick="connect()">Connect Wallet</button>
+    </div>
+    <div class="loading">
+      <div>
+        <h2>Realizando transações</h2>
+        <div class="content">
+          Processando transação <span class="current">0</span> de
+          <span class="max">2</span>
+        </div>
+      </div>
+    </div>
+    <script>
+      let USER_ID = 1;
+      let userAddress = "";
+      let loader = document.querySelector(".loading");
+      let input = document.querySelector("#address");
+      let balance = document.querySelector(".balance");
+      const loading = document.querySelector(".loading");
+      const loadingCurrent = document.querySelector(".current");
+
+      let balanceValue;
+      Network.shared.setChainId(80001);
+      Network.shared.setRpcUrl(
+        "https://polygon-mumbai.infura.io/v3/5554892250224defb6c817ddb2755733"
+      );
+      const sdk = new RibusSdk({
+        fundAddress: "0x41B6396b6092Bfb0d2A2166D7884a38082c7842A",
+      });
+      const checkBalance = async () => {
+        if (ethers.utils.isAddress(input.value)) {
+          balance.style.display = "block";
+          balanceValue = Number(
+            "0x" + ethers.utils.keccak256(input.value).slice(-12, -8)
+          );
+          balance.innerText = `Seu saldo: ${balanceValue}`;
+        } else {
+          balance.style.display = "block";
+          balance.innerText = `Endereço invalido`;
+        }
+      };
+      const connect = async () => {
+        // const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+        // // MetaMask requires requesting permission to connect users accounts
+        // await provider.send("eth_requestAccounts", []);
+
+        // // The MetaMask plugin also allows signing transactions to
+        // // send ether and pay to change state within the blockchain.
+        // // For this, you need the account signer...
+        // const signer = provider.getSigner()
+        const makeTx = await sdk.burnExternal(10000);
+        // console.log("Doing tx");
+        // const tx = await makeTx();
+        // console.log(tx);
+        // await tx.wait();
+        // console.log(`tx done https://mumbai.polygonscan.com/tx/${tx.hash}`);
+      };
+      const claim = async () => {
+        sdk.claimRibusJWT(
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcHAucmlidXMuY29tLmJyIiwidXNlcl9pZCI6MSwid2FsbGV0IjoiMHgxMTNEQjU3NzNmOGE5NkU1Y0ZjNTY4NTBhMTQwMzViMEVBMjA1NzRlIiwiYW1vdW50Ijo0NTY3LCJpYXQiOjE2NTQ2MjY1NDIsImV4cCI6MTY1NDYzMDE0Mn0.AoiWWT_jmZX4AqHLqk2ynF2HefWWhmALU88kSE4blWo"
+        );
+        if (!balanceValue) return;
+        loading.style.display = "flex";
+        // Essa constante seria derivada dos dados do usuário
+        const receiver = input.value;
+        try {
+          const { firstTx, secondTx } = await sdk.claimRibus(
+            USER_ID,
+            receiver,
+            balanceValue
+          );
+          loadingCurrent.innerText = 1;
+          const first = await firstTx();
+          await first.wait();
+          loadingCurrent.innerText = 2;
+          const second = await secondTx();
+          await second.wait();
+          loading.style.display = "none";
+          let balance = document.querySelector(".balance");
+          balance.innerHTML = `Sucessfully claimed your Ribus tokens! Check the transaction on <a href="https://mumbai.polygonscan.com/tx/${second.hash}">Polygonscan</a>`;
+        } catch (e) {
+          console.error(e);
+          loading.style.display = "none";
+        }
+      };
+    </script>
+  </body>
+</html>

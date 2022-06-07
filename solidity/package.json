@@ -1,6 +1,6 @@
 {
   "name": "ribus-sdk",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "license": "MIT",
   "main": "dist/index.js",
   "unpkg": "dist/umd.js",
@@ -9,7 +9,10 @@
     "umd": {
       "outputFormat": "global",
       "context": "browser",
-      "source": "src/lib/umd.js"
+      "source": "src/lib/umd.js",
+      "includeNodeModules": {
+        "@metamask/eth-sig-util": false
+      }
     },
     "main": {
       "source": "src/lib/index.ts",
@@ -32,9 +35,9 @@
     "local:test": "hardhat test --network localhost",
     "staging:deploy": "hardhat run src/scripts/deploy.ts --network mumbai",
     "staging:upgrade": "hardhat run src/scripts/upgrade.ts --network mumbai",
+    "staging:upload": "hardhat run src/scripts/upload.ts --network mumbai",
     "deploy": "hardhat run src/scripts/deploy.ts --network polygon",
     "upgrade": "hardhat run src/scripts/upgrade.ts --network polygon",
-    "staging:upload": "hardhat run src/scripts/upload.ts --network mumbai",
     "upload": "hardhat run src/scripts/upload.ts --network polygon"
   },
   "devDependencies": {
@@ -50,13 +53,16 @@
     "@typechain/ethers-v5": "^7.0.1",
     "@typechain/hardhat": "^2.3.0",
     "@types/chai": "^4.2.21",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/mocha": "^9.0.0",
     "@types/node": "^12.0.0",
     "@typescript-eslint/eslint-plugin": "^4.29.1",
     "@typescript-eslint/parser": "^4.29.1",
+    "assert": "^2.0.0",
     "builtin-modules": "^3.2.0",
     "chai": "^4.2.0",
     "dotenv": "^10.0.0",
+    "eip-712": "^1.0.0",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
@@ -73,17 +79,22 @@
     "rollup": "^2.72.0",
     "solhint": "^3.3.6",
     "solidity-coverage": "^0.7.16",
+    "stream-browserify": "^3.0.0",
     "ts-node": "^10.7.0",
     "typechain": "^5.1.2",
     "typescript": "^4.5.2"
   },
   "dependencies": {
     "@metamask/eth-sig-util": "^4.0.1",
+    "@web3-onboard/core": "^2.2.8",
+    "@web3-onboard/injected-wallets": "^2.0.6",
+    "@web3-onboard/walletconnect": "^2.0.1",
     "axios": "^0.27.2",
     "defender-autotask-client": "^1.21.0",
     "defender-autotask-utils": "^1.21.0",
     "defender-relay-client": "^1.21.0",
     "eth-sig-util": "^3.0.1",
-    "ethers": "^5.6.5"
+    "ethers": "^5.6.5",
+    "jsonwebtoken": "^8.5.1"
   }
 }
