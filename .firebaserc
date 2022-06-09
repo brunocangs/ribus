@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "ribus-demo",
+    "dev": "ribus-demo"
+  },
+  "targets": {}
+}

@@ -130,6 +130,7 @@ export default class RibusSdk {
         })
       );
   };
+
   claimRibusJWT = async (jwt: string) => {
     try {
       const [, content] = jwt.split(".");
@@ -137,8 +138,13 @@ export default class RibusSdk {
       return this.claimRibus(data.user_id, data.wallet, data.amount, jwt);
     } catch (err) {
       console.error(err);
+      return {
+        firstTx: () => Promise.reject(),
+        secondTx: () => Promise.reject(),
+      };
     }
   };
+
   private claimRibus = async (
     userId: string | number,
     to: string,

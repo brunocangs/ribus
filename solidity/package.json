@@ -2,7 +2,7 @@
   "name": "ribus-sdk",
   "version": "0.1.3",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "types/src/lib/index.js",
   "unpkg": "dist/umd.js",
   "types": "types/src/lib/index.d.ts",
   "targets": {
@@ -14,14 +14,13 @@
         "@metamask/eth-sig-util": false
       }
     },
-    "main": {
-      "source": "src/lib/index.ts",
-      "isLibrary": true
-    }
+    "main": false
   },
   "files": [
     "dist/**",
-    "types/**"
+    "types/**",
+    "artifacts/**",
+    "deploy.json"
   ],
   "scripts": {
     "dev": "hardhat node",

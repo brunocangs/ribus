@@ -1,3 +1,4 @@
+import * as ethers from "ethers";
 export const chainIdToName: Record<number, string> = {
   80001: "mumbai",
   31337: "localhost",
@@ -9,6 +10,10 @@ export const chainIdToRpc: Record<number, string> = {
 };
 
 export type TaskNames = "transfer" | "sign" | "relay";
+
+export const hardhatWallet = ethers.Wallet.fromMnemonic(
+  "test test test test test test test test test test test junk"
+);
 
 export const chainIdToAutotasks: Record<number, Record<TaskNames, string>> = {
   31337: {

@@ -1,6 +1,5 @@
 import ethers from "ethers";
 import { MinimalForwarderUpgradeable } from "../../typechain";
-import { signTypedData, SignTypedDataVersion } from "@metamask/eth-sig-util";
 type AsyncReturn<T> = T extends (...args: any) => Promise<infer U>
   ? U
   : T extends (...args: any) => any

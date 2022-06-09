@@ -1,0 +1,14 @@
+{
+    "localhost": {
+        "forwarder": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+        "token": "0x0165878A594ca255338adfa4d48449f69242Eb8F"
+    },
+    "mumbai": {
+        "forwarder": "0x32Bdc9B718fcB013D95ff5D879a50e52125F3f17",
+        "token": "0x144793465195eDdECcF1BaB8295DDbDFE7c002b0"
+    },
+    "polygon": {
+        "forwarder": "0xd722d10A4fDaDBE713BB2Db2acf577E47bd8B301",
+        "token": "0x3Af2dd7B91D8fACECCC26d21a065267817213D37"
+    }
+}

@@ -1,6 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { providers, Wallet } from "ethers";
+import { Wallet } from "ethers";
 import { HDNode, defaultPath } from "ethers/lib/utils";
 import { ethers, upgrades } from "hardhat";
 import { signMetaTxRequest } from "../lib/signer_node";
