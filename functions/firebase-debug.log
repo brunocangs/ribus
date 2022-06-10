@@ -1,0 +1,1381 @@
+[debug] [2022-06-10T20:26:19.689Z] ----------------------------------------------------------------------
+[debug] [2022-06-10T20:26:19.690Z] Command:       /Users/brunocangussu/.nvm/versions/node/v16.15.0/bin/node /usr/local/bin/firebase emulators:start --only functions
+[debug] [2022-06-10T20:26:19.690Z] CLI Version:   11.0.1
+[debug] [2022-06-10T20:26:19.691Z] Platform:      darwin
+[debug] [2022-06-10T20:26:19.691Z] Node Version:  v16.15.0
+[debug] [2022-06-10T20:26:19.691Z] Time:          Fri Jun 10 2022 17:26:19 GMT-0300 (Brasilia Standard Time)
+[debug] [2022-06-10T20:26:19.691Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-06-10T20:26:19.722Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-06-10T20:26:19.722Z] > authorizing via signed-in user (brunoferreiracangussu@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2022-06-10T20:26:19.734Z] [hub] writing locator at /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/hub-ribus-demo.json
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: auth, firestore, database, hosting, pubsub, storage {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mauth, firestore, database, hosting, pubsub, storage\u001b[22m"}}
+[info] ✔  functions: Using node@16 from host. {"metadata":{"emulator":{"name":"functions"},"message":"Using node@16 from host."}}
+[debug] [2022-06-10T20:26:20.017Z] defaultcredentials: writing to file /Users/brunocangussu/.config/firebase/brunoferreiracangussu_gmail_com_application_default_credentials.json
+[debug] [2022-06-10T20:26:20.020Z] Setting GAC to /Users/brunocangussu/.config/firebase/brunoferreiracangussu_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /Users/brunocangussu/.config/firebase/brunoferreiracangussu_gmail_com_application_default_credentials.json"}}
+[debug] [2022-06-10T20:26:20.021Z] > refreshing access token with scopes: []
+[debug] [2022-06-10T20:26:20.022Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-06-10T20:26:20.248Z] <<< HTTP RESPONSE 200 {"date":"Fri, 10 Jun 2022 20:26:20 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-06-10T20:26:20.313Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ribus-demo/adminSdkConfig [none]
+[debug] [2022-06-10T20:26:20.800Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ribus-demo/adminSdkConfig 200
+[debug] [2022-06-10T20:26:20.800Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ribus-demo/adminSdkConfig {"projectId":"ribus-demo","storageBucket":"ribus-demo.appspot.com"}
+[warn] ⚠  ui: Emulator UI unable to start on port 4000, starting on 4003 instead. {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI unable to start on port 4000, starting on 4003 instead."}}
+[debug] [2022-06-10T20:26:21.092Z] Ignoring unsupported arg: auto_download {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: auto_download"}}
+[debug] [2022-06-10T20:26:21.092Z] Ignoring unsupported arg: port {"metadata":{"emulator":{"name":"ui"},"message":"Ignoring unsupported arg: port"}}
+[debug] [2022-06-10T20:26:21.092Z] Starting Emulator UI with command {"binary":"node","args":["--dns-result-order=ipv4first","/Users/brunocangussu/.cache/firebase/emulators/ui-v1.7.0/server.bundle.js"],"optionalArgs":[],"joinArgs":false} {"metadata":{"emulator":{"name":"ui"},"message":"Starting Emulator UI with command {\"binary\":\"node\",\"args\":[\"--dns-result-order=ipv4first\",\"/Users/brunocangussu/.cache/firebase/emulators/ui-v1.7.0/server.bundle.js\"],\"optionalArgs\":[],\"joinArgs\":false}"}}
+[info] i  ui: Emulator UI logging to ui-debug.log {"metadata":{"emulator":{"name":"ui"},"message":"Emulator UI logging to \u001b[1mui-debug.log\u001b[22m"}}
+[debug] [2022-06-10T20:26:21.163Z] Web / API server started at localhost:4003
+ {"metadata":{"emulator":{"name":"ui"},"message":"Web / API server started at localhost:4003\n"}}
+[info] i  functions: Watching "/Users/brunocangussu/Projects/ribus-solidity/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/Users/brunocangussu/Projects/ribus-solidity/functions\" for Cloud Functions..."}}
+[debug] [2022-06-10T20:26:21.354Z] Validating nodejs source
+[debug] [2022-06-10T20:26:23.248Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:26:23.248Z] Building nodejs source
+[debug] [2022-06-10T20:26:23.249Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:26:23.250Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:26:23.360Z] Serving at port 9010
+
+[debug] [2022-06-10T20:26:23.585Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:26:23.589Z] shutdown requested via /__/quitquitquit
+
+[info] ✔  functions[us-central1-api]: http function initialized (http://localhost:5001/ribus-demo/us-central1/api). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5001/ribus-demo/us-central1/api)."}}
+[info] ✔  functions[us-central1-testQueue]: http function initialized (http://localhost:5001/ribus-demo/us-central1/testQueue). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5001/ribus-demo/us-central1/testQueue)."}}
+[info] ✔  functions[us-central1-firstTransfer]: http function initialized (http://localhost:5001/ribus-demo/us-central1/firstTransfer). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://localhost:5001/ribus-demo/us-central1/firstTransfer)."}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4003                │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ localhost:5001 │ http://localhost:4003/functions │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2022-06-10T20:31:06.034Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:31:06.344Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:31:06.344Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:31:07.346Z] Validating nodejs source
+[debug] [2022-06-10T20:31:09.763Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:31:09.764Z] Building nodejs source
+[debug] [2022-06-10T20:31:09.764Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:31:09.764Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:31:09.868Z] Serving at port 9010
+
+[debug] [2022-06-10T20:31:10.109Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:31:10.112Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:39:03.993Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:39:04.367Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:39:04.367Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:39:05.369Z] Validating nodejs source
+[debug] [2022-06-10T20:39:07.259Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:39:07.259Z] Building nodejs source
+[debug] [2022-06-10T20:39:07.259Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:39:07.260Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:39:07.371Z] Serving at port 9010
+
+[debug] [2022-06-10T20:39:07.628Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:39:07.630Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:40:13.232Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:13.559Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:13.559Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:14.560Z] Validating nodejs source
+[debug] [2022-06-10T20:40:16.233Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:40:16.233Z] Building nodejs source
+[debug] [2022-06-10T20:40:16.233Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:40:16.233Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:40:16.335Z] Serving at port 9010
+
+[debug] [2022-06-10T20:40:16.569Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:40:16.572Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:40:33.042Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:33.143Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:33.143Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:33.244Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:33.345Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:33.657Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:33.658Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:40:34.659Z] Validating nodejs source
+[debug] [2022-06-10T20:40:36.226Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:40:36.227Z] Building nodejs source
+[debug] [2022-06-10T20:40:36.227Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:40:36.227Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:40:36.320Z] Serving at port 9010
+
+[debug] [2022-06-10T20:40:36.506Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:40:36.508Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:41:01.463Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:41:01.775Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:41:01.775Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:41:02.777Z] Validating nodejs source
+[debug] [2022-06-10T20:41:04.303Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:41:04.303Z] Building nodejs source
+[debug] [2022-06-10T20:41:04.303Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:41:04.303Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:41:04.390Z] Serving at port 9010
+
+[debug] [2022-06-10T20:41:04.578Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:41:04.580Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:42:41.590Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:42:42.000Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:42:42.000Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:42:43.002Z] Validating nodejs source
+[debug] [2022-06-10T20:42:44.506Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:42:44.506Z] Building nodejs source
+[debug] [2022-06-10T20:42:44.506Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:42:44.507Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:42:44.592Z] Serving at port 9010
+
+[debug] [2022-06-10T20:42:44.883Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:42:44.885Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:42:51.300Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:42:51.781Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:42:51.781Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:42:52.783Z] Validating nodejs source
+[debug] [2022-06-10T20:42:54.332Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:42:54.332Z] Building nodejs source
+[debug] [2022-06-10T20:42:54.332Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:42:54.333Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:42:54.333Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:42:54.334Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:42:54.334Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:42:54.417Z] Serving at port 9010
+
+[debug] [2022-06-10T20:42:54.705Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:42:54.709Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:42:55.335Z] Validating nodejs source
+[debug] [2022-06-10T20:42:56.816Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:42:56.816Z] Building nodejs source
+[debug] [2022-06-10T20:42:56.816Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:42:56.817Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:42:56.900Z] Serving at port 9010
+
+[debug] [2022-06-10T20:42:57.089Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:42:57.092Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:43:36.535Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:43:36.961Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:43:36.961Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:43:37.963Z] Validating nodejs source
+[debug] [2022-06-10T20:43:40.252Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:43:40.252Z] Building nodejs source
+[debug] [2022-06-10T20:43:40.252Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:43:40.253Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:43:40.253Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:43:40.253Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:43:40.253Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:43:40.338Z] Serving at port 9010
+
+[debug] [2022-06-10T20:43:40.534Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:43:40.536Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:43:41.255Z] Validating nodejs source
+[debug] [2022-06-10T20:43:42.813Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:43:42.813Z] Building nodejs source
+[debug] [2022-06-10T20:43:42.813Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:43:42.813Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:43:42.899Z] Serving at port 9010
+
+[debug] [2022-06-10T20:43:43.090Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:43:43.092Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:45:24.651Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:45:24.751Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:45:24.752Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:45:25.754Z] Validating nodejs source
+[debug] [2022-06-10T20:45:27.656Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:45:27.656Z] Building nodejs source
+[debug] [2022-06-10T20:45:27.656Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:45:27.657Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:45:27.769Z] Serving at port 9010
+
+[debug] [2022-06-10T20:45:28.019Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:45:28.021Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:47:31.955Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:47:31.955Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:47:31.955Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:47:32.957Z] Validating nodejs source
+[debug] [2022-06-10T20:47:34.657Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:47:34.658Z] Building nodejs source
+[debug] [2022-06-10T20:47:34.658Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:47:34.658Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:47:34.760Z] Serving at port 9010
+
+[debug] [2022-06-10T20:47:34.986Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:47:34.989Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:47:35.495Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:47:35.924Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:47:35.924Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:47:36.926Z] Validating nodejs source
+[debug] [2022-06-10T20:47:38.401Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:47:38.401Z] Building nodejs source
+[debug] [2022-06-10T20:47:38.401Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:47:38.401Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:47:38.482Z] Serving at port 9010
+
+[debug] [2022-06-10T20:47:38.662Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:47:38.664Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:48:15.413Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:15.413Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:15.414Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:16.414Z] Validating nodejs source
+[debug] [2022-06-10T20:48:18.000Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:48:18.001Z] Building nodejs source
+[debug] [2022-06-10T20:48:18.001Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:48:18.001Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:18.001Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:18.001Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:18.002Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:48:18.105Z] Serving at port 9010
+
+[debug] [2022-06-10T20:48:18.333Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:48:18.335Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:48:19.003Z] Validating nodejs source
+[debug] [2022-06-10T20:48:20.535Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:48:20.535Z] Building nodejs source
+[debug] [2022-06-10T20:48:20.535Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:48:20.535Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:48:20.621Z] Serving at port 9010
+
+[debug] [2022-06-10T20:48:20.811Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:48:20.814Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:48:30.452Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:30.874Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:30.874Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:31.875Z] Validating nodejs source
+[debug] [2022-06-10T20:48:33.447Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:48:33.448Z] Building nodejs source
+[debug] [2022-06-10T20:48:33.448Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:48:33.448Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:48:33.551Z] Serving at port 9010
+
+[debug] [2022-06-10T20:48:33.779Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:48:33.781Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:48:53.552Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/index.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/index.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:53.553Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/index.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/index.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:53.553Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/index.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:53.553Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/index.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/index.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:53.553Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/index.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:48:54.555Z] Validating nodejs source
+[debug] [2022-06-10T20:48:57.056Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:48:57.056Z] Building nodejs source
+[debug] [2022-06-10T20:48:57.056Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:48:57.057Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:48:57.155Z] Serving at port 9010
+
+[debug] [2022-06-10T20:48:57.395Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:48:57.397Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:50:05.764Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-06-10T20:50:05.764Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-06-10T20:50:05.765Z] Accepted request POST /ribus-demo/us-central1/api/transfer --> us-central1-api
+[info] i  functions: Loaded environment variables from .env.dev, .env.local. 
+[debug] [2022-06-10T20:50:05.779Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2022-06-10T20:50:05.779Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2022-06-10T20:50:05.779Z] [worker-pool] submitWork(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-api)"}}
+[debug] [2022-06-10T20:50:05.779Z] [worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_34552.sock {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_34552.sock"}}
+[debug] [2022-06-10T20:50:05.779Z] [worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: BUSY"}}
+[debug] [2022-06-10T20:50:06.446Z] [runtime-status] [34552] Functions runtime initialized. {"cwd":"/Users/brunocangussu/Projects/ribus-solidity/functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Functions runtime initialized. {\"cwd\":\"/Users/brunocangussu/Projects/ribus-solidity/functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-06-10T20:50:06.448Z] [runtime-status] [34552] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Disabled runtime features: undefined"}}
+[debug] [2022-06-10T20:50:06.449Z] [runtime-status] [34552] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:06.449Z] [runtime-status] [34552] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:06.450Z] [runtime-status] [34552] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-06-10T20:50:06.450Z] [runtime-status] [34552] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:06.464Z] [runtime-status] [34552] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-06-10T20:50:06.464Z] [runtime-status] [34552] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:50:06.464Z] [runtime-status] [34552] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:06.465Z] [runtime-status] [34552] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:06.465Z] [runtime-status] [34552] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:06.465Z] [runtime-status] [34552] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:50:06.662Z] [runtime-status] [34552] Beginning invocation function api! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Beginning invocation function api!"}}
+[info] i  functions: Beginning execution of "api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"api\""}}
+[debug] [2022-06-10T20:50:06.663Z] [runtime-status] [34552] Running api in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Running api in signature http"}}
+[debug] [2022-06-10T20:50:06.663Z] [runtime-status] [34552] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_34552.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_34552.sock"}}
+[debug] [2022-06-10T20:50:06.668Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-06-10T20:50:06.669Z] [functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer"}}
+[debug] [2022-06-10T20:50:06.679Z] [runtime-status] [34552] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Ephemeral server handling POST request"}}
+[debug] [2022-06-10T20:50:06.680Z] [runtime-status] [34552] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34552] Ephemeral server survived."}}
+[debug] [2022-06-10T20:50:29.277Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:50:29.630Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:50:29.630Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:50:30.632Z] [worker-pool] Marking BUSY worker to finish (us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Marking BUSY worker to finish (us-central1-api)"}}
+[debug] [2022-06-10T20:50:30.632Z] [worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: FINISHING {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: FINISHING"}}
+[debug] [2022-06-10T20:50:30.633Z] Validating nodejs source
+[debug] [2022-06-10T20:50:32.283Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:50:32.284Z] Building nodejs source
+[debug] [2022-06-10T20:50:32.284Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:50:32.284Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:50:32.374Z] Serving at port 9010
+
+[debug] [2022-06-10T20:50:32.565Z] [work-queue] {"queueLength":1,"workRunningCount":1}
+[debug] [2022-06-10T20:50:32.565Z] [work-queue] {"queueLength":0,"workRunningCount":2}
+[debug] [2022-06-10T20:50:32.566Z] Accepted request POST /ribus-demo/us-central1/api/transfer --> us-central1-api
+[info] i  functions: Loaded environment variables from .env.dev, .env.local. 
+[debug] [2022-06-10T20:50:32.573Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2022-06-10T20:50:32.574Z] [worker-pool] Adding worker with key us-central1-api, total=2 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=2"}}
+[debug] [2022-06-10T20:50:32.574Z] [worker-pool] submitWork(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-api)"}}
+[debug] [2022-06-10T20:50:32.574Z] [worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_34970.sock {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_34970.sock"}}
+[debug] [2022-06-10T20:50:32.574Z] [worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: BUSY"}}
+[debug] [2022-06-10T20:50:32.575Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:50:32.578Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:50:33.166Z] [runtime-status] [34970] Functions runtime initialized. {"cwd":"/Users/brunocangussu/Projects/ribus-solidity/functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Functions runtime initialized. {\"cwd\":\"/Users/brunocangussu/Projects/ribus-solidity/functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-06-10T20:50:33.168Z] [runtime-status] [34970] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Disabled runtime features: undefined"}}
+[debug] [2022-06-10T20:50:33.169Z] [runtime-status] [34970] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:33.170Z] [runtime-status] [34970] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:33.170Z] [runtime-status] [34970] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-06-10T20:50:33.170Z] [runtime-status] [34970] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:33.183Z] [runtime-status] [34970] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-06-10T20:50:33.184Z] [runtime-status] [34970] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:50:33.184Z] [runtime-status] [34970] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:33.185Z] [runtime-status] [34970] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:33.185Z] [runtime-status] [34970] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:33.185Z] [runtime-status] [34970] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:50:33.380Z] [runtime-status] [34970] Beginning invocation function api! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Beginning invocation function api!"}}
+[info] i  functions: Beginning execution of "api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"api\""}}
+[debug] [2022-06-10T20:50:33.380Z] [runtime-status] [34970] Running api in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Running api in signature http"}}
+[debug] [2022-06-10T20:50:33.381Z] [runtime-status] [34970] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_34970.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_34970.sock"}}
+[debug] [2022-06-10T20:50:33.384Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-06-10T20:50:33.385Z] [functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer"}}
+[debug] [2022-06-10T20:50:33.395Z] [runtime-status] [34970] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Ephemeral server handling POST request"}}
+[debug] [2022-06-10T20:50:33.398Z] [runtime-status] [34970] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [34970] Ephemeral server survived."}}
+[info] i  functions: Finished "api" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"api\" in ~1s"}}
+[debug] [2022-06-10T20:50:33.402Z] [worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: IDLE"}}
+[debug] [2022-06-10T20:50:33.402Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-06-10T20:50:47.820Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:50:47.955Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:50:47.956Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:50:48.957Z] [worker-pool] Shutting down IDLE worker (us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-api)"}}
+[debug] [2022-06-10T20:50:48.957Z] [worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: FINISHING {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: FINISHING"}}
+[debug] [2022-06-10T20:50:48.958Z] Validating nodejs source
+[debug] [2022-06-10T20:50:50.538Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:50:50.538Z] Building nodejs source
+[debug] [2022-06-10T20:50:50.538Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:50:50.539Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:50:50.540Z] [worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: exited"}}
+[debug] [2022-06-10T20:50:50.540Z] [worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-abcd555f-f5e4-4d99-a26b-9fa4443ba868]: FINISHED"}}
+[debug] [2022-06-10T20:50:50.625Z] Serving at port 9010
+
+[debug] [2022-06-10T20:50:50.815Z] [work-queue] {"queueLength":1,"workRunningCount":1}
+[debug] [2022-06-10T20:50:50.815Z] [work-queue] {"queueLength":0,"workRunningCount":2}
+[debug] [2022-06-10T20:50:50.815Z] Accepted request POST /ribus-demo/us-central1/api/transfer --> us-central1-api
+[debug] [2022-06-10T20:50:50.816Z] [worker-pool] Cleaned up workers for us-central1-api: 2 --> 1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-api: 2 --> 1"}}
+[info] i  functions: Loaded environment variables from .env.dev, .env.local. 
+[debug] [2022-06-10T20:50:50.821Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2022-06-10T20:50:50.822Z] [worker-pool] Adding worker with key us-central1-api, total=2 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=2"}}
+[debug] [2022-06-10T20:50:50.822Z] [worker-pool] submitWork(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-api)"}}
+[debug] [2022-06-10T20:50:50.822Z] [worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_35264.sock {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_35264.sock"}}
+[debug] [2022-06-10T20:50:50.822Z] [worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: BUSY"}}
+[debug] [2022-06-10T20:50:50.823Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:50:50.825Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:50:51.200Z] [runtime-status] [35264] Functions runtime initialized. {"cwd":"/Users/brunocangussu/Projects/ribus-solidity/functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Functions runtime initialized. {\"cwd\":\"/Users/brunocangussu/Projects/ribus-solidity/functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-06-10T20:50:51.203Z] [runtime-status] [35264] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Disabled runtime features: undefined"}}
+[debug] [2022-06-10T20:50:51.204Z] [runtime-status] [35264] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:51.204Z] [runtime-status] [35264] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:51.204Z] [runtime-status] [35264] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-06-10T20:50:51.204Z] [runtime-status] [35264] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:51.218Z] [runtime-status] [35264] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-06-10T20:50:51.219Z] [runtime-status] [35264] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:50:51.219Z] [runtime-status] [35264] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:51.219Z] [runtime-status] [35264] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:51.219Z] [runtime-status] [35264] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:50:51.220Z] [runtime-status] [35264] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:50:51.415Z] [runtime-status] [35264] Beginning invocation function api! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Beginning invocation function api!"}}
+[info] i  functions: Beginning execution of "api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"api\""}}
+[debug] [2022-06-10T20:50:51.415Z] [runtime-status] [35264] Running api in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Running api in signature http"}}
+[debug] [2022-06-10T20:50:51.417Z] [runtime-status] [35264] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_35264.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_35264.sock"}}
+[debug] [2022-06-10T20:50:51.419Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-06-10T20:50:51.419Z] [functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer"}}
+[debug] [2022-06-10T20:50:51.428Z] [runtime-status] [35264] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Ephemeral server handling POST request"}}
+[debug] [2022-06-10T20:50:51.431Z] [runtime-status] [35264] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [35264] Ephemeral server survived."}}
+[info] i  functions: Finished "api" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"api\" in ~1s"}}
+[debug] [2022-06-10T20:50:51.436Z] [worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: IDLE"}}
+[debug] [2022-06-10T20:50:51.436Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[warn] ⚠  functions: Your function timed out after ~60s. To configure this timeout, see
+      https://firebase.google.com/docs/functions/manage-functions#set_timeout_and_memory_allocation. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Your function timed out after ~60s. To configure this timeout, see\n      https://firebase.google.com/docs/functions/manage-functions#set_timeout_and_memory_allocation."}}
+[info] >  /Users/brunocangussu/.config/yarn/global/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:634 {"user":"/Users/brunocangussu/.config/yarn/global/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:634","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m /Users/brunocangussu/.config/yarn/global/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:634"}}
+[info] >              throw new Error("Function timed out."); {"user":"            throw new Error(\"Function timed out.\");","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m             throw new Error(\"Function timed out.\");"}}
+[info] >              ^ {"user":"            ^","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m             ^"}}
+[info] >   {"user":"","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m "}}
+[info] >  Error: Function timed out. {"user":"Error: Function timed out.","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Error: Function timed out."}}
+[info] >      at Timeout._onTimeout (/Users/brunocangussu/.config/yarn/global/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:634:19) {"user":"    at Timeout._onTimeout (/Users/brunocangussu/.config/yarn/global/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:634:19)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     at Timeout._onTimeout (/Users/brunocangussu/.config/yarn/global/node_modules/firebase-tools/lib/emulator/functionsEmulatorRuntime.js:634:19)"}}
+[info] >      at listOnTimeout (node:internal/timers:559:17) {"user":"    at listOnTimeout (node:internal/timers:559:17)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     at listOnTimeout (node:internal/timers:559:17)"}}
+[info] >      at processTimers (node:internal/timers:502:7) {"user":"    at processTimers (node:internal/timers:502:7)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     at processTimers (node:internal/timers:502:7)"}}
+[debug] [2022-06-10T20:51:06.668Z] [worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: exited"}}
+[debug] [2022-06-10T20:51:06.668Z] [worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-ca157c6e-d21b-4c9a-96bb-39b97b81421e]: FINISHED"}}
+[debug] [2022-06-10T20:51:06.668Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-06-10T20:52:17.184Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:52:17.488Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:52:17.488Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:52:18.489Z] [worker-pool] Shutting down IDLE worker (us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-api)"}}
+[debug] [2022-06-10T20:52:18.489Z] [worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: FINISHING {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: FINISHING"}}
+[debug] [2022-06-10T20:52:18.489Z] Validating nodejs source
+[debug] [2022-06-10T20:52:21.051Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:52:21.051Z] Building nodejs source
+[debug] [2022-06-10T20:52:21.051Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:52:21.052Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:52:21.053Z] [worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: exited"}}
+[debug] [2022-06-10T20:52:21.053Z] [worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-52f434d1-060c-4638-bb82-4eb4eeecd0ff]: FINISHED"}}
+[debug] [2022-06-10T20:52:21.163Z] Serving at port 9010
+
+[debug] [2022-06-10T20:52:21.425Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:52:21.428Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:52:24.665Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-06-10T20:52:24.665Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-06-10T20:52:24.665Z] Accepted request POST /ribus-demo/us-central1/api/transfer --> us-central1-api
+[debug] [2022-06-10T20:52:24.665Z] [worker-pool] Cleaned up workers for us-central1-api: 2 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-api: 2 --> 0"}}
+[info] i  functions: Loaded environment variables from .env.dev, .env.local. 
+[debug] [2022-06-10T20:52:24.675Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2022-06-10T20:52:24.675Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2022-06-10T20:52:24.675Z] [worker-pool] submitWork(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-api)"}}
+[debug] [2022-06-10T20:52:24.676Z] [worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_36739.sock {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_36739.sock"}}
+[debug] [2022-06-10T20:52:24.676Z] [worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: BUSY"}}
+[debug] [2022-06-10T20:52:25.291Z] [runtime-status] [36739] Functions runtime initialized. {"cwd":"/Users/brunocangussu/Projects/ribus-solidity/functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Functions runtime initialized. {\"cwd\":\"/Users/brunocangussu/Projects/ribus-solidity/functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-06-10T20:52:25.294Z] [runtime-status] [36739] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Disabled runtime features: undefined"}}
+[debug] [2022-06-10T20:52:25.295Z] [runtime-status] [36739] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:52:25.295Z] [runtime-status] [36739] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:52:25.296Z] [runtime-status] [36739] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-06-10T20:52:25.296Z] [runtime-status] [36739] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:52:25.310Z] [runtime-status] [36739] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-06-10T20:52:25.310Z] [runtime-status] [36739] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:52:25.311Z] [runtime-status] [36739] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:52:25.311Z] [runtime-status] [36739] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:52:25.311Z] [runtime-status] [36739] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:52:25.311Z] [runtime-status] [36739] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:52:25.511Z] [runtime-status] [36739] Beginning invocation function api! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Beginning invocation function api!"}}
+[info] i  functions: Beginning execution of "api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"api\""}}
+[debug] [2022-06-10T20:52:25.511Z] [runtime-status] [36739] Running api in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Running api in signature http"}}
+[debug] [2022-06-10T20:52:25.512Z] [runtime-status] [36739] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_36739.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_36739.sock"}}
+[debug] [2022-06-10T20:52:25.514Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-06-10T20:52:25.514Z] [functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer"}}
+[debug] [2022-06-10T20:52:25.524Z] [runtime-status] [36739] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Ephemeral server handling POST request"}}
+[debug] [2022-06-10T20:52:25.536Z] [runtime-status] [36739] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [36739] Ephemeral server survived."}}
+[info] i  functions: Finished "api" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"api\" in ~1s"}}
+[debug] [2022-06-10T20:52:25.628Z] [worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: IDLE"}}
+[debug] [2022-06-10T20:52:25.628Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-06-10T20:52:56.832Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/src/api/transfer.ts changed, reloading triggers"}}
+[debug] [2022-06-10T20:52:57.179Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js.map changed, reloading triggers"}}
+[debug] [2022-06-10T20:52:57.179Z] File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/brunocangussu/Projects/ribus-solidity/functions/lib/functions/src/api/transfer.js changed, reloading triggers"}}
+[debug] [2022-06-10T20:52:58.180Z] [worker-pool] Shutting down IDLE worker (us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-api)"}}
+[debug] [2022-06-10T20:52:58.180Z] [worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: FINISHING {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: FINISHING"}}
+[debug] [2022-06-10T20:52:58.180Z] Validating nodejs source
+[debug] [2022-06-10T20:52:59.824Z] > [functions] package.json contents: {
+  "name": "functions",
+  "scripts": {
+    "lint": "eslint --ext .js,.ts .",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "lib/functions/src/index.js",
+  "dependencies": {
+    "@metamask/eth-sig-util": "^4.0.1",
+    "axios": "^0.27.2",
+    "cors": "^2.8.5",
+    "defender-autotask-utils": "^1.24.0",
+    "defender-relay-client": "^1.24.0",
+    "ethers": "^5.6.8",
+    "express": "^4.18.1",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^0.2.0",
+    "typescript": "^4.5.4"
+  },
+  "private": true
+}
+[debug] [2022-06-10T20:52:59.825Z] Building nodejs source
+[debug] [2022-06-10T20:52:59.825Z] Analyzing nodejs backend spec
+[debug] [2022-06-10T20:52:59.825Z] Could not find functions.yaml. Must use http discovery
+[debug] [2022-06-10T20:52:59.826Z] [worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: exited {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: exited"}}
+[debug] [2022-06-10T20:52:59.826Z] [worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: FINISHED {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-39e212fd-736b-4a2a-a662-de5cc24bccd2]: FINISHED"}}
+[debug] [2022-06-10T20:52:59.827Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-06-10T20:52:59.827Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-06-10T20:52:59.827Z] Accepted request POST /ribus-demo/us-central1/api/transfer --> us-central1-api
+[debug] [2022-06-10T20:52:59.827Z] [worker-pool] Cleaned up workers for us-central1-api: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-api: 1 --> 0"}}
+[info] i  functions: Loaded environment variables from .env.dev, .env.local. 
+[debug] [2022-06-10T20:52:59.831Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2022-06-10T20:52:59.832Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2022-06-10T20:52:59.832Z] [worker-pool] submitWork(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-api)"}}
+[debug] [2022-06-10T20:52:59.832Z] [worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_37288.sock {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_37288.sock"}}
+[debug] [2022-06-10T20:52:59.832Z] [worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: BUSY"}}
+[debug] [2022-06-10T20:52:59.937Z] Serving at port 9010
+
+[debug] [2022-06-10T20:53:00.301Z] Got response from /__/functions.yaml {"endpoints":{"api":{"platform":"gcfv1","minInstances":1,"secretEnvironmentVariables":[{"key":"SEED"}],"httpsTrigger":{},"entryPoint":"api"},"testQueue":{"platform":"gcfv1","taskQueueTrigger":{"rateLimits":{"maxConcurrentDispatches":2}},"entryPoint":"testQueue"},"firstTransfer":{"platform":"gcfv1","secretEnvironmentVariables":[{"key":"SEED"}],"taskQueueTrigger":{"retryConfig":{"maxAttempts":3},"rateLimits":{"maxConcurrentDispatches":15}},"entryPoint":"firstTransfer"}},"specVersion":"v1alpha1","requiredAPIs":[{"api":"cloudtasks.googleapis.com","reason":"Needed for task queue functions"}]}
+[debug] [2022-06-10T20:53:00.303Z] shutdown requested via /__/quitquitquit
+
+[debug] [2022-06-10T20:53:00.432Z] [runtime-status] [37288] Functions runtime initialized. {"cwd":"/Users/brunocangussu/Projects/ribus-solidity/functions","node_version":"16.15.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Functions runtime initialized. {\"cwd\":\"/Users/brunocangussu/Projects/ribus-solidity/functions\",\"node_version\":\"16.15.0\"}"}}
+[debug] [2022-06-10T20:53:00.434Z] [runtime-status] [37288] Disabled runtime features: undefined {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Disabled runtime features: undefined"}}
+[debug] [2022-06-10T20:53:00.434Z] [runtime-status] [37288] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:53:00.435Z] [runtime-status] [37288] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:53:00.435Z] [runtime-status] [37288] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2022-06-10T20:53:00.435Z] [runtime-status] [37288] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:53:00.449Z] [runtime-status] [37288] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Checked functions.config() {\"config\":{}}"}}
+[debug] [2022-06-10T20:53:00.450Z] [runtime-status] [37288] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:53:00.450Z] [runtime-status] [37288] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:53:00.450Z] [runtime-status] [37288] Resolved module firebase-admin {"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2022-06-10T20:53:00.450Z] [runtime-status] [37288] Resolved module firebase-functions {"declared":true,"installed":true,"version":"3.21.2","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"3.21.2\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-functions/lib/index.js\"}"}}
+[debug] [2022-06-10T20:53:00.450Z] [runtime-status] [37288] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"10.2.0","resolution":"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"10.2.0\",\"resolution\":\"/Users/brunocangussu/Projects/ribus-solidity/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2022-06-10T20:53:00.645Z] [runtime-status] [37288] Beginning invocation function api! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Beginning invocation function api!"}}
+[info] i  functions: Beginning execution of "api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"api\""}}
+[debug] [2022-06-10T20:53:00.645Z] [runtime-status] [37288] Running api in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Running api in signature http"}}
+[debug] [2022-06-10T20:53:00.646Z] [runtime-status] [37288] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_37288.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_37288.sock"}}
+[debug] [2022-06-10T20:53:00.648Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-06-10T20:53:00.648Z] [functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer"}}
+[debug] [2022-06-10T20:53:00.658Z] [runtime-status] [37288] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Ephemeral server handling POST request"}}
+[info] >  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 {"user":"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"}}
+[debug] [2022-06-10T20:53:00.671Z] [runtime-status] [37288] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Ephemeral server survived."}}
+[info] i  functions: Finished "api" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"api\" in ~1s"}}
+[debug] [2022-06-10T20:53:00.728Z] [worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: IDLE"}}
+[debug] [2022-06-10T20:53:00.728Z] [work-queue] {"queueLength":0,"workRunningCount":0}
+[debug] [2022-06-10T20:54:42.501Z] [work-queue] {"queueLength":1,"workRunningCount":0}
+[debug] [2022-06-10T20:54:42.501Z] [work-queue] {"queueLength":0,"workRunningCount":1}
+[debug] [2022-06-10T20:54:42.501Z] Accepted request POST /ribus-demo/us-central1/api/transfer --> us-central1-api
+[debug] [2022-06-10T20:54:42.502Z] [worker-pool] submitWork(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitWork(triggerId=us-central1-api)"}}
+[debug] [2022-06-10T20:54:42.502Z] [worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_37288.sock {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: Assigning socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_37288.sock"}}
+[debug] [2022-06-10T20:54:42.502Z] [worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: BUSY {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: BUSY"}}
+[debug] [2022-06-10T20:54:42.502Z] [runtime-status] [37288] Beginning invocation function api! {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Beginning invocation function api!"}}
+[info] i  functions: Beginning execution of "api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"api\""}}
+[debug] [2022-06-10T20:54:42.503Z] [runtime-status] [37288] Running api in signature http {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Running api in signature http"}}
+[debug] [2022-06-10T20:54:42.504Z] [runtime-status] [37288] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_37288.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Attempting to listen to socketPath: /var/folders/ld/yyn5g1sd49g0pd67k9n5cc8w0000gn/T/fire_emu_37288.sock"}}
+[debug] [2022-06-10T20:54:42.505Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2022-06-10T20:54:42.505Z] [functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/ribus-demo/us-central1/api/transfer, mapping to path=/transfer"}}
+[debug] [2022-06-10T20:54:42.507Z] [runtime-status] [37288] Ephemeral server handling POST request {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Ephemeral server handling POST request"}}
+[info] >  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 {"user":"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"}}
+[debug] [2022-06-10T20:54:42.519Z] [runtime-status] [37288] Ephemeral server survived. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [37288] Ephemeral server survived."}}
+[info] i  functions: Finished "api" in ~1s {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"api\" in ~1s"}}
+[debug] [2022-06-10T20:54:42.898Z] [worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: IDLE {"metadata":{"emulator":{"name":"functions"},"message":"[worker-us-central1-api-64cdfe74-0b8b-45cd-97e1-a5f86aef0c2e]: IDLE"}}
+[debug] [2022-06-10T20:54:42.898Z] [work-queue] {"queueLength":0,"workRunningCount":0}

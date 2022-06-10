@@ -14,3 +14,19 @@ export const testQueue = functions.tasks
       console.log(data);
     });
   });
+
+export const firstTransfer = functions
+  .runWith({
+    secrets: ["SEED"],
+  })
+  .tasks.taskQueue({
+    rateLimits: {
+      maxConcurrentDispatches: 15,
+    },
+    retryConfig: {
+      maxAttempts: 3,
+    },
+  })
+  .onDispatch(async (data) => {
+    console.log(`Got it`, data);
+  });

@@ -131,54 +131,15 @@ export default class RibusSdk {
       );
   };
 
-  claimRibusJWT = async (jwt: string) => {
-    try {
-      const [, content] = jwt.split(".");
-      const data: RibusTransferJWT = JSON.parse(atob(content));
-      return this.claimRibus(data.user_id, data.wallet, data.amount, jwt);
-    } catch (err) {
-      console.error(err);
-      return {
-        firstTx: () => Promise.reject(),
-        secondTx: () => Promise.reject(),
-      };
-    }
-  };
-
-  private claimRibus = async (
-    userId: string | number,
-    to: string,
-    amount: number,
-    jwt?: string
-  ) => {
-    if (!this.userIdToAddressMap[userId]) await this.getWalletAddress(userId);
-    // Get current userWallet balance
-    // Move only difference => Fixing mechanic
-    // Move logic to queue on firebase
-    const userWallet = this.userIdToAddressMap[userId];
-    const firstTx = () =>
-      this.getTxFor(
-        task("transfer", {
-          data: {
-            from: this.fundAddress,
-            to: userWallet,
-            amount,
-          },
-          jwt,
-        })
-      );
-    const secondTx = () =>
-      this.getTxFor(
-        task("transfer", {
-          data: {
-            to,
-            amount,
-          },
-          index: userId,
-          jwt,
-        })
-      );
-    return { firstTx, secondTx };
+  claimRibus = async (jwt: string) => {
+    return this.getTxFor(
+      task("transfer", {
+        data: {
+          from: this.fundAddress,
+        },
+        jwt,
+      })
+    );
   };
 
   getWalletAddress = async (userId: string | number) => {
