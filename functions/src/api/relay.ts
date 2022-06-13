@@ -1,7 +1,6 @@
-import { AutotaskEvent } from "defender-autotask-utils";
-import { RelayerParams } from "defender-relay-client";
 import { ethers } from "ethers";
 import { Router } from "express";
+import { logger } from "firebase-functions";
 // Entrypoint for the Autotask
 import { abi as ForwarderAbi } from "../../../solidity/artifacts/src/contracts/UpgradeableForwarder.sol/UpgradeableForwarder.json";
 import d from "../../../solidity/deploy.json";
@@ -58,6 +57,7 @@ relayRouter.post("/", async (req, res) => {
     const result = await handler(req.body);
     res.json(result);
   } catch (err: any) {
+    logger.error(err);
     res.status(500).send(err.message);
   }
 });

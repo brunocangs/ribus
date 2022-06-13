@@ -13,5 +13,5 @@ app.use("/relay", relayRouter);
 app.use("/transfer", transferRouter);
 
 export const api = functions
-  .runWith({ secrets: ["SEED"], minInstances: 1 })
+  .runWith({ secrets: ["SEED"] })
   .https.onRequest(app);

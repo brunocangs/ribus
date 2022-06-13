@@ -5,8 +5,16 @@ import {
 } from "defender-relay-client/lib/ethers";
 import { ethers } from "ethers";
 import { defaultPath, HDNode } from "ethers/lib/utils";
-import { getFunctions } from "firebase-admin/functions";
+import { credential } from "firebase-admin";
+import { initializeApp } from "firebase-admin/app";
+import { getFunctions, TaskOptions } from "firebase-admin/functions";
+import { logger } from "firebase-functions";
 import { hardhatWallet } from "../../../solidity/src/lib/utils";
+import devServiceAccount from "../../service-account.dev.json";
+
+const app = initializeApp({
+  credential: credential.cert(devServiceAccount as any),
+});
 
 const isLocal = process.env.NODE_ENV === "development";
 
@@ -18,27 +26,26 @@ export const getSeed = () => {
 
 export const taskQueue = (taskName: string) => {
   const {
-    FUNCTION_EMULATOR_HOST = "http://localhost:5001",
+    FUNCTION_EMULATOR_HOST = "localhost:5001",
     PROJECT_ID = "ribus-demo",
     REGION = "us-central1",
   } = process.env;
   if (process.env.NODE_ENV === "development") {
     return async (data: Record<string, any>, opts?: any) => {
       const url = `http://${FUNCTION_EMULATOR_HOST}/${PROJECT_ID}/${REGION}/${taskName}`;
-      try {
-        await axios.post(url, JSON.stringify({ data }), {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer blep",
-          },
-        });
-      } catch (err) {
-        console.error(err);
-      }
+      await axios.post(url, JSON.stringify({ data }), {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer blep",
+        },
+      });
     };
   } else {
-    const queue = getFunctions().taskQueue("testQueue");
-    return queue.enqueue;
+    return (data: Record<string, any>, opts?: TaskOptions | undefined) => {
+      const queue = getFunctions(app).taskQueue(taskName);
+      logger.debug(queue);
+      return queue.enqueue(data, opts);
+    };
   }
 };
 

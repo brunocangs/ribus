@@ -46,7 +46,6 @@ async function handler(body: Record<string, any>) {
 
 walletRouter.post("/", async (request, response) => {
   try {
-    console.log({ body: request.body });
     const result = await handler(request.body);
     response.send(result);
   } catch (err: any) {
