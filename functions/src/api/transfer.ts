@@ -25,17 +25,32 @@ async function handler(body: Record<string, any>) {
     throw new Error("Invalid payload");
   const firestore = getFirestore();
   const requestRef = firestore.collection("claim_requests").doc(jwtPayload.jti);
-  const request = await requestRef.get();
-  if (request && request.exists) {
-    logger.warn(`Repeated attempt to claim`, jwtPayload);
-    return {
-      success: false,
-      id: null,
-    };
+  const failedResponse = {
+    success: false,
+    id: null,
+  };
+  try {
+    const request = await requestRef.get();
+    if (request && request.exists) {
+      logger.warn(`Repeated attempt to claim`, jwtPayload);
+      return failedResponse;
+    }
+    const enqueue = taskQueue("firstTransfer");
+    await requestRef.set({
+      user_id: jwtPayload.user_id,
+      status: "starting",
+    });
+    enqueue({ ...body, jwtPayload });
+  } catch (err: any) {
+    requestRef.set(
+      {
+        status: "errored",
+        error: err,
+      },
+      { merge: true }
+    );
+    return failedResponse;
   }
-  const enqueue = taskQueue("firstTransfer");
-  await requestRef.set({});
-  await enqueue({ ...body, jwtPayload });
   // second tx
   // return { firstTx: firstTx.hash, secondTx: secondTx.hash };
   return {
@@ -52,6 +67,7 @@ async function handler(body: Record<string, any>) {
  */
 transferRouter.post("/", async (req, res) => {
   try {
+    console.log(req.body);
     const result = await handler(req.body);
     res.json(result);
   } catch (err: any) {

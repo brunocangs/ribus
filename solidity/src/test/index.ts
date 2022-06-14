@@ -12,7 +12,7 @@ import {
 
 let ALLOWANCE = 100000;
 
-describe("Greeter", function () {
+describe("RibusToken", function () {
   this.beforeAll(async function () {
     // Parent custodiated wallet => Generates children wallet
     const parentNode = HDNode.fromMnemonic(
@@ -86,7 +86,6 @@ describe("Greeter", function () {
     }
     // Pick last wallet as funds holder (ICO bank)
     this.holder = await ethers.getSigner(wallets[4]);
-    console.log(`Holder PK: ${this.holder.privateKey}`);
   });
   it("Should transfer to custodiated wallet", async function () {
     const holder = this.holder as SignerWithAddress;
@@ -159,6 +158,7 @@ describe("Greeter", function () {
     ) as MinimalForwarderUpgradeable;
     const secondUser = this.secondUser as Wallet;
     const RibusV2 = this.token as RibusTokenV2;
+    const supplyBefore = await RibusV2.totalSupply();
     const { request, signature } = await signMetaTxRequest(
       secondUser.privateKey,
       forwarder,
@@ -169,9 +169,7 @@ describe("Greeter", function () {
       }
     );
     await forwarder.execute(request, signature).then((tx) => tx.wait);
-    let newBalance = await RibusV2.balanceOf(secondUser.address);
-    expect(newBalance.eq(ALLOWANCE / 4));
-    let totalSupply = await RibusV2.totalSupply();
-    expect(totalSupply.lt(3e8));
+    let newSupply = await RibusV2.totalSupply();
+    expect(newSupply.lt(supplyBefore));
   });
 });

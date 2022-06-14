@@ -132,14 +132,10 @@ export default class RibusSdk {
   };
 
   claimRibus = async (jwt: string) => {
-    return this.getTxFor(
-      task("transfer", {
-        data: {
-          from: this.fundAddress,
-        },
-        jwt,
-      })
-    );
+    return task("transfer", {
+      from: this.fundAddress,
+      jwt,
+    });
   };
 
   getWalletAddress = async (userId: string | number) => {

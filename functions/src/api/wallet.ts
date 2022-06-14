@@ -1,3 +1,4 @@
+import { logger } from "firebase-functions";
 import * as ethers from "ethers";
 import express from "express";
 // Entrypoint for the Autotask
@@ -49,6 +50,7 @@ walletRouter.post("/", async (request, response) => {
     const result = await handler(request.body);
     response.send(result);
   } catch (err: any) {
+    logger.error(err);
     response.status(500).send(err.message);
   }
 });

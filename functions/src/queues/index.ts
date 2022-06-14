@@ -38,37 +38,50 @@ export const firstTransfer = functions
     console.log(`First task`);
     const provider = getProvider();
     const signer = getSigner();
-    const network = await provider._networkPromise;
     const { jwtPayload, from, jwt } = data;
-    const tokenContract = new ethers.Contract(
-      deploy[chainIdToName[network.chainId]].token,
-      TokenAbi
-    ).connect(signer) as unknown as RibusToken;
-    const child = await getChildWallet(jwtPayload.user_id.toString());
-    let tx = await tokenContract.transferFrom(
-      from,
-      child.address,
-      jwtPayload.amount
-    );
-    const firstTx = await provider.getTransaction(tx.hash);
     const firestore = getFirestore();
     const requestRef = firestore
       .collection("claim_requests")
       .doc(jwtPayload.jti);
-    await requestRef.set(
-      {
-        firstTxHash: firstTx.hash,
-        secondTxHash: null,
-      },
-      {
-        merge: true,
-      }
-    );
-    const secondTask = taskQueue("secondTransfer");
-    await secondTask({
-      ...data,
-      hash: firstTx.hash,
-    });
+    try {
+      const network = await provider._networkPromise;
+      const tokenContract = new ethers.Contract(
+        deploy[chainIdToName[network.chainId]].token,
+        TokenAbi
+      ).connect(signer) as unknown as RibusToken;
+      const child = await getChildWallet(jwtPayload.user_id.toString());
+      let tx = await tokenContract.transferFrom(
+        from,
+        child.address,
+        jwtPayload.amount
+      );
+      const firstTx = await provider.getTransaction(tx.hash);
+      await requestRef.set(
+        {
+          firstTxHash: firstTx.hash,
+          secondTxHash: null,
+        },
+        {
+          merge: true,
+        }
+      );
+      const secondTask = taskQueue("secondTransfer");
+      await secondTask({
+        ...data,
+        hash: firstTx.hash,
+      });
+    } catch (err: any) {
+      functions.logger.error(err);
+      requestRef.set(
+        {
+          error: err.stack,
+          status: "errored",
+        },
+        {
+          merge: true,
+        }
+      );
+    }
   });
 
 export const secondTransfer = functions
@@ -90,43 +103,56 @@ export const secondTransfer = functions
     const requestRef = firestore
       .collection("claim_requests")
       .doc(jwtPayload.jti);
-    const provider = getProvider();
-    const firstActionTx = await provider.getTransaction(hash);
-    await firstActionTx.wait();
+    try {
+      const provider = getProvider();
+      const firstActionTx = await provider.getTransaction(hash);
+      await firstActionTx.wait();
 
-    const signer = getSigner();
-    const network = await provider._networkPromise;
-    const tokenContract = new ethers.Contract(
-      deploy[chainIdToName[network.chainId]].token,
-      TokenAbi
-    ).connect(signer) as unknown as RibusToken;
-    const forwarder = new ethers.Contract(
-      deploy[chainIdToName[network.chainId]].forwarder,
-      ForwarderAbi,
-      signer
-    ) as unknown as MinimalForwarderUpgradeable;
-    const child = await getChildWallet(jwtPayload.user_id.toString());
-    const { request, signature } = await signMetaTxRequest(
-      child.privateKey,
-      forwarder,
-      {
-        data: tokenContract.interface.encodeFunctionData("transfer", [
-          jwtPayload.wallet,
-          jwtPayload.amount,
-        ]),
-        from: child.address,
-        to: tokenContract.address,
-      }
-    );
-    const secondTx = await forwarder.execute(request, signature);
-    await secondTx.wait(1);
-    await requestRef.set(
-      {
-        secondTxHash: secondTx.hash,
-      },
-      {
-        merge: true,
-      }
-    );
-    console.log({ firstHash: data.hash, secondHash: secondTx.hash });
+      const signer = getSigner();
+      const network = await provider._networkPromise;
+      const tokenContract = new ethers.Contract(
+        deploy[chainIdToName[network.chainId]].token,
+        TokenAbi
+      ).connect(signer) as unknown as RibusToken;
+      const forwarder = new ethers.Contract(
+        deploy[chainIdToName[network.chainId]].forwarder,
+        ForwarderAbi,
+        signer
+      ) as unknown as MinimalForwarderUpgradeable;
+      const child = await getChildWallet(jwtPayload.user_id.toString());
+      const { request, signature } = await signMetaTxRequest(
+        child.privateKey,
+        forwarder,
+        {
+          data: tokenContract.interface.encodeFunctionData("transfer", [
+            jwtPayload.wallet,
+            jwtPayload.amount,
+          ]),
+          from: child.address,
+          to: tokenContract.address,
+        }
+      );
+      const secondTx = await forwarder.execute(request, signature);
+      await secondTx.wait(1);
+      await requestRef.set(
+        {
+          secondTxHash: secondTx.hash,
+          status: "completed",
+        },
+        {
+          merge: true,
+        }
+      );
+    } catch (err: any) {
+      functions.logger.error(err);
+      requestRef.set(
+        {
+          error: err.stack,
+          status: "errored",
+        },
+        {
+          merge: true,
+        }
+      );
+    }
   });
