@@ -13,7 +13,7 @@ async function handler(body: Record<string, any>) {
   const { from, jwt } = body;
   if (!from || !jwt) throw new Error(`Invalid payload`);
   let jwtPayload: RibusTransferJWT;
-  jwtPayload = verify(jwt, "secret", {
+  jwtPayload = verify(jwt, process.env.JWT_SECRET as string, {
     issuer: "app.ribus.com.br",
   }) as RibusTransferJWT;
   if (
@@ -38,36 +38,28 @@ async function handler(body: Record<string, any>) {
     const enqueue = taskQueue("firstTransfer");
     await requestRef.set({
       user_id: jwtPayload.user_id,
-      status: "starting",
+      status: "STARTING",
     });
-    enqueue({ ...body, jwtPayload });
+    await enqueue({ ...body, jwtPayload }, {});
   } catch (err: any) {
+    logger.error(err);
     requestRef.set(
       {
-        status: "errored",
+        status: "ERROR",
         error: err,
       },
       { merge: true }
     );
     return failedResponse;
   }
-  // second tx
-  // return { firstTx: firstTx.hash, secondTx: secondTx.hash };
   return {
     success: true,
     id: jwtPayload.jti,
   };
 }
 
-/**
- * req.body: {
- *  from: address,
- *  jwt: string
- * }
- */
 transferRouter.post("/", async (req, res) => {
   try {
-    console.log(req.body);
     const result = await handler(req.body);
     res.json(result);
   } catch (err: any) {

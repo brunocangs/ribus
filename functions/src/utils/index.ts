@@ -7,16 +7,21 @@ import { ethers } from "ethers";
 import { defaultPath, HDNode } from "ethers/lib/utils";
 import { credential } from "firebase-admin";
 import { initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 import { getFunctions, TaskOptions } from "firebase-admin/functions";
 import { logger } from "firebase-functions";
+import { sign } from "jsonwebtoken";
 import { hardhatWallet } from "../../../solidity/src/lib/utils";
 import devServiceAccount from "../../service-account.dev.json";
-
-const app = initializeApp({
-  credential: credential.cert(devServiceAccount as any),
-});
+import prodServiceAccount from "../../service-account.prod.json";
 
 const isLocal = process.env.NODE_ENV === "development";
+
+const serviceAccount = isLocal ? devServiceAccount : prodServiceAccount;
+
+const app = initializeApp({
+  credential: credential.cert(serviceAccount as any),
+});
 
 export const getSeed = () => {
   const seed = process.env.SEED;
@@ -24,15 +29,50 @@ export const getSeed = () => {
   return seed;
 };
 
+export const postFeedback = async (token: any) => {
+  console.log(`postFeedback - Posting to ${process.env.FEEDBACK_SERVER_URL}`, {
+    token,
+  });
+  const [, content] = token.split(".");
+  const jwtPayload = JSON.parse(Buffer.from(content, "base64").toString());
+
+  const firestore = getFirestore();
+  const requestRef = firestore.collection("claim_requests").doc(jwtPayload.jti);
+  try {
+    const req = await axios.post(
+      process.env.FEEDBACK_SERVER_URL as string,
+      JSON.stringify({ token }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    requestRef.set(
+      {
+        synced: true,
+      },
+      { merge: true }
+    );
+    return req;
+  } catch (err) {
+    requestRef.set(
+      {
+        synced: false,
+      },
+      { merge: true }
+    );
+    logger.error(`Errored sending feedback`, { err });
+    return;
+  }
+};
+
 export const taskQueue = (taskName: string) => {
-  const {
-    FUNCTION_EMULATOR_HOST = "localhost:5001",
-    PROJECT_ID = "ribus-demo",
-    REGION = "us-central1",
-  } = process.env;
-  if (process.env.NODE_ENV === "development") {
+  const { FUNCTION_EMULATOR_HOST = "localhost:5001", REGION = "us-central1" } =
+    process.env;
+  if (isLocal) {
     return async (data: Record<string, any>, opts?: any) => {
-      const url = `http://${FUNCTION_EMULATOR_HOST}/${PROJECT_ID}/${REGION}/${taskName}`;
+      const url = `http://${FUNCTION_EMULATOR_HOST}/${serviceAccount.project_id}/${REGION}/${taskName}`;
       await axios.post(url, JSON.stringify({ data }), {
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +83,6 @@ export const taskQueue = (taskName: string) => {
   } else {
     return (data: Record<string, any>, opts?: TaskOptions | undefined) => {
       const queue = getFunctions(app).taskQueue(taskName);
-      logger.debug(queue);
       return queue.enqueue(data, opts);
     };
   }
@@ -75,3 +114,13 @@ export const getSigner = () =>
     : new DefenderRelaySigner(getDefenderCredentials(), getProvider(), {
         speed: "fast",
       });
+
+export const signToken = (data: any, id: string, expire = false) => {
+  const opts: any = {
+    issuer: "app.ribus.com.br",
+    algorithm: "HS256",
+    jwtid: id,
+  };
+  if (expire) opts["expiresIn"] = "2h";
+  return sign(data, process.env.JWT_SECRET as string, opts);
+};

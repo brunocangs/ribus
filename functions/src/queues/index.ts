@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import * as functions from "firebase-functions";
 import { getFirestore } from "firebase-admin/firestore";
+import * as functions from "firebase-functions";
 import { abi as TokenAbi } from "../../../solidity/artifacts/src/contracts/RibusToken.sol/RibusToken.json";
 import { abi as ForwarderAbi } from "../../../solidity/artifacts/src/contracts/UpgradeableForwarder.sol/UpgradeableForwarder.json";
 import d from "../../../solidity/deploy.json";
@@ -11,10 +11,18 @@ import {
   MinimalForwarderUpgradeable,
   RibusToken,
 } from "../../../solidity/typechain";
-import { getChildWallet, getProvider, getSigner, taskQueue } from "../utils";
+import {
+  getChildWallet,
+  getProvider,
+  getSigner,
+  postFeedback,
+  signToken,
+  taskQueue,
+} from "../utils";
+
 const deploy = d as any;
 
-export const requiredSecrets = ["SEED"];
+const secrets = ["SEED", "JWT_SECRET"];
 
 type TaskData = {
   from: string;
@@ -24,7 +32,7 @@ type TaskData = {
 
 export const firstTransfer = functions
   .runWith({
-    secrets: requiredSecrets,
+    secrets,
   })
   .tasks.taskQueue({
     rateLimits: {
@@ -38,28 +46,30 @@ export const firstTransfer = functions
     console.log(`First task`);
     const provider = getProvider();
     const signer = getSigner();
-    const { jwtPayload, from, jwt } = data;
+    const { jwtPayload, from } = data;
     const firestore = getFirestore();
     const requestRef = firestore
       .collection("claim_requests")
       .doc(jwtPayload.jti);
+
     try {
       const network = await provider._networkPromise;
       const tokenContract = new ethers.Contract(
         deploy[chainIdToName[network.chainId]].token,
-        TokenAbi
-      ).connect(signer) as unknown as RibusToken;
+        TokenAbi,
+        signer
+      ) as unknown as RibusToken;
       const child = await getChildWallet(jwtPayload.user_id.toString());
       let tx = await tokenContract.transferFrom(
         from,
         child.address,
         jwtPayload.amount
       );
-      const firstTx = await provider.getTransaction(tx.hash);
       await requestRef.set(
         {
-          firstTxHash: firstTx.hash,
-          secondTxHash: null,
+          first_hash: tx.hash,
+          second_hash: null,
+          status: "PROCESSING",
         },
         {
           merge: true,
@@ -68,25 +78,33 @@ export const firstTransfer = functions
       const secondTask = taskQueue("secondTransfer");
       await secondTask({
         ...data,
-        hash: firstTx.hash,
+        hash: tx.hash,
       });
     } catch (err: any) {
       functions.logger.error(err);
       requestRef.set(
         {
-          error: err.stack,
-          status: "errored",
+          status: "ERROR",
         },
         {
           merge: true,
         }
+      );
+      postFeedback(
+        signToken(
+          {
+            status: "ERROR",
+            message: `Falha ao dar claim em RIB: ${err.message}`,
+          },
+          jwtPayload.jti
+        )
       );
     }
   });
 
 export const secondTransfer = functions
   .runWith({
-    secrets: requiredSecrets,
+    secrets: secrets,
   })
   .tasks.taskQueue({
     rateLimits: {
@@ -106,7 +124,7 @@ export const secondTransfer = functions
     try {
       const provider = getProvider();
       const firstActionTx = await provider.getTransaction(hash);
-      await firstActionTx.wait();
+      await firstActionTx.wait(1);
 
       const signer = getSigner();
       const network = await provider._networkPromise;
@@ -136,23 +154,44 @@ export const secondTransfer = functions
       await secondTx.wait(1);
       await requestRef.set(
         {
-          secondTxHash: secondTx.hash,
-          status: "completed",
+          second_hash: secondTx.hash,
+          status: "SUCCESS",
+          message: "Claim realizado com sucesso",
         },
         {
           merge: true,
         }
       );
+      postFeedback(
+        signToken(
+          {
+            first_hash: hash,
+            second_hash: secondTx.hash,
+            status: "SUCCESS",
+            message: "Claim realizado com sucesso",
+          },
+          jwtPayload.jti
+        )
+      );
     } catch (err: any) {
       functions.logger.error(err);
       requestRef.set(
         {
-          error: err.stack,
-          status: "errored",
+          status: "ERROR",
+          message: `Falha ao dar claim em RIB: ${err.message}`,
         },
         {
           merge: true,
         }
+      );
+      postFeedback(
+        signToken(
+          {
+            status: "ERROR",
+            message: `Falha ao dar claim em RIB: ${err.message}`,
+          },
+          jwtPayload.jti
+        )
       );
     }
   });

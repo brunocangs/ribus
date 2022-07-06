@@ -7,8 +7,13 @@ const main = async () => {
     wallet.mnemonic.phrase,
     process.env.PASSWORD
   );
+  const node = ethers.utils.HDNode.fromSeed(seed).derivePath(
+    ethers.utils.defaultPath.replace(/\d$/, "6")
+  );
+  const pk = node.privateKey;
+  console.log(`Private key: ${pk}\nAddress: ${node.address}`);
   console.log(
-    `Generated wallet at ${wallet.address}\n========== MNEMONIC ==========\n${wallet.mnemonic.phrase}\n============ SEED ============\n${seed}`
+    `========== MNEMONIC ==========\n${wallet.mnemonic.phrase}\n============ SEED ============\n${seed}`
   );
 };
 

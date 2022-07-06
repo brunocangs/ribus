@@ -26,6 +26,12 @@ export const chainIdToAutotasks: Record<number, Record<TaskNames, string>> = {
     sign: "https://us-central1-ribus-demo.cloudfunctions.net/api/sign",
     transfer: "https://us-central1-ribus-demo.cloudfunctions.net/api/transfer",
   },
+  137: {
+    relay: "https://us-central1-ribus-tecnologia.cloudfunctions.net/api/relay",
+    sign: "https://us-central1-ribus-tecnologia.cloudfunctions.net/api/sign",
+    transfer:
+      "https://us-central1-ribus-tecnologia.cloudfunctions.net/api/transfer",
+  },
 };
 
 export const toChainId = (inc: number | string) => "0x" + (+inc).toString(16);
