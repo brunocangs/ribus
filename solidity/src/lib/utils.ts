@@ -2,11 +2,13 @@ import * as ethers from "ethers";
 export const chainIdToName: Record<number, string> = {
   80001: "mumbai",
   31337: "localhost",
+  137: "polygon",
 };
 
 export const chainIdToRpc: Record<number, string> = {
   31337: "http://localhost:8545",
   80001: "https://polygon-mumbai.infura.io/v3/5554892250224defb6c817ddb2755733",
+  137: "https://polygon-mainnet.infura.io/v3/5554892250224defb6c817ddb2755733",
 };
 
 export type TaskNames = "transfer" | "sign" | "relay";
@@ -19,7 +21,7 @@ export const chainIdToAutotasks: Record<number, Record<TaskNames, string>> = {
   31337: {
     relay: "http://localhost:5001/ribus-demo/us-central1/api/relay",
     sign: "http://localhost:5001/ribus-demo/us-central1/api/sign",
-    transfer: "http://localhost:5001/ribus-demo/us-central1/api/transfer",
+    transfer: "http://localhost:5001/ribus-tecnologia/us-central1/api/transfer",
   },
   80001: {
     relay: "https://us-central1-ribus-demo.cloudfunctions.net/api/relay",
@@ -29,6 +31,7 @@ export const chainIdToAutotasks: Record<number, Record<TaskNames, string>> = {
   137: {
     relay: "https://us-central1-ribus-tecnologia.cloudfunctions.net/api/relay",
     sign: "https://us-central1-ribus-tecnologia.cloudfunctions.net/api/sign",
+    // transfer: "http://localhost:5001/ribus-tecnologia/us-central1/api/transfer",
     transfer:
       "https://us-central1-ribus-tecnologia.cloudfunctions.net/api/transfer",
   },

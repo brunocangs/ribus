@@ -1,23 +1,25 @@
 import cors from "cors";
 import express from "express";
 import * as functions from "firebase-functions";
+import { getSigner } from "../utils";
 import { anyRouter } from "./any";
-import { relayRouter } from "./relay";
 import { claimRouter } from "./claim";
 import { tokenRouter } from "./token";
 import { transferRouter } from "./transfer";
-import { walletRouter } from "./wallet";
 
 const app = express();
 app.use(cors({ origin: true }));
 
-app.use("/wallet", walletRouter);
-app.use("/relay", relayRouter);
 app.use("/transfer", transferRouter);
-app.use("/token", tokenRouter);
 app.use("/claim", claimRouter);
 
-if (process.env.NODE_ENV === "development") app.use(anyRouter);
+if (process.env.NODE_ENV !== "production") {
+  app.get("/", async (_, res) =>
+    res.json({ address: await getSigner().getAddress() })
+  );
+  app.use("/token", tokenRouter);
+  app.use(anyRouter);
+}
 
 const secrets = ["SEED", "JWT_SECRET"];
 

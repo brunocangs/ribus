@@ -16,6 +16,7 @@ import {
   getProvider,
   getSigner,
   postFeedback,
+  sendRelayRequest,
   signToken,
   taskQueue,
 } from "../utils";
@@ -53,18 +54,24 @@ export const firstTransfer = functions
       .doc(jwtPayload.jti);
 
     try {
-      const network = await provider._networkPromise;
+      const network = await provider.getNetwork();
       const tokenContract = new ethers.Contract(
         deploy[chainIdToName[network.chainId]].token,
         TokenAbi,
         signer
-      ) as unknown as RibusToken;
+      ) as RibusToken;
       const child = await getChildWallet(jwtPayload.user_id.toString());
-      let tx = await tokenContract.transferFrom(
+      let request = await tokenContract.populateTransaction.transferFrom(
         from,
         child.address,
         jwtPayload.amount
       );
+      const estimate = await provider.send(`eth_estimateGas`, [request]);
+      const tx = await sendRelayRequest({
+        ...request,
+        gasLimit: ethers.BigNumber.from(estimate),
+      });
+      await tx.wait(1);
       await requestRef.set(
         {
           first_hash: tx.hash,
@@ -123,20 +130,18 @@ export const secondTransfer = functions
       .doc(jwtPayload.jti);
     try {
       const provider = getProvider();
-      const firstActionTx = await provider.getTransaction(hash);
-      await firstActionTx.wait(1);
-
       const signer = getSigner();
-      const network = await provider._networkPromise;
+      const network = await provider.getNetwork();
       const tokenContract = new ethers.Contract(
         deploy[chainIdToName[network.chainId]].token,
-        TokenAbi
-      ).connect(signer) as unknown as RibusToken;
+        TokenAbi,
+        signer
+      ) as RibusToken;
       const forwarder = new ethers.Contract(
         deploy[chainIdToName[network.chainId]].forwarder,
         ForwarderAbi,
         signer
-      ) as unknown as MinimalForwarderUpgradeable;
+      ) as MinimalForwarderUpgradeable;
       const child = await getChildWallet(jwtPayload.user_id.toString());
       const { request, signature } = await signMetaTxRequest(
         child.privateKey,
@@ -150,7 +155,15 @@ export const secondTransfer = functions
           to: tokenContract.address,
         }
       );
-      const secondTx = await forwarder.execute(request, signature);
+      const populated = await forwarder.populateTransaction.execute(
+        request,
+        signature
+      );
+      const estimate = await provider.send(`eth_estimateGas`, [populated]);
+      const secondTx = await sendRelayRequest({
+        ...populated,
+        gasLimit: ethers.BigNumber.from(estimate),
+      });
       await secondTx.wait(1);
       await requestRef.set(
         {

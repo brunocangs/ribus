@@ -15,7 +15,8 @@ import { hardhatWallet } from "../../../solidity/src/lib/utils";
 import devServiceAccount from "../../service-account.dev.json";
 import prodServiceAccount from "../../service-account.prod.json";
 
-const isLocal = process.env.NODE_ENV === "development";
+const ENV = process.env.NODE_ENV;
+const isLocal = ENV === "development";
 
 const serviceAccount = isLocal ? devServiceAccount : prodServiceAccount;
 
@@ -90,8 +91,12 @@ export const taskQueue = (taskName: string) => {
 
 export const getRootNode = () => HDNode.fromSeed(getSeed());
 
+export const getPath = (index: string) => {
+  return defaultPath.replace(/\d$/, index);
+};
+
 export const getChildNode = (index: string) =>
-  getRootNode().derivePath(defaultPath.replace(/\d$/, index));
+  getRootNode().derivePath(getPath(index));
 
 export const getChildWallet = (
   index: string,
@@ -103,17 +108,32 @@ export const getDefenderCredentials = () => ({
   apiSecret: process.env.DEFENDER_API_SECRET as string,
 });
 
-export const getProvider = () =>
-  isLocal
-    ? new ethers.providers.JsonRpcProvider()
-    : new DefenderRelayProvider(getDefenderCredentials());
+export const getProvider = () => {
+  switch (ENV) {
+    case "staging":
+      return new DefenderRelayProvider(getDefenderCredentials());
+    case "production":
+      return new ethers.providers.InfuraProvider(
+        "matic",
+        process.env.INFURA_PROJECT_ID
+      );
+    default:
+      return new ethers.providers.JsonRpcProvider();
+  }
+};
 
-export const getSigner = () =>
-  isLocal
-    ? hardhatWallet.connect(getProvider())
-    : new DefenderRelaySigner(getDefenderCredentials(), getProvider(), {
+export const getSigner = () => {
+  switch (ENV) {
+    case "staging":
+      return new DefenderRelaySigner(getDefenderCredentials(), getProvider(), {
         speed: "fast",
       });
+    case "production":
+      return getChildWallet("0");
+    default:
+      return hardhatWallet.connect(getProvider());
+  }
+};
 
 export const signToken = (data: any, id: string, expire = false) => {
   const opts: any = {
@@ -124,3 +144,99 @@ export const signToken = (data: any, id: string, expire = false) => {
   if (expire) opts["expiresIn"] = "2h";
   return sign(data, process.env.JWT_SECRET as string, opts);
 };
+
+export const signRequest = async (tx: any) => {
+  const provider = getProvider();
+  await provider._networkPromise;
+  const network = provider._network;
+  const relayTransactionHash = ethers.utils.keccak256(
+    ethers.utils.defaultAbiCoder.encode(
+      ["address", "bytes", "uint", "uint", "string"],
+      [tx.to, tx.data, tx.gas, network.chainId, tx.schedule]
+    )
+  );
+  return await getSigner().signMessage(
+    ethers.utils.arrayify(relayTransactionHash)
+  );
+};
+
+interface Transaction {
+  hash: string;
+  wait(confirmations?: number): Promise<ethers.ContractReceipt>;
+}
+
+export const sendRelayRequest = async (
+  tx: ethers.PopulatedTransaction
+): Promise<Transaction> => {
+  const wallet = getSigner();
+  const provider = wallet.provider as ethers.providers.JsonRpcProvider;
+  if (ENV !== "production") {
+    return wallet.sendTransaction(tx);
+  } else {
+    const gasLimit = tx.gasLimit as ethers.BigNumber | undefined;
+    const txObj = {
+      to: tx.to,
+      data: tx.data,
+      gas: gasLimit?.mul(105).div(100).toString() || (1e6).toString(),
+      schedule: "fast",
+    };
+    const signature = await signRequest(txObj);
+    return provider
+      .send("relay_sendTransaction", [txObj, signature])
+      .then((result) => new ITXTransaction(result.relayTransactionHash));
+  }
+};
+
+const wait = (milliseconds: number) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds)).catch(
+    (err) => {
+      logger.error(err);
+    }
+  );
+};
+
+class ITXTransaction implements Transaction {
+  minedTxHash?: string;
+  relayTransactionHash: string;
+  constructor(relayTransactionHash: string) {
+    this.relayTransactionHash = relayTransactionHash;
+  }
+  get hash() {
+    if (this.minedTxHash) return this.minedTxHash;
+    return this.relayTransactionHash;
+  }
+  async wait(confirmations = 1) {
+    const provider = getProvider();
+    while (true) {
+      // fetches an object
+      // { receivedTime: string, broadcasts?: [{broadcastTime: string, ethTxHash: string, gasPrice: string}]}
+      const { broadcasts } = await provider.send("relay_getTransactionStatus", [
+        this.relayTransactionHash,
+      ]);
+
+      // check each of these hashes to see if their receipt exists and
+      // has confirmations
+      if (broadcasts) {
+        for (const broadcast of broadcasts) {
+          const { ethTxHash } = broadcast;
+          const receipt = await provider.getTransactionReceipt(ethTxHash);
+
+          if (
+            receipt &&
+            receipt.confirmations &&
+            receipt.confirmations >= confirmations
+          ) {
+            // The transaction is now on chain!
+            logger.debug(
+              `Ethereum transaction hash: ${receipt.transactionHash}`
+            );
+            logger.debug(`Mined in block ${receipt.blockNumber}`);
+            this.minedTxHash = receipt.transactionHash;
+            return receipt;
+          }
+        }
+      }
+      await wait(200);
+    }
+  }
+}

@@ -40,7 +40,7 @@ async function handler(body: Record<string, any>) {
       user_id: jwtPayload.user_id,
       status: "STARTING",
     });
-    await enqueue({ ...body, jwtPayload }, {});
+    await enqueue({ ...body, jwtPayload });
   } catch (err: any) {
     logger.error(err);
     requestRef.set(
