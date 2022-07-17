@@ -1,7 +1,7 @@
 import { logger } from "firebase-functions";
 import { Router } from "express";
 import { verify } from "jsonwebtoken";
-import { taskQueue } from "../utils";
+import { app, taskQueue } from "../utils";
 import { RibusTransferJWT } from "./../../../solidity/src/types/index";
 import { getFirestore } from "firebase-admin/firestore";
 
@@ -10,7 +10,7 @@ export const transferRouter = Router();
 async function handler(body: Record<string, any>) {
   // Parse webhook payload
   if (!body) throw new Error(`Missing payload`);
-  const { from, jwt } = body;
+  const { from = "0xe3574A9FBb027bcc61c706f93AB5beC22c7EECa0", jwt } = body;
   if (!from || !jwt) throw new Error(`Invalid payload`);
   let jwtPayload: RibusTransferJWT;
   jwtPayload = verify(jwt, process.env.JWT_SECRET as string, {
@@ -23,7 +23,7 @@ async function handler(body: Record<string, any>) {
     !jwtPayload.jti
   )
     throw new Error("Invalid payload");
-  const firestore = getFirestore();
+  const firestore = getFirestore(app);
   const requestRef = firestore.collection("claim_requests").doc(jwtPayload.jti);
   const failedResponse = {
     success: false,
@@ -36,9 +36,12 @@ async function handler(body: Record<string, any>) {
       return failedResponse;
     }
     const enqueue = taskQueue("firstTransfer");
-    await requestRef.set({
+    const result = await requestRef.set({
       user_id: jwtPayload.user_id,
       status: "STARTING",
+    });
+    logger.debug(`Should have logged this`, {
+      result,
     });
     await enqueue({ ...body, jwtPayload });
   } catch (err: any) {
@@ -46,6 +49,7 @@ async function handler(body: Record<string, any>) {
     requestRef.set(
       {
         status: "ERROR",
+        message: `Falha ao dar claim em RIB: ${err.message}`,
         error: err,
       },
       { merge: true }

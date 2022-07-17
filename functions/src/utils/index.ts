@@ -18,9 +18,10 @@ import prodServiceAccount from "../../service-account.prod.json";
 const ENV = process.env.NODE_ENV;
 const isLocal = ENV === "development";
 
-const serviceAccount = isLocal ? devServiceAccount : prodServiceAccount;
+const serviceAccount =
+  ENV === "production" ? prodServiceAccount : devServiceAccount;
 
-const app = initializeApp({
+export const app = initializeApp({
   credential: credential.cert(serviceAccount as any),
 });
 
@@ -142,6 +143,7 @@ export const signToken = (data: any, id: string, expire = false) => {
     jwtid: id,
   };
   if (expire) opts["expiresIn"] = "2h";
+  console.log(process.env.JWT_SECRET);
   return sign(data, process.env.JWT_SECRET as string, opts);
 };
 

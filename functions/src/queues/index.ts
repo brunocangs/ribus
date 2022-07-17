@@ -12,6 +12,7 @@ import {
   RibusToken,
 } from "../../../solidity/typechain";
 import {
+  app,
   getChildWallet,
   getProvider,
   getSigner,
@@ -37,18 +38,18 @@ export const firstTransfer = functions
   })
   .tasks.taskQueue({
     rateLimits: {
-      maxConcurrentDispatches: 15,
+      maxConcurrentDispatches: 1,
     },
     retryConfig: {
       maxAttempts: 3,
     },
   })
   .onDispatch(async (data: TaskData) => {
-    console.log(`First task`);
+    functions.logger.info(`First task`);
     const provider = getProvider();
     const signer = getSigner();
     const { jwtPayload, from } = data;
-    const firestore = getFirestore();
+    const firestore = getFirestore(app);
     const requestRef = firestore
       .collection("claim_requests")
       .doc(jwtPayload.jti);
@@ -61,37 +62,62 @@ export const firstTransfer = functions
         signer
       ) as RibusToken;
       const child = await getChildWallet(jwtPayload.user_id.toString());
-      let request = await tokenContract.populateTransaction.transferFrom(
-        from,
-        child.address,
-        jwtPayload.amount
+
+      const forwarder = new ethers.Contract(
+        deploy[chainIdToName[network.chainId]].forwarder,
+        ForwarderAbi,
+        signer
+      ) as MinimalForwarderUpgradeable;
+      const { request, signature } = await signMetaTxRequest(
+        getChildWallet("0").privateKey,
+        forwarder,
+        {
+          to: tokenContract.address,
+          from: await signer.getAddress(),
+          data: tokenContract.interface.encodeFunctionData("transferFrom", [
+            from,
+            jwtPayload.wallet,
+            jwtPayload.amount,
+          ]),
+        }
       );
-      const estimate = await provider.send(`eth_estimateGas`, [request]);
-      const tx = await sendRelayRequest({
-        ...request,
+      const populated = await forwarder.populateTransaction.execute(
+        request,
+        signature
+      );
+      const estimate = await provider.send(`eth_estimateGas`, [populated]);
+      const txRequest = {
+        ...populated,
         gasLimit: ethers.BigNumber.from(estimate),
-      });
+      };
+      const tx = await sendRelayRequest(txRequest);
+      functions.logger.debug(`First Queue Transaction`, tx);
       await tx.wait(1);
-      await requestRef.set(
+      const result = await requestRef.set(
         {
           first_hash: tx.hash,
-          second_hash: null,
-          status: "PROCESSING",
+          second_hash: tx.hash,
+          status: "SUCCESS",
+          message: "Claim realizado com sucesso",
         },
         {
           merge: true,
         }
       );
-      const secondTask = taskQueue("secondTransfer");
-      await secondTask({
-        ...data,
-        hash: tx.hash,
+      functions.logger.debug(`Should have logged this in queue firstTransfer`, {
+        result,
       });
+      // const secondTask = taskQueue("secondTransfer");
+      // await secondTask({
+      //   ...data,
+      //   hash: tx.hash,
+      // });
     } catch (err: any) {
       functions.logger.error(err);
       requestRef.set(
         {
           status: "ERROR",
+          message: `Falha ao dar claim em RIB: ${err.message}`,
         },
         {
           merge: true,
@@ -115,16 +141,16 @@ export const secondTransfer = functions
   })
   .tasks.taskQueue({
     rateLimits: {
-      maxConcurrentDispatches: 15,
+      maxConcurrentDispatches: 1,
     },
     retryConfig: {
       maxAttempts: 3,
     },
   })
   .onDispatch(async (data: TaskData & { hash: string }) => {
-    console.log(`Second task`);
+    functions.logger.info(`Second task`);
     const { jwtPayload, hash } = data;
-    const firestore = getFirestore();
+    const firestore = getFirestore(app);
     const requestRef = firestore
       .collection("claim_requests")
       .doc(jwtPayload.jti);
@@ -160,12 +186,15 @@ export const secondTransfer = functions
         signature
       );
       const estimate = await provider.send(`eth_estimateGas`, [populated]);
-      const secondTx = await sendRelayRequest({
+      const txRequest = {
         ...populated,
         gasLimit: ethers.BigNumber.from(estimate),
-      });
+      };
+      functions.logger.debug(`Second Queue Transaction`, txRequest);
+
+      const secondTx = await sendRelayRequest(txRequest);
       await secondTx.wait(1);
-      await requestRef.set(
+      const result = await requestRef.set(
         {
           second_hash: secondTx.hash,
           status: "SUCCESS",
@@ -175,6 +204,10 @@ export const secondTransfer = functions
           merge: true,
         }
       );
+
+      functions.logger.debug(`Should have logged this in queue firstTransfer`, {
+        result,
+      });
       postFeedback(
         signToken(
           {
