@@ -58,10 +58,10 @@ export default class RibusSdk {
       ],
       chains: [
         {
-          id: toChainId(80001),
+          id: toChainId(137),
           token: "MATIC",
           rpcUrl: Network.shared.RPC_URL,
-          label: "Polygon Testnet (Mumbai)",
+          label: "Polygon",
         },
       ],
       appMetadata: {
@@ -71,7 +71,38 @@ export default class RibusSdk {
       },
     });
   }
-
+  switchNetwork = async () => {
+    const wallet = await this.getSigner();
+    try {
+      await wallet.provider.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x" + (137).toString(16) }],
+      });
+    } catch (error: any) {
+      if (error.code === 4902) {
+        try {
+          await wallet.provider.request({
+            method: "wallet_addEthereumChain",
+            params: [
+              {
+                chainName: "Polygon",
+                chainId: "0x" + (137).toString(16),
+                rpcUrls: ["https://polygon-rpc.com/"],
+                nativeCurrency: {
+                  name: "Matic",
+                  symbol: "MATIC",
+                  decimals: 18,
+                },
+                blockExplorerUrls: ["https://polygonscan.com"],
+              },
+            ],
+          });
+        } catch (error: any) {
+          console.log(error);
+        }
+      }
+    }
+  };
   addToken = () =>
     this.getSigner().then((wallet) =>
       wallet.provider.request({
@@ -108,8 +139,11 @@ export default class RibusSdk {
     });
 
   getSigner = async () => {
-    const [wallet] = await this.onboard.connectWallet();
-    return wallet;
+    let state = this.onboard.state.get();
+    if (state.wallets.length === 0) await this.onboard.connectWallet();
+    state = this.onboard.state.get();
+    console.log(state);
+    return state.wallets[0];
   };
 
   burnExternal = async (amount: number) => {

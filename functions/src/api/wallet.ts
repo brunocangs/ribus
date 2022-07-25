@@ -21,8 +21,8 @@ walletRouter.get("/:userId", async (req, res) => {
     userWallet
   ) as RibusToken;
   const address = await userWallet.getAddress();
-  return {
+  res.json({
     address,
-    balance: await tokenContract.balanceOf(address),
-  };
+    balance: (await tokenContract.balanceOf(address)).toString(),
+  });
 });

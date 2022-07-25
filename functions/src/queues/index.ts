@@ -16,10 +16,7 @@ import {
   getChildWallet,
   getProvider,
   getSigner,
-  postFeedback,
   sendRelayRequest,
-  signToken,
-  taskQueue,
 } from "../utils";
 
 const deploy = d as any;
@@ -41,7 +38,7 @@ export const firstTransfer = functions
       maxConcurrentDispatches: 1,
     },
     retryConfig: {
-      maxAttempts: 3,
+      maxAttempts: 1,
     },
   })
   .onDispatch(async (data: TaskData) => {
@@ -61,8 +58,6 @@ export const firstTransfer = functions
         TokenAbi,
         signer
       ) as RibusToken;
-      const child = await getChildWallet(jwtPayload.user_id.toString());
-
       const forwarder = new ethers.Contract(
         deploy[chainIdToName[network.chainId]].forwarder,
         ForwarderAbi,
@@ -92,8 +87,39 @@ export const firstTransfer = functions
       };
       const tx = await sendRelayRequest(txRequest);
       functions.logger.debug(`First Queue Transaction`, tx);
-      await tx.wait(1);
-      const result = await requestRef.set(
+      try {
+        const result = await tx.wait(1);
+        if ("infuraHash" in result) {
+          await requestRef.set(
+            {
+              infuraHash: result.infuraHash,
+              // first_hash: tx.hash,
+              // second_hash: tx.hash,
+              status: "WAITING",
+              message: "Aguardando confirmaçao",
+            },
+            {
+              merge: true,
+            }
+          );
+          return;
+        }
+      } catch (err) {
+        functions.logger.warn(err);
+        await requestRef.set(
+          {
+            // first_hash: tx.hash,
+            // second_hash: tx.hash,
+            status: "WAITING",
+            message: "Aguardando confirmaçao",
+          },
+          {
+            merge: true,
+          }
+        );
+      }
+
+      await requestRef.set(
         {
           first_hash: tx.hash,
           second_hash: tx.hash,
@@ -104,9 +130,6 @@ export const firstTransfer = functions
           merge: true,
         }
       );
-      functions.logger.debug(`Should have logged this in queue firstTransfer`, {
-        result,
-      });
       // const secondTask = taskQueue("secondTransfer");
       // await secondTask({
       //   ...data,
@@ -123,15 +146,15 @@ export const firstTransfer = functions
           merge: true,
         }
       );
-      postFeedback(
-        signToken(
-          {
-            status: "ERROR",
-            message: `Falha ao dar claim em RIB: ${err.message}`,
-          },
-          jwtPayload.jti
-        )
-      );
+      // postFeedback(
+      //   signToken(
+      //     {
+      //       status: "ERROR",
+      //       message: `Falha ao dar claim em RIB: ${err.message}`,
+      //     },
+      //     jwtPayload.jti
+      //   )
+      // );
     }
   });
 
@@ -208,17 +231,17 @@ export const secondTransfer = functions
       functions.logger.debug(`Should have logged this in queue firstTransfer`, {
         result,
       });
-      postFeedback(
-        signToken(
-          {
-            first_hash: hash,
-            second_hash: secondTx.hash,
-            status: "SUCCESS",
-            message: "Claim realizado com sucesso",
-          },
-          jwtPayload.jti
-        )
-      );
+      // postFeedback(
+      //   signToken(
+      //     {
+      //       first_hash: hash,
+      //       second_hash: secondTx.hash,
+      //       status: "SUCCESS",
+      //       message: "Claim realizado com sucesso",
+      //     },
+      //     jwtPayload.jti
+      //   )
+      // );
     } catch (err: any) {
       functions.logger.error(err);
       requestRef.set(
@@ -230,14 +253,14 @@ export const secondTransfer = functions
           merge: true,
         }
       );
-      postFeedback(
-        signToken(
-          {
-            status: "ERROR",
-            message: `Falha ao dar claim em RIB: ${err.message}`,
-          },
-          jwtPayload.jti
-        )
-      );
+      // postFeedback(
+      //   signToken(
+      //     {
+      //       status: "ERROR",
+      //       message: `Falha ao dar claim em RIB: ${err.message}`,
+      //     },
+      //     jwtPayload.jti
+      //   )
+      // );
     }
   });

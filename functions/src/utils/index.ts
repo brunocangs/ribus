@@ -164,7 +164,9 @@ export const signRequest = async (tx: any) => {
 
 interface Transaction {
   hash: string;
-  wait(confirmations?: number): Promise<ethers.ContractReceipt>;
+  wait(
+    confirmations?: number
+  ): Promise<ethers.ContractReceipt | { infuraHash: string }>;
 }
 
 export const sendRelayRequest = async (
@@ -209,12 +211,31 @@ class ITXTransaction implements Transaction {
   }
   async wait(confirmations = 1) {
     const provider = getProvider();
+    let retries = 0;
     while (true) {
       // fetches an object
       // { receivedTime: string, broadcasts?: [{broadcastTime: string, ethTxHash: string, gasPrice: string}]}
-      const { broadcasts } = await provider.send("relay_getTransactionStatus", [
-        this.relayTransactionHash,
-      ]);
+      let broadcasts = [] as any[];
+      try {
+        retries++;
+        const result = await provider.send("relay_getTransactionStatus", [
+          this.relayTransactionHash,
+        ]);
+        broadcasts = result.broadcasts;
+      } catch (err) {
+        await wait(1000);
+        logger.warn(`Infura call failed, retrying`, {
+          infuraHash: this.relayTransactionHash,
+          retries,
+        });
+        if (retries < 50) {
+          continue;
+        } else {
+          return {
+            infuraHash: this.relayTransactionHash,
+          };
+        }
+      }
 
       // check each of these hashes to see if their receipt exists and
       // has confirmations

@@ -1,6 +1,6 @@
 {
   "name": "ribus-sdk",
-  "version": "0.1.4",
+  "version": "0.1.63",
   "license": "MIT",
   "main": "dist/index.js",
   "unpkg": "dist/umd.js",

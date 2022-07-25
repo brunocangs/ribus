@@ -3,7 +3,7 @@ import { Router } from "express";
 import { verify } from "jsonwebtoken";
 import { app, taskQueue } from "../utils";
 import { RibusTransferJWT } from "./../../../solidity/src/types/index";
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, Timestamp } from "firebase-admin/firestore";
 
 export const transferRouter = Router();
 
@@ -36,12 +36,11 @@ async function handler(body: Record<string, any>) {
       return failedResponse;
     }
     const enqueue = taskQueue("firstTransfer");
-    const result = await requestRef.set({
-      user_id: jwtPayload.user_id,
+    const { iat, exp, iss, jti, ...data } = jwtPayload;
+    await requestRef.set({
+      ...data,
       status: "STARTING",
-    });
-    logger.debug(`Should have logged this`, {
-      result,
+      created_at: Timestamp.fromDate(new Date()),
     });
     await enqueue({ ...body, jwtPayload });
   } catch (err: any) {
