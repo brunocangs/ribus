@@ -31,7 +31,8 @@ async function handler(body: Record<string, any>) {
   };
   try {
     const request = await requestRef.get();
-    if (request && request.exists) {
+    const itemData = request.data();
+    if (request && request.exists && itemData && itemData.status !== "ERROR") {
       logger.warn(`Repeated attempt to claim`, jwtPayload);
       return failedResponse;
     }
