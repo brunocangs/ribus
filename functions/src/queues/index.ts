@@ -103,6 +103,18 @@ export const firstTransfer = functions
             }
           );
           return;
+        } else {
+          await requestRef.set(
+            {
+              first_hash: result.transactionHash,
+              second_hash: result.transactionHash,
+              status: "SUCCESS",
+              message: "Claim realizado com sucesso",
+            },
+            {
+              merge: true,
+            }
+          );
         }
       } catch (err) {
         functions.logger.warn(err);
@@ -118,18 +130,6 @@ export const firstTransfer = functions
           }
         );
       }
-
-      await requestRef.set(
-        {
-          first_hash: tx.hash,
-          second_hash: tx.hash,
-          status: "SUCCESS",
-          message: "Claim realizado com sucesso",
-        },
-        {
-          merge: true,
-        }
-      );
       // const secondTask = taskQueue("secondTransfer");
       // await secondTask({
       //   ...data,
