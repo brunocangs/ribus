@@ -5,8 +5,8 @@ const main = async () => {
   const wallet = ethers.Wallet.createRandom();
 
   const seed = ethers.utils.mnemonicToSeed(
-    wallet.mnemonic.phrase,
-    process.env.PASSWORD
+    wallet.mnemonic.phrase
+    // process.env.PASSWORD
   );
   const node = ethers.utils.HDNode.fromSeed(seed).derivePath(
     ethers.utils.defaultPath

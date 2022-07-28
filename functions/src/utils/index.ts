@@ -11,9 +11,24 @@ import { getFirestore } from "firebase-admin/firestore";
 import { getFunctions, TaskOptions } from "firebase-admin/functions";
 import { logger } from "firebase-functions";
 import { sign } from "jsonwebtoken";
-import { hardhatWallet } from "../../../solidity/src/lib/utils";
+import { State } from "xstate";
+import { abi as ForwarderAbi } from "../../../solidity/artifacts/@openzeppelin/contracts-upgradeable/metatx/MinimalForwarderUpgradeable.sol/MinimalForwarderUpgradeable.json";
+import { abi as TokenAbi } from "../../../solidity/artifacts/src/contracts/RibusTokenV2.sol/RibusTokenV2.json";
+import d from "../../../solidity/deploy.json";
+import { chainIdToName, hardhatWallet } from "../../../solidity/src/lib/utils";
+import { RibusTransferJWT } from "../../../solidity/src/types";
+import {
+  MinimalForwarderUpgradeable,
+  RibusTokenV2,
+} from "../../../solidity/typechain";
 import devServiceAccount from "../../service-account.dev.json";
 import prodServiceAccount from "../../service-account.prod.json";
+import {
+  txMachine,
+  TxModelContext,
+  TxModelEvents,
+} from "../machines/transaction.machine";
+const deploy = d as any;
 
 const ENV = process.env.NODE_ENV;
 const isLocal = ENV === "development";
@@ -24,9 +39,15 @@ const serviceAccount =
 export const app = initializeApp({
   credential: credential.cert(serviceAccount as any),
 });
+export const firestore = getFirestore(app);
 
 export const getSeed = () => {
-  const seed = process.env.SEED;
+  let seed = process.env.SEED;
+  // hardhat seed if dev
+  if (ENV === "development")
+    seed = ethers.utils.mnemonicToSeed(
+      "test test test test test test test test test test test junk"
+    );
   if (!seed) throw new Error(`Missing secrets`);
   return seed;
 };
@@ -112,7 +133,10 @@ export const getDefenderCredentials = () => ({
 export const getProvider = () => {
   switch (ENV) {
     case "staging":
-      return new DefenderRelayProvider(getDefenderCredentials());
+      return new ethers.providers.InfuraProvider(
+        "maticmum",
+        process.env.INFURA_PROJECT_ID
+      );
     case "production":
       return new ethers.providers.InfuraProvider(
         "matic",
@@ -123,16 +147,37 @@ export const getProvider = () => {
   }
 };
 
+export const getContracts = async () => {
+  const network = await getNetwork();
+  const networkName = chainIdToName[network.chainId];
+  if (!networkName) throw new Error(`Problem loading network from provider`);
+  const addresses = deploy[networkName];
+  if (!addresses) throw new Error(`No addresses found for ${networkName}`);
+  return {
+    forwarder: new ethers.Contract(
+      addresses.forwarder,
+      ForwarderAbi,
+      getSigner()
+    ) as MinimalForwarderUpgradeable,
+    token: new ethers.Contract(
+      addresses.token,
+      TokenAbi,
+      getSigner()
+    ) as RibusTokenV2,
+  };
+};
+
+export const getNetwork = () => getProvider().getNetwork();
+
 export const getSigner = () => {
   switch (ENV) {
-    case "staging":
-      return new DefenderRelaySigner(getDefenderCredentials(), getProvider(), {
-        speed: "fast",
-      });
-    case "production":
-      return getChildWallet("0");
+    // case "staging":
+    //   return new DefenderRelaySigner(getDefenderCredentials(), getProvider(), {
+    //     speed: "fast",
+    //   });
+    // case "production":
     default:
-      return hardhatWallet.connect(getProvider());
+      return getChildWallet("0");
   }
 };
 
@@ -143,10 +188,10 @@ export const signToken = (data: any, id: string, expire = false) => {
     jwtid: id,
   };
   if (expire) opts["expiresIn"] = "2h";
-  console.log(process.env.JWT_SECRET);
   return sign(data, process.env.JWT_SECRET as string, opts);
 };
 
+// Infura relay
 export const signRequest = async (tx: any) => {
   const provider = getProvider();
   await provider._networkPromise;
@@ -263,3 +308,102 @@ class ITXTransaction implements Transaction {
     }
   }
 }
+
+// State Machine <> JSON
+
+export const serialize = <TAny>(state: TAny) =>
+  JSON.parse(JSON.stringify(state));
+
+export const hydrate = (state: any) =>
+  State.create<TxModelContext, TxModelEvents>(state);
+
+// Firebase transactions
+export const txsRef = firestore.collection("claim_requests");
+
+export const createTx = (data: any) =>
+  txsRef.add({
+    ...data,
+    state: serialize(txMachine.initialState),
+  });
+
+export const saveTx = (txId: string, data: { state: any } & any) =>
+  txsRef
+    .doc(txId)
+    .set({ ...data, state: serialize(data.state) }, { merge: true });
+
+export const getTx = (txId: string) =>
+  txsRef
+    .doc(txId)
+    .get()
+    .then((snap) => {
+      if (!snap.exists) return null;
+      const snapshotData = snap.data();
+      if (!snapshotData) return null;
+      const { state, ...data } = snapshotData;
+      return {
+        ...data,
+        state: state ? hydrate(state) : null,
+        id: snap.id,
+      } as MachineTransaction;
+    });
+
+export const getTxs = () =>
+  txsRef.get().then((snap) => {
+    if (snap.empty) return [];
+    return snap.docs
+      .map((doc) => {
+        if (!doc.exists) return null;
+        const docData = doc.data();
+        if (!docData) return null;
+        return {
+          ...docData,
+          id: doc.id,
+          state: docData.state ? hydrate(docData.state) : null,
+        } as MachineTransaction;
+      })
+      .filter(Boolean) as MachineTransaction[];
+  });
+
+export type MachineTransaction = {
+  hash?: string;
+  id: string;
+  user_id: number;
+  to: string;
+  data: string;
+  state: typeof txMachine.initialState | null;
+  jwt?: RibusTransferJWT;
+  version?: number;
+};
+
+// Firebase locks
+
+type TxLock = {
+  locked: boolean;
+  id: string;
+};
+
+export const locksRef = firestore.collection("tx_locks");
+
+export const getLock = (lockId: string) =>
+  locksRef
+    .doc(lockId)
+    .get()
+    .then((snap) => {
+      if (!snap.exists) return null;
+      const snapData = snap.data();
+      if (!snapData) return null;
+      return {
+        ...snapData,
+        id: snap.id,
+      } as TxLock;
+    });
+
+export const setLocked = (lockId: string, locked: boolean) =>
+  locksRef.doc(lockId).set(
+    {
+      locked,
+    },
+    {
+      merge: true,
+    }
+  );

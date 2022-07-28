@@ -1,11 +1,14 @@
 import { logger } from "firebase-functions";
 import { Router } from "express";
 import { verify } from "jsonwebtoken";
-import { app, taskQueue } from "../utils";
+import { app, createTx, getContracts, saveTx, taskQueue } from "../utils";
 import { RibusTransferJWT } from "./../../../solidity/src/types/index";
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
+import { txMachine } from "../machines/transaction.machine";
 
 export const transferRouter = Router();
+
+const initialState = txMachine.initialState;
 
 async function handler(body: Record<string, any>) {
   // Parse webhook payload
@@ -32,18 +35,25 @@ async function handler(body: Record<string, any>) {
   try {
     const request = await requestRef.get();
     const itemData = request.data();
-    if (request && request.exists && itemData && itemData.status !== "ERROR") {
+    if (request && request.exists) {
       logger.warn(`Repeated attempt to claim`, jwtPayload);
       return failedResponse;
     }
-    const enqueue = taskQueue("firstTransfer");
     const { iat, exp, iss, jti, ...data } = jwtPayload;
-    await requestRef.set({
-      ...data,
-      status: "STARTING",
-      created_at: Timestamp.fromDate(new Date()),
+    const { token } = await getContracts();
+    await saveTx(jti, {
+      // Must be 0 to execute as root wallet
+      user_id: "0",
+      to: token.address,
+      data: token.interface.encodeFunctionData("transferFrom", [
+        from,
+        data.wallet,
+        data.amount,
+      ]),
+      jwt: data,
+      version: 2,
+      state: txMachine.initialState,
     });
-    await enqueue({ ...body, jwtPayload });
   } catch (err: any) {
     logger.error(err);
     requestRef.set(

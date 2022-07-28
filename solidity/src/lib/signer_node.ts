@@ -10,6 +10,7 @@ type TxInput = {
   to: string;
   from: string;
   data: string;
+  nonce?: ethers.BigNumberish;
 };
 
 type SignerType =
