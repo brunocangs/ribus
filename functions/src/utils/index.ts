@@ -1,13 +1,9 @@
 import axios from "axios";
-import {
-  DefenderRelayProvider,
-  DefenderRelaySigner,
-} from "defender-relay-client/lib/ethers";
 import { ethers } from "ethers";
 import { defaultPath, HDNode } from "ethers/lib/utils";
 import { credential } from "firebase-admin";
 import { initializeApp } from "firebase-admin/app";
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { getFunctions, TaskOptions } from "firebase-admin/functions";
 import { logger } from "firebase-functions";
 import { sign } from "jsonwebtoken";
@@ -15,7 +11,7 @@ import { State } from "xstate";
 import { abi as ForwarderAbi } from "../../../solidity/artifacts/@openzeppelin/contracts-upgradeable/metatx/MinimalForwarderUpgradeable.sol/MinimalForwarderUpgradeable.json";
 import { abi as TokenAbi } from "../../../solidity/artifacts/src/contracts/RibusTokenV2.sol/RibusTokenV2.json";
 import d from "../../../solidity/deploy.json";
-import { chainIdToName, hardhatWallet } from "../../../solidity/src/lib/utils";
+import { chainIdToName } from "../../../solidity/src/lib/utils";
 import { RibusTransferJWT } from "../../../solidity/src/types";
 import {
   MinimalForwarderUpgradeable,
@@ -364,6 +360,77 @@ export const getTxs = () =>
       .filter(Boolean) as MachineTransaction[];
   });
 
+export const getNonce = async (userId: number) => {
+  const allNonces = await Promise.all([
+    txsRef
+      .where("user_id", "==", userId.toString())
+      .orderBy("nonce", "desc")
+      .limit(1)
+      .get()
+      .then((snap) => {
+        if (snap.empty) return null;
+        const [firstSnap] = snap.docs;
+        const first = firstSnap.data();
+        // next nonce = Last nonce + 1
+        return first.nonce + 1;
+      }),
+    getProvider().getTransactionCount(
+      // This will always be next nonce
+      getChildWallet(userId.toString()).address
+    ),
+  ]);
+  console.log({
+    userId,
+    allNonces,
+  });
+  return Math.max(...allNonces);
+};
+
+export const getTxsByUser = () =>
+  txsRef
+    .orderBy("user_id", "asc")
+    .orderBy("nonce", "asc")
+    .get()
+    .then((snap) => {
+      if (snap.empty) return [];
+      return snap.docs
+        .map((docSnap) => {
+          const docData = docSnap.data();
+          return {
+            ...docData,
+            id: docSnap.id,
+            state: docData.state ? hydrate(docData.state) : null,
+          };
+        })
+        .filter(Boolean) as MachineTransaction[];
+    });
+
+export const getUserTxs = (userId: number) =>
+  txsRef
+    .where("jwt.user_id", "==", userId)
+    .orderBy("nonce", "asc")
+    .get()
+    .then((snap) => {
+      if (snap.empty) return [];
+      return snap.docs
+        .map((doc) => {
+          if (!doc.exists) return null;
+          const docData = doc.data();
+          if (!docData) return null;
+          return {
+            ...docData,
+            id: doc.id,
+            state: docData.state ? hydrate(docData.state) : null,
+          } as MachineTransaction;
+        })
+        .filter(Boolean) as MachineTransaction[];
+      // .sort((a, b) => {
+      //   if (!a?.nonce) return -1;
+      //   if (!b?.nonce) return 1;
+      //   return a.nonce - b.nonce;
+      // })
+    });
+
 export type MachineTransaction = {
   hash?: string;
   id: string;
@@ -371,6 +438,7 @@ export type MachineTransaction = {
   to: string;
   data: string;
   state: typeof txMachine.initialState | null;
+  nonce: number;
   jwt?: RibusTransferJWT;
   version?: number;
 };
@@ -379,6 +447,7 @@ export type MachineTransaction = {
 
 type TxLock = {
   locked: boolean;
+  lockedAt: Date | null;
   id: string;
 };
 
@@ -392,9 +461,27 @@ export const getLock = (lockId: string) =>
       if (!snap.exists) return null;
       const snapData = snap.data();
       if (!snapData) return null;
+      if (snapData.lockedAt) {
+        const lockedAt = snapData.lockedAt as Timestamp | undefined;
+        if (lockedAt) {
+          // If locked for over 70 seconds => Cloud function timed out
+          logger.debug(
+            `Interval`,
+            Date.now() - lockedAt.toMillis() > 60 * 1000
+          );
+          if (Date.now() - lockedAt.toMillis() > 60 * 1000) {
+            return {
+              id: snap.id,
+              locked: false,
+              lockedAt: null,
+            } as TxLock;
+          }
+        }
+      }
       return {
         ...snapData,
         id: snap.id,
+        lockedAt: snapData.lockedAt ? snapData.lockedAt.toDate() : null,
       } as TxLock;
     });
 
@@ -402,6 +489,7 @@ export const setLocked = (lockId: string, locked: boolean) =>
   locksRef.doc(lockId).set(
     {
       locked,
+      lockedAt: Timestamp.fromDate(new Date()),
     },
     {
       merge: true,

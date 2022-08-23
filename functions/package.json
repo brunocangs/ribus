@@ -25,10 +25,12 @@
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash.groupby": "^4.6.0",
     "uuid": "^8.3.2",
     "xstate": "^4.32.1"
   },
   "devDependencies": {
+    "@types/lodash.groupby": "^4.6.7",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",

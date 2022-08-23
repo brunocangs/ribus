@@ -1,20 +1,13 @@
+import * as ethers from "ethers";
+import { logger } from "firebase-functions";
+import { signMetaTxRequest } from "../../../solidity/src/lib/signer_node";
+import { getChildWallet, getContracts, getProvider, getSigner } from "../utils";
 import {
   getLock,
   MachineTransaction,
   saveTx,
   setLocked,
 } from "./../utils/index";
-import { logger } from "firebase-functions";
-import * as ethers from "ethers";
-import { getFirestore } from "firebase-admin/firestore";
-import { signMetaTxRequest } from "../../../solidity/src/lib/signer_node";
-import {
-  app,
-  getChildWallet,
-  getContracts,
-  getProvider,
-  getSigner,
-} from "../utils";
 import { txMachine } from "./transaction.machine";
 
 // Mocks
@@ -76,6 +69,8 @@ export const processPending = async (txs: MachineTransaction[]) => {
           ...executeData,
           nonce: executerNonce,
         });
+        await transaction.wait(1);
+        console.log(`Executed ${transaction.hash}`);
         executerNonce++;
         await saveTx(tx.id, {
           ...tx,
@@ -83,7 +78,11 @@ export const processPending = async (txs: MachineTransaction[]) => {
           state: txMachine.transition(state, "submitted"),
         });
       } catch (err: any) {
-        logger.error(`Errored processing pending txs`, err);
+        logger.error(`Errored processing pending txs`, {
+          executerNonce,
+          lastUserNonce,
+          message: err.toString().slice(0, 200),
+        });
         await saveTx(tx.id, {
           ...tx,
           state: tx.state ? txMachine.transition(tx.state, "errored") : null,
@@ -155,7 +154,7 @@ export const processFailed = async (txs: MachineTransaction[]) => {
   try {
     await Promise.all(
       txs.map(async (tx) => {
-        if (tx.state?.matches("failed") && tx.state.context.retries < 5) {
+        if (tx.state?.matches("failed") && tx.state.context.retries < 50) {
           return saveTx(tx.id, {
             ...tx,
             state: txMachine.transition(tx.state, "adjusted"),

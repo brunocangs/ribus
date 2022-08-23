@@ -13,6 +13,7 @@ export const progressStates = runWith({
 })
   .pubsub.schedule("every minute")
   .onRun(async () => {
+    return;
     const txs = await getTxs();
     const {
       pending = [],
