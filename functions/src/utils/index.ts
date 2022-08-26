@@ -75,6 +75,7 @@ export const taskQueue = (taskName: string) => {
   if (isLocal) {
     return async (data: Record<string, any>, opts?: any) => {
       const url = `http://${FUNCTION_EMULATOR_HOST}/${serviceAccount.project_id}/${REGION}/${taskName}`;
+      console.log({ url });
       await axios.post(url, JSON.stringify({ data }), {
         headers: {
           "Content-Type": "application/json",

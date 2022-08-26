@@ -11,3 +11,14 @@ export type RibusTransferJWT = {
   exp: number;
   jti: string;
 };
+
+export type RibusSendJWT = {
+  iss: string;
+  user_id_from: string;
+  user_id_to?: string;
+  wallet?: string;
+  amount: number;
+  iat: number;
+  exp: number;
+  jti: string;
+};

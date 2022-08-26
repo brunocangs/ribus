@@ -6,7 +6,7 @@ import { abi as ForwarderAbi } from "../../../solidity/artifacts/src/contracts/U
 import d from "../../../solidity/deploy.json";
 import { signMetaTxRequest } from "../../../solidity/src/lib/signer_node";
 import { chainIdToName } from "../../../solidity/src/lib/utils";
-import { RibusTransferJWT } from "../../../solidity/src/types";
+import { RibusSendJWT, RibusTransferJWT } from "../../../solidity/src/types";
 import {
   MinimalForwarderUpgradeable,
   RibusToken,
@@ -23,10 +23,10 @@ const deploy = d as any;
 
 const secrets = ["SEED", "JWT_SECRET"];
 
-type TaskData = {
+type TaskData<T> = {
   from: string;
   jwt: string;
-  jwtPayload: RibusTransferJWT;
+  jwtPayload: T;
 };
 
 export const firstTransfer = functions
@@ -41,7 +41,7 @@ export const firstTransfer = functions
       maxAttempts: 1,
     },
   })
-  .onDispatch(async (data: TaskData) => {
+  .onDispatch(async (data: TaskData<RibusTransferJWT>) => {
     functions.logger.info(`First task`);
     const provider = getProvider();
     const signer = getSigner();
@@ -158,6 +158,144 @@ export const firstTransfer = functions
     }
   });
 
+export const sendFunds = functions
+  .runWith({
+    secrets,
+  })
+  .tasks.taskQueue({
+    rateLimits: {
+      maxConcurrentDispatches: 1,
+    },
+    retryConfig: {
+      maxAttempts: 1,
+    },
+  })
+  .onDispatch(async (data: TaskData<RibusSendJWT>) => {
+    const provider = getProvider();
+    const signer = getSigner();
+    const { jwtPayload } = data;
+    const firestore = getFirestore(app);
+    const requestRef = firestore
+      .collection("send_requests")
+      .doc(jwtPayload.jti);
+
+    try {
+      const network = await provider.getNetwork();
+      let receiverAddress: string;
+      if (jwtPayload.user_id_to) {
+        receiverAddress = await getChildWallet(
+          jwtPayload.user_id_to
+        ).getAddress();
+      } else if (jwtPayload.wallet) {
+        receiverAddress = jwtPayload.wallet;
+      } else {
+        throw new Error(
+          `Missing receiver in Send Request ${JSON.stringify(data)}`
+        );
+      }
+      const tokenContract = new ethers.Contract(
+        deploy[chainIdToName[network.chainId]].token,
+        TokenAbi,
+        signer
+      ) as RibusToken;
+
+      const forwarder = new ethers.Contract(
+        deploy[chainIdToName[network.chainId]].forwarder,
+        ForwarderAbi,
+        signer
+      ) as MinimalForwarderUpgradeable;
+      const child = getChildWallet(jwtPayload.user_id_from);
+      const { request, signature } = await signMetaTxRequest(
+        child.privateKey,
+        forwarder,
+        {
+          to: tokenContract.address,
+          from: await child.getAddress(),
+          data: tokenContract.interface.encodeFunctionData("transfer", [
+            receiverAddress,
+            jwtPayload.amount,
+          ]),
+        }
+      );
+      const populated = await forwarder.populateTransaction.execute(
+        request,
+        signature
+      );
+      const estimate = await provider.send(`eth_estimateGas`, [populated]);
+      const txRequest = {
+        ...populated,
+        gasLimit: ethers.BigNumber.from(estimate),
+      };
+      const tx = await sendRelayRequest(txRequest);
+      functions.logger.debug(`Send Funds Transaction`, tx);
+      try {
+        const result = await tx.wait(1);
+        if ("infuraHash" in result) {
+          await requestRef.set(
+            {
+              infuraHash: result.infuraHash,
+              status: "WAITING",
+              message: "Aguardando confirmaçao",
+            },
+            {
+              merge: true,
+            }
+          );
+          return;
+        } else {
+          await requestRef.set(
+            {
+              hash: result.transactionHash,
+              status: "SUCCESS",
+              message: "Claim realizado com sucesso",
+            },
+            {
+              merge: true,
+            }
+          );
+        }
+      } catch (err) {
+        functions.logger.warn(err);
+        await requestRef.set(
+          {
+            // first_hash: tx.hash,
+            // second_hash: tx.hash,
+            status: "WAITING",
+            message: "Aguardando confirmaçao",
+          },
+          {
+            merge: true,
+          }
+        );
+      }
+      // const secondTask = taskQueue("secondTransfer");
+      // await secondTask({
+      //   ...data,
+      //   hash: tx.hash,
+      // });
+    } catch (err: any) {
+      functions.logger.error(err);
+      requestRef.set(
+        {
+          status: "ERROR",
+          message: `Falha ao dar claim em RIB: ${err.message}`,
+        },
+        {
+          merge: true,
+        }
+      );
+      // postFeedback(
+      //   signToken(
+      //     {
+      //       status: "ERROR",
+      //       message: `Falha ao dar claim em RIB: ${err.message}`,
+      //     },
+      //     jwtPayload.jti
+      //   )
+      // );
+    }
+  });
+
 export const secondTransfer = functions
   .runWith({
     secrets: secrets,
@@ -170,7 +308,7 @@ export const secondTransfer = functions
       maxAttempts: 3,
     },
   })
-  .onDispatch(async (data: TaskData & { hash: string }) => {
+  .onDispatch(async (data: TaskData<RibusTransferJWT> & { hash: string }) => {
     functions.logger.info(`Second task`);
     const { jwtPayload, hash } = data;
     const firestore = getFirestore(app);

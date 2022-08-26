@@ -1,7 +1,7 @@
 {
   "projects": {
     "default": "ribus-demo",
-    "dev": "ribus-demo",
+    "dev": "ribus-tecnologia-staging",
     "prod": "ribus-tecnologia"
   },
   "targets": {}

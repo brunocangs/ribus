@@ -4,7 +4,7 @@ import { signToken } from "../utils";
 
 export const tokenRouter = Router();
 
-tokenRouter.get("/", async (req, res) => {
+tokenRouter.get("/claim", async (req, res) => {
   let { amount = 1, wallet = "0x1C713C99fB1d02237FC7b0bb3f043867ccD79b87" } =
     req.query;
   amount = +amount * Math.pow(10, 8);
@@ -17,6 +17,36 @@ tokenRouter.get("/", async (req, res) => {
     v4(),
     true
   );
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.json({ token });
+});
+
+tokenRouter.get("/transfer", async (req, res) => {
+  let { user_id_from = "1", user_id_to = "2", wallet, amount = 1 } = req.query;
+  amount = +amount * Math.pow(10, 8);
+  let useIdTo = Math.random() > 0.5;
+  let token: string;
+  if (!wallet || user_id_to) {
+    token = await signToken(
+      {
+        user_id_from,
+        user_id_to,
+        amount,
+      },
+      v4(),
+      true
+    );
+  } else {
+    token = await signToken(
+      {
+        user_id_from,
+        wallet,
+        amount,
+      },
+      v4(),
+      true
+    );
+  }
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.json({ token });
 });
