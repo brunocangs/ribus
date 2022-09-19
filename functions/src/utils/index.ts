@@ -16,7 +16,7 @@ import devServiceAccount from "../../service-account.dev.json";
 import prodServiceAccount from "../../service-account.prod.json";
 
 const ENV = process.env.NODE_ENV;
-const isLocal = ENV === "staging";
+const isLocal = ENV === "development";
 
 const serviceAccount =
   ENV === "production" ? prodServiceAccount : devServiceAccount;
