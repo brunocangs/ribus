@@ -16,7 +16,7 @@ import devServiceAccount from "../../service-account.dev.json";
 import prodServiceAccount from "../../service-account.prod.json";
 
 const ENV = process.env.NODE_ENV;
-const isLocal = ENV === "development";
+const isLocal = ENV === "staging";
 
 const serviceAccount =
   ENV === "production" ? prodServiceAccount : devServiceAccount;
@@ -75,7 +75,6 @@ export const taskQueue = (taskName: string) => {
   if (isLocal) {
     return async (data: Record<string, any>, opts?: any) => {
       const url = `http://${FUNCTION_EMULATOR_HOST}/${serviceAccount.project_id}/${REGION}/${taskName}`;
-      console.log({ url });
       await axios.post(url, JSON.stringify({ data }), {
         headers: {
           "Content-Type": "application/json",
@@ -104,6 +103,8 @@ export const getChildWallet = (
   index: string,
   provider: ethers.providers.JsonRpcProvider = getProvider()
 ) => new ethers.Wallet(getChildNode(index).privateKey, provider);
+
+export const getRootWallet = () => getChildWallet("0");
 
 export const getDefenderCredentials = () => ({
   apiKey: process.env.DEFENDER_API_KEY as string,
@@ -144,7 +145,6 @@ export const signToken = (data: any, id: string, expire = false) => {
     jwtid: id,
   };
   if (expire) opts["expiresIn"] = "2h";
-  console.log(process.env.JWT_SECRET);
   return sign(data, process.env.JWT_SECRET as string, opts);
 };
 

@@ -19,7 +19,10 @@ app.use("/wallet", walletRouter);
 
 if (process.env.NODE_ENV !== "production") {
   app.get("/", async (_, res) =>
-    res.json({ address: await getSigner().getAddress() })
+    res.json({
+      address: await getSigner().getAddress(),
+      network: await getProvider().getNetwork(),
+    })
   );
   app.use("/token", tokenRouter);
   app.use(anyRouter);

@@ -27,7 +27,11 @@
     "deploy.json"
   ],
   "scripts": {
-    "dev": "hardhat node",
+    "dev": "run-p -l dev:*",
+    "dev:node": "hardhat node",
+    "dev:deploy": "wait-port 8545 && npm run local:deploy",
+    "dev:build": "npm run watch",
+    "console": "hardhat console --network",
     "watch": "parcel watch",
     "build": "npm run build:lib && npm run build:types",
     "build:lib": "parcel build",
@@ -75,6 +79,7 @@
     "ethereum-waffle": "^3.0.0",
     "hardhat": "^2.9.3",
     "hardhat-gas-reporter": "^1.0.4",
+    "npm-run-all": "^4.1.5",
     "parcel": "^2.5.0",
     "prettier": "^2.3.2",
     "prettier-plugin-solidity": "^1.0.0-beta.13",
@@ -84,7 +89,8 @@
     "stream-browserify": "^3.0.0",
     "ts-node": "^10.7.0",
     "typechain": "^5.1.2",
-    "typescript": "^4.5.2"
+    "typescript": "^4.5.2",
+    "wait-port": "^0.3.0"
   },
   "dependencies": {
     "@metamask/eth-sig-util": "^4.0.1",

@@ -10,16 +10,21 @@ export const transferRouter = Router();
 async function handler(body: Record<string, any>) {
   // Parse webhook payload
   if (!body) throw new Error(`Missing payload`);
-  const { from = "0xe3574A9FBb027bcc61c706f93AB5beC22c7EECa0", jwt } = body;
-  if (!from || !jwt) throw new Error(`Invalid payload`);
+  const { jwt } = body;
+  if (!jwt) throw new Error(`Invalid payload`);
   let jwtPayload: RibusTransferJWT;
   jwtPayload = verify(jwt, process.env.JWT_SECRET as string, {
     issuer: "app.ribus.com.br",
   }) as RibusTransferJWT;
   if (
     !jwtPayload.amount ||
-    !jwtPayload.wallet ||
-    !jwtPayload.user_id ||
+    !(
+      jwtPayload.from_user_id !== undefined ||
+      jwtPayload.from_wallet !== undefined
+    ) ||
+    !(
+      jwtPayload.to_user_id !== undefined || jwtPayload.to_wallet !== undefined
+    ) ||
     !jwtPayload.jti
   )
     throw new Error("Invalid payload");

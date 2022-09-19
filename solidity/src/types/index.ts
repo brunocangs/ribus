@@ -2,11 +2,26 @@ export type NamedAccounts = {
   [key in "deployer"]: string;
 };
 
+/**
+ * Sender:
+ *  from_user_id
+ *    OR
+ *  from
+ *
+ * Receiver
+ *  to_user_id
+ *    OR
+ *  wallet
+ */
+
 export type RibusTransferJWT = {
-  iss: string;
-  user_id: number;
-  wallet: string;
+  from_user_id?: number;
+  from_wallet?: string;
+  to_user_id?: number;
+  to_wallet?: string;
   amount: number;
+  // JWT standard fields
+  iss: string;
   iat: number;
   exp: number;
   jti: string;
