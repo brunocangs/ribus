@@ -4,19 +4,25 @@ import { signToken } from "../utils";
 
 export const tokenRouter = Router();
 
-tokenRouter.get("/", async (req, res) => {
-  let { amount = 1, wallet = "0x1C713C99fB1d02237FC7b0bb3f043867ccD79b87" } =
-    req.query;
+tokenRouter.get("/claim", async (req, res) => {
+  let {
+    amount = 1,
+    from_wallet,
+    to_wallet,
+    from_user_id = 0,
+    to_user_id = 1,
+  } = req.query;
   amount = +amount * Math.pow(10, 8);
-  const max = Math.pow(2, 31) - 1;
-  const jwt = await signToken(
+  let senderData = from_wallet ? { from_wallet } : { from_user_id };
+  let receiverData = to_wallet ? { to_wallet } : { to_user_id };
+  const token = await signToken(
     {
-      user_id: Math.round(Math.random() * 2 + 2),
-      wallet,
+      ...senderData,
+      ...receiverData,
       amount,
     },
     v4(),
     true
   );
-  res.json({ jwt });
+  res.json({ token });
 });

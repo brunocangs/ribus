@@ -1,30 +1,27 @@
 import cors from "cors";
 import express from "express";
 import * as functions from "firebase-functions";
-import {
-  processFailed,
-  processPending,
-  processProcessing,
-} from "../machines/handlers";
+import groupBy from "lodash.groupby";
+import { processFailed } from "../machines/handlers";
 import {
   getProvider,
   getSigner,
-  getTxs,
   getTxsByUser,
   getUserTxs,
   MachineTransaction,
 } from "../utils";
 import { anyRouter } from "./any";
 import { claimRouter } from "./claim";
+import { sendRouter } from "./send";
 import { tokenRouter } from "./token";
 import { transferRouter } from "./transfer";
 import { walletRouter } from "./wallet";
-import groupBy from "lodash.groupby";
 
 const app = express();
 app.use(cors({ origin: true }));
 
 app.use("/transfer", transferRouter);
+app.use("/send", sendRouter);
 app.use("/claim", claimRouter);
 app.use("/wallet", walletRouter);
 
@@ -106,23 +103,12 @@ if (process.env.NODE_ENV !== "production") {
       res.json({ err });
     }
   });
-
-  app.get("/", async (_, res) => {
-    const provider = getProvider();
-    let network: any;
-    try {
-      network = await provider.getNetwork();
-    } catch (err) {
-      network = {
-        chainId: 31337,
-        name: "localhost",
-      };
-    }
-    return res.json({
+  app.get("/", async (_, res) =>
+    res.json({
       address: await getSigner().getAddress(),
-      network,
-    });
-  });
+      network: await getProvider().getNetwork(),
+    })
+  );
   app.use("/token", tokenRouter);
   app.use(anyRouter);
 }

@@ -15,6 +15,7 @@ import {
   app,
   getChildWallet,
   getProvider,
+  getRootWallet,
   getSigner,
   sendRelayRequest,
 } from "../utils";
@@ -23,10 +24,10 @@ const deploy = d as any;
 
 const secrets = ["SEED", "JWT_SECRET"];
 
-type TaskData = {
+type TaskData<T> = {
   from: string;
   jwt: string;
-  jwtPayload: RibusTransferJWT;
+  jwtPayload: T;
 };
 
 export const firstTransfer = functions
@@ -41,15 +42,36 @@ export const firstTransfer = functions
       maxAttempts: 1,
     },
   })
-  .onDispatch(async (data: TaskData) => {
+  .onDispatch(async (data: TaskData<RibusTransferJWT>) => {
     functions.logger.info(`First task`);
     const provider = getProvider();
     const signer = getSigner();
-    const { jwtPayload, from } = data;
+    const { jwtPayload } = data;
     const firestore = getFirestore(app);
     const requestRef = firestore
       .collection("claim_requests")
       .doc(jwtPayload.jti);
+
+    // Pull data from JWT
+    // Who is sending => Internal or external
+    let sender: string;
+    if (jwtPayload.from_user_id !== undefined) {
+      sender = await getChildWallet(
+        jwtPayload.from_user_id.toString()
+      ).getAddress();
+    } else if (jwtPayload.from_wallet !== undefined) {
+      sender = jwtPayload.from_wallet;
+    } else throw new Error("Missing sender information");
+
+    // Who is receiving => Internal or external
+    let receiver: string;
+    if (jwtPayload.to_user_id !== undefined) {
+      receiver = await getChildWallet(
+        jwtPayload.to_user_id.toString()
+      ).getAddress();
+    } else if (jwtPayload.to_wallet !== undefined) {
+      receiver = jwtPayload.to_wallet;
+    } else throw new Error("Missing receiver information");
 
     try {
       const network = await provider.getNetwork();
@@ -63,17 +85,33 @@ export const firstTransfer = functions
         ForwarderAbi,
         signer
       ) as MinimalForwarderUpgradeable;
+      const isInternal = jwtPayload.from_user_id !== undefined;
+      // If there's no from_user_id, sign metaTx as root
+      const signerPk = isInternal
+        ? getChildWallet(jwtPayload.from_user_id?.toString() ?? "0").privateKey
+        : getRootWallet().privateKey;
+      // If there's from_user_id, tx `from` and signer must be child wallet
+      const from = isInternal ? sender : await getRootWallet().getAddress();
+      const data = isInternal
+        ? // If there's from_user_id, tx data will be transfer from self
+          tokenContract.interface.encodeFunctionData("transfer", [
+            receiver,
+            jwtPayload.amount,
+          ])
+        : // If there's from_wallet, tx will be transferFrom as third party
+          tokenContract.interface.encodeFunctionData("transferFrom", [
+            sender,
+            receiver,
+            jwtPayload.amount,
+          ]);
+
       const { request, signature } = await signMetaTxRequest(
-        getChildWallet("0").privateKey,
+        signerPk,
         forwarder,
         {
           to: tokenContract.address,
-          from: await signer.getAddress(),
-          data: tokenContract.interface.encodeFunctionData("transferFrom", [
-            from,
-            jwtPayload.wallet,
-            jwtPayload.amount,
-          ]),
+          from,
+          data,
         }
       );
       const populated = await forwarder.populateTransaction.execute(
@@ -93,8 +131,6 @@ export const firstTransfer = functions
           await requestRef.set(
             {
               infuraHash: result.infuraHash,
-              // first_hash: tx.hash,
-              // second_hash: tx.hash,
               status: "WAITING",
               message: "Aguardando confirmaçao",
             },
@@ -106,8 +142,7 @@ export const firstTransfer = functions
         } else {
           await requestRef.set(
             {
-              first_hash: result.transactionHash,
-              second_hash: result.transactionHash,
+              hash: result.transactionHash,
               status: "SUCCESS",
               message: "Claim realizado com sucesso",
             },
@@ -120,8 +155,6 @@ export const firstTransfer = functions
         functions.logger.warn(err);
         await requestRef.set(
           {
-            // first_hash: tx.hash,
-            // second_hash: tx.hash,
             status: "WAITING",
             message: "Aguardando confirmaçao",
           },
@@ -130,137 +163,16 @@ export const firstTransfer = functions
           }
         );
       }
-      // const secondTask = taskQueue("secondTransfer");
-      // await secondTask({
-      //   ...data,
-      //   hash: tx.hash,
-      // });
     } catch (err: any) {
       functions.logger.error(err);
       requestRef.set(
         {
           status: "ERROR",
-          message: `Falha ao dar claim em RIB: ${err.message}`,
+          message: `Falha ao transferir RIB: ${err.message}`,
         },
         {
           merge: true,
         }
       );
-      // postFeedback(
-      //   signToken(
-      //     {
-      //       status: "ERROR",
-      //       message: `Falha ao dar claim em RIB: ${err.message}`,
-      //     },
-      //     jwtPayload.jti
-      //   )
-      // );
-    }
-  });
-
-export const secondTransfer = functions
-  .runWith({
-    secrets: secrets,
-  })
-  .tasks.taskQueue({
-    rateLimits: {
-      maxConcurrentDispatches: 1,
-    },
-    retryConfig: {
-      maxAttempts: 3,
-    },
-  })
-  .onDispatch(async (data: TaskData & { hash: string }) => {
-    functions.logger.info(`Second task`);
-    const { jwtPayload, hash } = data;
-    const firestore = getFirestore(app);
-    const requestRef = firestore
-      .collection("claim_requests")
-      .doc(jwtPayload.jti);
-    try {
-      const provider = getProvider();
-      const signer = getSigner();
-      const network = await provider.getNetwork();
-      const tokenContract = new ethers.Contract(
-        deploy[chainIdToName[network.chainId]].token,
-        TokenAbi,
-        signer
-      ) as RibusToken;
-      const forwarder = new ethers.Contract(
-        deploy[chainIdToName[network.chainId]].forwarder,
-        ForwarderAbi,
-        signer
-      ) as MinimalForwarderUpgradeable;
-      const child = await getChildWallet(jwtPayload.user_id.toString());
-      const { request, signature } = await signMetaTxRequest(
-        child.privateKey,
-        forwarder,
-        {
-          data: tokenContract.interface.encodeFunctionData("transfer", [
-            jwtPayload.wallet,
-            jwtPayload.amount,
-          ]),
-          from: child.address,
-          to: tokenContract.address,
-        }
-      );
-      const populated = await forwarder.populateTransaction.execute(
-        request,
-        signature
-      );
-      const estimate = await provider.send(`eth_estimateGas`, [populated]);
-      const txRequest = {
-        ...populated,
-        gasLimit: ethers.BigNumber.from(estimate),
-      };
-      functions.logger.debug(`Second Queue Transaction`, txRequest);
-
-      const secondTx = await sendRelayRequest(txRequest);
-      await secondTx.wait(1);
-      const result = await requestRef.set(
-        {
-          second_hash: secondTx.hash,
-          status: "SUCCESS",
-          message: "Claim realizado com sucesso",
-        },
-        {
-          merge: true,
-        }
-      );
-
-      functions.logger.debug(`Should have logged this in queue firstTransfer`, {
-        result,
-      });
-      // postFeedback(
-      //   signToken(
-      //     {
-      //       first_hash: hash,
-      //       second_hash: secondTx.hash,
-      //       status: "SUCCESS",
-      //       message: "Claim realizado com sucesso",
-      //     },
-      //     jwtPayload.jti
-      //   )
-      // );
-    } catch (err: any) {
-      functions.logger.error(err);
-      requestRef.set(
-        {
-          status: "ERROR",
-          message: `Falha ao dar claim em RIB: ${err.message}`,
-        },
-        {
-          merge: true,
-        }
-      );
-      // postFeedback(
-      //   signToken(
-      //     {
-      //       status: "ERROR",
-      //       message: `Falha ao dar claim em RIB: ${err.message}`,
-      //     },
-      //     jwtPayload.jti
-      //   )
-      // );
     }
   });

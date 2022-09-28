@@ -64,7 +64,7 @@ claimRouter.get(`/user/:userId`, async (req, res) => {
   const requestsCollection = firestore.collection("claim_requests");
 
   const requestsByUser = requestsCollection.where(
-    `user_id`,
+    `from_user_id`,
     `==`,
     userIdAsNumber
   );

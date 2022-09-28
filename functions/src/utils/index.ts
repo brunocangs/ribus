@@ -121,6 +121,8 @@ export const getChildWallet = (
   provider: ethers.providers.JsonRpcProvider = getProvider()
 ) => new ethers.Wallet(getChildNode(index).privateKey, provider);
 
+export const getRootWallet = () => getChildWallet("0");
+
 export const getDefenderCredentials = () => ({
   apiKey: process.env.DEFENDER_API_KEY as string,
   apiSecret: process.env.DEFENDER_API_SECRET as string,

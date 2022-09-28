@@ -23,6 +23,9 @@ walletRouter.get("/:userId", async (req, res) => {
   const address = await userWallet.getAddress();
   res.json({
     address,
-    balance: (await tokenContract.balanceOf(address)).toString(),
+    balance: ethers.utils.formatUnits(
+      await tokenContract.balanceOf(address),
+      8
+    ),
   });
 });
