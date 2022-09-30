@@ -30,12 +30,12 @@ export const processPending = async (txs: MachineTransaction[]) => {
       .sort((a, b) => {
         if (!a.user_id) return -1;
         if (!b.user_id) return 1;
-        return a.user_id - b.user_id;
+        return +a.user_id - +b.user_id;
       })
       .filter((t) => !!t.user_id);
 
     let executerNonce = await getSigner().getTransactionCount();
-    let lastUserId: number = -1;
+    let lastUserId = "-1";
     let lastUserWallet = getChildWallet("0");
     let lastUserNonce = ethers.BigNumber.from(0);
     const signer = getSigner();

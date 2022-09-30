@@ -24,5 +24,5 @@ tokenRouter.get("/claim", async (req, res) => {
     v4(),
     true
   );
-  res.json({ token });
+  res.json({ jwt: token });
 });

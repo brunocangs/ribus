@@ -1,9 +1,17 @@
 import { Router } from "express";
-import { getFirestore } from "firebase-admin/firestore";
+import { getFirestore, Timestamp } from "firebase-admin/firestore";
 import { logger } from "firebase-functions";
 import { verify } from "jsonwebtoken";
 import { txMachine } from "../machines/transaction.machine";
-import { app, getContracts, getNonce, getTx, saveTx } from "../utils";
+import {
+  app,
+  getChildWallet,
+  getContracts,
+  getNonce,
+  getRootWallet,
+  getTx,
+  saveTx,
+} from "../utils";
 import { RibusTransferJWT } from "./../../../solidity/src/types/index";
 
 export const transferRouter = Router();
@@ -29,7 +37,7 @@ async function handler(body: Record<string, any>) {
     !jwtPayload.jti
   )
     throw new Error("Invalid payload");
-  const { iat, exp, iss, jti, ...data } = jwtPayload;
+  const { iat, exp, iss, jti, ...jwtData } = jwtPayload;
   const failedResponse = {
     success: false,
     id: null,
@@ -40,19 +48,53 @@ async function handler(body: Record<string, any>) {
       logger.warn(`Repeated attempt to claim`, jwtPayload);
       return failedResponse;
     }
+    // Pull data from JWT
+    // Who is sending => Internal or external
+    let sender: string;
+    if (jwtData.from_user_id !== undefined) {
+      sender = await getChildWallet(
+        jwtData.from_user_id.toString()
+      ).getAddress();
+    } else if (jwtData.from_wallet !== undefined) {
+      sender = jwtData.from_wallet;
+    } else throw new Error("Missing sender information");
+
+    // Who is receiving => Internal or external
+    let receiver: string;
+    if (jwtData.to_user_id !== undefined) {
+      receiver = await getChildWallet(
+        jwtData.to_user_id.toString()
+      ).getAddress();
+    } else if (jwtData.to_wallet !== undefined) {
+      receiver = jwtData.to_wallet;
+    } else throw new Error("Missing receiver information");
+
+    const isInternal = jwtData.from_user_id !== undefined;
+    // If there's from_user_id, tx `from` and signer must be child wallet
+    const user_id = isInternal ? jwtData.from_user_id?.toString() ?? "0" : "0";
+
     const { token } = await getContracts();
+
+    const data = isInternal
+      ? // If there's from_user_id, tx data will be transfer from self
+        token.interface.encodeFunctionData("transfer", [
+          receiver,
+          jwtData.amount,
+        ])
+      : // If there's from_wallet, tx will be transferFrom as third party
+        token.interface.encodeFunctionData("transferFrom", [
+          sender,
+          receiver,
+          jwtData.amount,
+        ]);
     await saveTx(jti, {
-      // Must be 0 to execute as root wallet
-      user_id: "0", // data.user_id.toString(), //
+      user_id,
       to: token.address,
-      data: token.interface.encodeFunctionData("transferFrom", [
-        from,
-        data.wallet,
-        data.amount,
-      ]),
-      jwt: data,
+      data,
+      jwt: jwtData,
       version: 2,
       state: txMachine.initialState,
+      sentAt: Timestamp.fromDate(new Date()),
     });
   } catch (err: any) {
     logger.error(err);

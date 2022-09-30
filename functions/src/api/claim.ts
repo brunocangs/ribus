@@ -37,8 +37,8 @@ claimRouter.get("/:requestId", async (req, res) => {
           {
             ...item.jwt,
             status,
-            first_hash: hash,
-            second_hash: hash,
+            message,
+            hash,
           },
           item.id
         ),
@@ -56,10 +56,7 @@ claimRouter.get("/:requestId", async (req, res) => {
 claimRouter.get(`/user/:userId`, async (req, res) => {
   const { userId } = req.params;
   const userIdAsNumber = +userId;
-  if (isNaN(userIdAsNumber)) return res.status(500).send(`Invalid`);
-  if (!userId) {
-    return res.status(500).send(`Invalid`);
-  }
+  if (!userId || isNaN(userIdAsNumber)) return res.status(500).send(`Invalid`);
   const firestore = getFirestore();
   const requestsCollection = firestore.collection("claim_requests");
 

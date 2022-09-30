@@ -390,8 +390,9 @@ export const getNonce = async (userId: number) => {
 
 export const getTxsByUser = () =>
   txsRef
-    .orderBy("user_id", "asc")
-    .orderBy("nonce", "asc")
+    .where("state.done", "!=", true)
+    // .orderBy("user_id", "asc")
+    // .orderBy("nonce", "asc")
     .get()
     .then((snap) => {
       if (snap.empty) return [];
@@ -436,7 +437,7 @@ export const getUserTxs = (userId: number) =>
 export type MachineTransaction = {
   hash?: string;
   id: string;
-  user_id: number;
+  user_id: string;
   to: string;
   data: string;
   state: typeof txMachine.initialState | null;
@@ -491,7 +492,7 @@ export const setLocked = (lockId: string, locked: boolean) =>
   locksRef.doc(lockId).set(
     {
       locked,
-      lockedAt: Timestamp.fromDate(new Date()),
+      lockedAt: locked ? Timestamp.fromDate(new Date()) : null,
     },
     {
       merge: true,
