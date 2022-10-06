@@ -216,6 +216,7 @@ export const sendRelayRequest = async (
   tx: ethers.PopulatedTransaction
 ): Promise<Transaction> => {
   const wallet = getSigner();
+  console.log(wallet.address);
   const provider = wallet.provider as ethers.providers.JsonRpcProvider;
   if (ENV !== "production") {
     return wallet.sendTransaction(tx);

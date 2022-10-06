@@ -4,7 +4,7 @@ import { signToken } from "../../utils";
 
 export const tokenRouter = Router();
 
-tokenRouter.get("/claim", async (req, res) => {
+tokenRouter.get("/", async (req, res) => {
   let {
     amount = 1,
     from_wallet,

@@ -83,6 +83,7 @@ export const processPending = async (txs: MachineTransaction[]) => {
           lastUserNonce,
           message: err.toString().slice(0, 200),
         });
+        console.log(err);
         await saveTx(tx.id, {
           ...tx,
           state: tx.state ? txMachine.transition(tx.state, "errored") : null,

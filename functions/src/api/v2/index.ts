@@ -21,7 +21,6 @@ import { transferRouter } from "./transfer";
 import { walletRouter } from "./wallet";
 
 const app = express();
-app.use(cors({ origin: true }));
 
 app.use("/transfer", transferRouter);
 app.use("/claim", claimRouter);
@@ -65,22 +64,15 @@ if (process.env.NODE_ENV !== "production") {
     await Promise.all(promises);
   });
 
-  app.get("/test/:userId", async (req, res) => {
-    try {
-      const userId = req.params.userId;
-      res.json(await getUserTxs(+userId));
-    } catch (err) {
-      res.json({ err });
-    }
-  });
   app.get("/", async (_, res) =>
     res.json({
       address: await getSigner().getAddress(),
       network: await getProvider().getNetwork(),
+      version: 2,
     })
   );
   app.use("/token", tokenRouter);
   app.use(anyRouter);
 }
 
-export const routerV2 = app;
+export const v2Router = app;
