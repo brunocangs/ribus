@@ -14,10 +14,10 @@ app.use("/transfer", transferRouter);
 app.use("/claim", claimRouter);
 app.use("/wallet", walletRouter);
 
+app.get("/", async (_, res) =>
+  res.json({ address: await getSigner().getAddress(), version: 1 })
+);
 if (process.env.NODE_ENV !== "production") {
-  app.get("/", async (_, res) =>
-    res.json({ address: await getSigner().getAddress(), version: 1 })
-  );
   app.use("/token", tokenRouter);
   app.use(anyRouter);
 }

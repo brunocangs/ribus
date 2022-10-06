@@ -25,6 +25,13 @@ const app = express();
 app.use("/transfer", transferRouter);
 app.use("/claim", claimRouter);
 app.use("/wallet", walletRouter);
+app.get("/", async (_, res) =>
+  res.json({
+    address: await getSigner().getAddress(),
+    network: await getProvider().getNetwork(),
+    version: 2,
+  })
+);
 
 if (process.env.NODE_ENV !== "production") {
   app.get("/process", async (_, res) => {
@@ -64,13 +71,6 @@ if (process.env.NODE_ENV !== "production") {
     await Promise.all(promises);
   });
 
-  app.get("/", async (_, res) =>
-    res.json({
-      address: await getSigner().getAddress(),
-      network: await getProvider().getNetwork(),
-      version: 2,
-    })
-  );
   app.use("/token", tokenRouter);
   app.use(anyRouter);
 }
