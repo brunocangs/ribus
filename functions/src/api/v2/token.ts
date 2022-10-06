@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { v4 } from "uuid";
-import { signToken } from "../utils";
+import { signToken } from "../../utils";
 
 export const tokenRouter = Router();
 

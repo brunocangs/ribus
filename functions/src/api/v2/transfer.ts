@@ -1,18 +1,10 @@
 import { Router } from "express";
-import { getFirestore, Timestamp } from "firebase-admin/firestore";
+import { Timestamp } from "firebase-admin/firestore";
 import { logger } from "firebase-functions";
 import { verify } from "jsonwebtoken";
-import { txMachine } from "../machines/transaction.machine";
-import {
-  app,
-  getChildWallet,
-  getContracts,
-  getNonce,
-  getRootWallet,
-  getTx,
-  saveTx,
-} from "../utils";
-import { RibusTransferJWT } from "./../../../solidity/src/types/index";
+import { RibusTransferJWT } from "../../../../solidity/src/types/index";
+import { txMachine } from "../../machines/transaction.machine";
+import { getChildWallet, getContracts, getTx, saveTx } from "../../utils";
 
 export const transferRouter = Router();
 

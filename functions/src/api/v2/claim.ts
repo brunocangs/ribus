@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getFirestore } from "firebase-admin/firestore";
-import { getTx, signToken } from "../utils";
+import { getTx, signToken } from "../../utils";
 
 export const claimRouter = Router();
 

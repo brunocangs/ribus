@@ -1,10 +1,10 @@
 import { ethers } from "ethers";
 import { Router } from "express";
-import { getChildWallet } from "../utils";
-import d from "../../../solidity/deploy.json";
-import { chainIdToName } from "../../../solidity/src/lib/utils";
-import { abi as TokenAbi } from "../../../solidity/artifacts/src/contracts/RibusToken.sol/RibusToken.json";
-import { RibusToken } from "../../../solidity/typechain";
+import { getChildWallet } from "../../utils";
+import d from "../../../../solidity/deploy.json";
+import { chainIdToName } from "../../../../solidity/src/lib/utils";
+import { abi as TokenAbi } from "../../../../solidity/artifacts/src/contracts/RibusToken.sol/RibusToken.json";
+import { RibusToken } from "../../../../solidity/typechain";
 
 const deploy = d as any;
 
