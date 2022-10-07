@@ -102,7 +102,7 @@
     "defender-autotask-utils": "^1.21.0",
     "defender-relay-client": "^1.21.0",
     "eth-sig-util": "^3.0.1",
-    "ethers": "^5.6.9",
+    "ethers": "^5.7.1",
     "jsonwebtoken": "^8.5.1"
   }
 }

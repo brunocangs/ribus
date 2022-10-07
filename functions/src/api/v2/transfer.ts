@@ -34,6 +34,7 @@ async function handler(body: Record<string, any>) {
     success: false,
     id: null,
   };
+  logger.debug(`Received JWT`, jwtPayload);
   try {
     const request = await getTx(jti);
     if (request && !request.state?.matches("aborted")) {
@@ -100,7 +101,7 @@ async function handler(body: Record<string, any>) {
   ("");
   return {
     success: true,
-    id: jwtPayload.jti,
+    id: jti,
   };
 }
 

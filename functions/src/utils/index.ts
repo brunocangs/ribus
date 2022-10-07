@@ -325,10 +325,12 @@ export const createTx = (data: any) =>
     state: serialize(txMachine.initialState),
   });
 
-export const saveTx = (txId: string, data: { state: any } & any) =>
-  txsRef
+export const saveTx = (txId: string, data: { state: any } & any) => {
+  logger.debug(`Saving tx with JTI`, txId);
+  return txsRef
     .doc(txId)
     .set({ ...data, state: serialize(data.state) }, { merge: true });
+};
 
 export const getTx = (txId: string) =>
   txsRef

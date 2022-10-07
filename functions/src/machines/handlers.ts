@@ -40,6 +40,8 @@ export const processPending = async (txs: MachineTransaction[]) => {
     let lastUserNonce = ethers.BigNumber.from(0);
     const signer = getSigner();
     for (const tx of sortedTxs) {
+      const { state, ...txData } = tx;
+      if (!state || !state.matches("pending")) continue;
       // If moved to another user, update info
       try {
         if (lastUserId !== tx.user_id) {
@@ -48,8 +50,6 @@ export const processPending = async (txs: MachineTransaction[]) => {
           const address = await lastUserWallet.getAddress();
           lastUserNonce = await forwarder.getNonce(address);
         }
-        const { state, ...txData } = tx;
-        if (!state || !state.matches("pending")) continue;
         // Sign meta tx as wallet
         const { request, signature } = await signMetaTxRequest(
           lastUserWallet.privateKey,
@@ -62,13 +62,27 @@ export const processPending = async (txs: MachineTransaction[]) => {
           }
         );
         lastUserNonce = lastUserNonce.add(1);
-        const executeData = await forwarder
-          .connect(signer)
-          .populateTransaction.execute(request, signature);
-        const transaction = await signer.sendTransaction({
-          ...executeData,
-          nonce: executerNonce,
+
+        const feeData = await provider.getFeeData();
+        const populatedTx = await forwarder.populateTransaction.execute(
+          request,
+          signature
+        );
+        const gasEstimate = await forwarder.estimateGas.execute(
+          request,
+          signature
+        );
+        logger.debug(`Dispatching tx`, {
+          request,
+          feeData,
+          tx: await forwarder.populateTransaction.execute(request, signature),
         });
+        const transaction = await signer.sendTransaction({
+          ...populatedTx,
+          gasPrice: feeData.gasPrice?.mul(120).div(100) || 0,
+          gasLimit: gasEstimate,
+        });
+        logger.debug(`Transaction`, transaction);
         await transaction.wait(1);
         console.log(`Executed ${transaction.hash}`);
         executerNonce++;
@@ -81,9 +95,8 @@ export const processPending = async (txs: MachineTransaction[]) => {
         logger.error(`Errored processing pending txs`, {
           executerNonce,
           lastUserNonce,
-          message: err.toString().slice(0, 200),
+          err,
         });
-        console.log(err);
         await saveTx(tx.id, {
           ...tx,
           state: tx.state ? txMachine.transition(tx.state, "errored") : null,
@@ -141,7 +154,7 @@ export const processProcessing = async (txs: MachineTransaction[]) => {
     logger.error(`Errored processProcessing`, { err });
   }
   await setLocked(PROCESSING_LOCK, false);
-  logger.debug(`Clearing lock`, { lock: PROCESSING_LOCK });
+  // logger.debug(`Clearing lock`, { lock: PROCESSING_LOCK });
 };
 
 const FAILED_LOCK = "failed";
