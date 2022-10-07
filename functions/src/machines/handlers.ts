@@ -72,18 +72,11 @@ export const processPending = async (txs: MachineTransaction[]) => {
           request,
           signature
         );
-        logger.debug(`Dispatching tx`, {
-          request,
-          feeData,
-          tx: await forwarder.populateTransaction.execute(request, signature),
-        });
         const transaction = await signer.sendTransaction({
           ...populatedTx,
           gasPrice: feeData.gasPrice?.mul(120).div(100) || 0,
           gasLimit: gasEstimate,
         });
-        logger.debug(`Transaction`, transaction);
-        await transaction.wait(1);
         console.log(`Executed ${transaction.hash}`);
         executerNonce++;
         await saveTx(tx.id, {
@@ -91,6 +84,7 @@ export const processPending = async (txs: MachineTransaction[]) => {
           hash: transaction.hash,
           state: txMachine.transition(state, "submitted"),
         });
+        await transaction.wait(1);
       } catch (err: any) {
         logger.error(`Errored processing pending txs`, {
           executerNonce,
