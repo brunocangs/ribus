@@ -93,7 +93,12 @@ export const processPending = async (txs: MachineTransaction[]) => {
         });
         await saveTx(tx.id, {
           ...tx,
-          state: tx.state ? txMachine.transition(tx.state, "errored") : null,
+          state: tx.state
+            ? txMachine.transition(tx.state, {
+                type: "errored",
+                error: err.toString(),
+              })
+            : null,
         });
       }
     }
@@ -131,7 +136,10 @@ export const processProcessing = async (txs: MachineTransaction[]) => {
                 hash: tx.hash,
               });
             } else {
-              nextState = txMachine.transition(tx.state, "rejected");
+              nextState = txMachine.transition(tx.state, {
+                type: "rejected",
+                error: "Transaction rejected",
+              });
             }
             return saveTx(tx.id, {
               ...tx,

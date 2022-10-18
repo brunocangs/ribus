@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { verify } from "jsonwebtoken";
 import { v4 } from "uuid";
 import { signToken } from "../../utils";
 
@@ -25,4 +26,17 @@ tokenRouter.get("/", async (req, res) => {
     true
   );
   res.json({ jwt: token });
+});
+
+tokenRouter.post("/decode", (req, res) => {
+  const jwt = req?.body?.jwt;
+  if (!jwt)
+    return res.json({
+      success: false,
+    });
+  return res.json(
+    verify(jwt, process.env.JWT_SECRET as string, {
+      issuer: "app.ribus.com.br",
+    })
+  );
 });

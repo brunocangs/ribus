@@ -329,7 +329,10 @@ export const saveTx = (txId: string, data: { state: any } & any) => {
   logger.debug(`Saving tx with JTI`, txId);
   return txsRef
     .doc(txId)
-    .set({ ...data, state: serialize(data.state) }, { merge: true });
+    .set(
+      { ...data, state: serialize(data.state), version: 2 },
+      { merge: true }
+    );
 };
 
 export const getTx = (txId: string) =>
@@ -396,6 +399,7 @@ export const getTxsByUser = () =>
     .where("state.done", "!=", true)
     // .orderBy("user_id", "asc")
     // .orderBy("nonce", "asc")
+    .limit(10)
     .get()
     .then((snap) => {
       if (snap.empty) return [];

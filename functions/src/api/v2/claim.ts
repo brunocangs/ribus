@@ -23,7 +23,7 @@ claimRouter.get("/:requestId", async (req, res) => {
           message = "Claim realizado com sucesso";
         } else if (state.matches("aborted")) {
           status = "ERROR";
-          message = "Falha ao realizar claim";
+          message = `Falha ao realizar claim. ${state.context.error}`;
         } else {
           status = "WAITING";
           message = "Pedido em processamento";
@@ -38,7 +38,7 @@ claimRouter.get("/:requestId", async (req, res) => {
             ...item.jwt,
             status,
             message,
-            hash,
+            hash: hash.length > 0 ? hash : undefined,
           },
           item.id
         ),

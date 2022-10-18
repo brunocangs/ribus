@@ -34,7 +34,7 @@ async function handler(body: Record<string, any>) {
     success: false,
     id: null,
   };
-  logger.debug(`Received JWT`, jwtPayload);
+  logger.debug(`Received JWT`, jwtPayload, jwt);
   try {
     const request = await getTx(jti);
     if (request && !request.state?.matches("aborted")) {
@@ -68,37 +68,53 @@ async function handler(body: Record<string, any>) {
 
     const { token } = await getContracts();
 
-    const data = isInternal
-      ? // If there's from_user_id, tx data will be transfer from self
-        token.interface.encodeFunctionData("transfer", [
-          receiver,
-          jwtData.amount,
-        ])
-      : // If there's from_wallet, tx will be transferFrom as third party
-        token.interface.encodeFunctionData("transferFrom", [
-          sender,
-          receiver,
-          jwtData.amount,
-        ]);
+    let data: string;
+    if (isInternal) {
+      // Validate tx. Will throw on fail
+      await token
+        .connect(getChildWallet(user_id))
+        .callStatic.transfer(receiver, jwtData.amount);
+      // If there's from_user_id, tx data will be transfer from self
+      data = token.interface.encodeFunctionData("transfer", [
+        receiver,
+        jwtData.amount,
+      ]);
+    } else {
+      // Validate tx. Will throw on fail
+      await token
+        .connect(getChildWallet(user_id))
+        .callStatic.transferFrom(sender, receiver, jwtData.amount);
+      // If there's from_wallet, tx will be transferFrom as third party
+      data = token.interface.encodeFunctionData("transferFrom", [
+        sender,
+        receiver,
+        jwtData.amount,
+      ]);
+    }
     await saveTx(jti, {
       user_id,
       to: token.address,
       data,
       jwt: jwtData,
-      version: 2,
       state: txMachine.initialState,
       sentAt: Timestamp.fromDate(new Date()),
     });
   } catch (err: any) {
-    logger.error(err);
+    let errorMsg: string;
+    try {
+      errorMsg = JSON.parse(err.error.body).error.message;
+    } catch {
+      errorMsg = err.toString();
+    }
+    // logger.error(err);
     await saveTx(jti, {
-      status: "ERROR",
-      message: `Falha ao dar claim em RIB: ${err.message}`,
-      error: JSON.stringify(err),
+      state: txMachine.transition(txMachine.initialState, {
+        type: "abort",
+        error: errorMsg,
+      }),
     });
     return failedResponse;
   }
-  ("");
   return {
     success: true,
     id: jti,
