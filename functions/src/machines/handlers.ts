@@ -75,7 +75,7 @@ export const processPending = async (txs: MachineTransaction[]) => {
         const transaction = await signer.sendTransaction({
           ...populatedTx,
           gasPrice: feeData.gasPrice?.mul(120).div(100) || 0,
-          gasLimit: gasEstimate,
+          gasLimit: gasEstimate.mul(120).div(100),
         });
         console.log(`Executed ${transaction.hash}`);
         executerNonce++;
@@ -145,8 +145,10 @@ export const processProcessing = async (txs: MachineTransaction[]) => {
               ...tx,
               state: nextState,
             });
-          } catch (err) {
-            logger.error(`Failed to get receit`);
+          } catch (err: any) {
+            logger.warn(`Failed to get receit. Tx hasnt been mined yet`, {
+              hash: tx.hash,
+            });
           }
         }
         return;

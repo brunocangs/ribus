@@ -396,7 +396,7 @@ export const getNonce = async (userId: number) => {
 
 export const getTxsByUser = () =>
   txsRef
-    .where("state.done", "!=", true)
+    .where("state.value", "not-in", ["success", "aborted"])
     // .orderBy("user_id", "asc")
     // .orderBy("nonce", "asc")
     .limit(10)
