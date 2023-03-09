@@ -108,12 +108,17 @@ async function handler(body: Record<string, any>) {
     }
     // logger.error(err);
     await saveTx(jti, {
+      jwt: jwtData,
+      sentAt: Timestamp.fromDate(new Date()),
       state: txMachine.transition(txMachine.initialState, {
         type: "abort",
         error: errorMsg,
       }),
     });
-    return failedResponse;
+    return {
+      ...failedResponse,
+      error: errorMsg,
+    };
   }
   return {
     success: true,
